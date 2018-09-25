@@ -1,5 +1,4 @@
-﻿using Endobit.DomainDrivenDesign;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -8,10 +7,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using WorldServer.Constants;
 using WorldServer.Entities;
-using WorldServer.Events;
 using WorldServer.Extensions;
 using WorldServer.Services;
-using WorldServer.Specifications;
 
 namespace WorldServer.Aggregates
 {
@@ -55,14 +52,12 @@ namespace WorldServer.Aggregates
         }
 
 
-        private readonly IPublisher _publisher;
         private readonly TerrainType[] _generated = new TerrainType[(Rows + 1) * (Columns + 1)];
         private readonly FractalService _fractal;
 
-        public Chunk(FractalService fractal, IPublisher publisher, IEnumerable<WorldEntity> entities, int x, int y)
+        public Chunk(FractalService fractal, int x, int y)
         {
             _fractal = fractal;
-            _publisher = publisher;
 
             X = x;
             Y = y;
@@ -99,7 +94,7 @@ namespace WorldServer.Aggregates
                     {
                         if(heightVal <= Ramp[(byte)i])
                         {
-                            _generated[(x+1) + ((y+1) * Columns)] = i;
+                            _generated[(x+1) + ((y+1) * (Columns+1))] = i;
                             break;
                         }
                     }

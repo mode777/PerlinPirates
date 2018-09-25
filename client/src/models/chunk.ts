@@ -53,11 +53,21 @@ export class Chunk{
     }
 
     public createTiles(){
-        for (let y = 1; y < this.width; y++) {
-            for (let x = 1; x < this.height; x++) {
+        for (let y = 1; y < this.width+1; y++) {
+            for (let x = 1; x < this.height+1; x++) {
                 this.visitCorner(x,y);
             }            
         }
+    }
+
+    public getColumn(x: number){
+        const arr = new Array(this.height+1);
+        
+        for (let y = 0; y < this.height+1; y++) {
+            arr[y] = this.data[x + y * this.width+1];
+        }
+
+        return arr;
     }
     // -----
     // |a|b|
@@ -65,10 +75,10 @@ export class Chunk{
     // |c|d|
     // -----
     private visitCorner(x: number, y: number){
-        const a = this.data[(x-1) + (y-1) * this.width];
-        const b = this.data[x + (y-1) * this.width];
-        const c = this.data[(x-1) + y * this.width];
-        const d = this.data[x + y * this.width];
+        const a = this.data[(x-1) + (y-1) * (this.width+1)];
+        const b = this.data[x + (y-1) * (this.width+1)];
+        const c = this.data[(x-1) + y * (this.width+1)];
+        const d = this.data[x + y * (this.width+1)];
 
         const max = Math.max(a,b,c,d);
         const min = Math.min(a,b,c,d);
@@ -80,7 +90,7 @@ export class Chunk{
                 c >= i, 
                 d >= i);
 
-            this.tiles.push([x,y,materialIds[i],transitionId]);
+            this.tiles.push([x-1,y-1,materialIds[i],transitionId]);
         }         
     }
 

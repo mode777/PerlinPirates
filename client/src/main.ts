@@ -25,6 +25,8 @@ async function main() {
         [Tilewidth * 32, Tileheight * 32]);
         
     await client.connect();
+    const chk1 = client.subscribeChunk(0,1)
+    const chk2 = client.subscribeChunk(1,1)    
 
     renderer.canvas.onmousemove = (ev) => {
         if(ev.offsetX > (renderer.canvas.width - scrollMargin))
