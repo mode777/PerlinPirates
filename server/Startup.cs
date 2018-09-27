@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using WorldServer.Database;
 using WorldServer.Entities;
 using WorldServer.Services;
 
@@ -31,6 +32,8 @@ namespace WorldServer
 
             services.AddScoped<ChunkManager>();
             services.AddSingleton<FractalService>();
+
+            services.AddDbContext<WorldContext>(x => x.UseSqlite("Data Source=World.db"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

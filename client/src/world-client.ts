@@ -1,5 +1,6 @@
 import { HubConnection, HubConnectionBuilder } from '@aspnet/signalr';
 import { ChunkDto, Chunk } from './models/chunk';
+import { Player } from './models/player';
 
 
 export class WorldClient {
@@ -27,6 +28,10 @@ export class WorldClient {
 
     async unsubscribeChunk(cx: number, cy: number){
         await this.connection.invoke("UnsubscribeChunk", cx, cy);
+    }
+
+    async createPlayer(id: string, player: Player, x: number, y: number){
+        return await this.connection.invoke("CreatePlayer", id, player, x, y);
     }
 
     private registerCallbacks(){

@@ -5,6 +5,7 @@ import { WorldClient } from './world-client';
 import { WorldRenderer, Tilewidth, Tileheight } from './world-renderer';
 import { Chunk } from './models/chunk';
 import { Viewport } from './viewport';
+import { Player } from './models/player';
 
 let dx = 0;
 let dy = 0;
@@ -25,9 +26,8 @@ async function main() {
         [Tilewidth * 32, Tileheight * 32]);
         
     await client.connect();
-    const chk1 = client.subscribeChunk(0,1)
-    const chk2 = client.subscribeChunk(1,1)    
-
+    console.log(await client.createPlayer("player3", new Player("Alex"), 0,0));
+    
     renderer.canvas.onmousemove = (ev) => {
         if(ev.offsetX > (renderer.canvas.width - scrollMargin))
             dx = speed;

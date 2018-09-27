@@ -9,8 +9,8 @@ namespace WorldServer.Services
 {
     public class FractalService
     {
-        const int Rows = 32;
-        const int Columns = 32;
+        const int Rows = WorldConstants.ChunkRows;
+        const int Columns = WorldConstants.ChunkColumns;
 
         static readonly byte[] Weights = new byte[Rows * Columns];
         static readonly byte[] Ramp = new byte[] {
@@ -62,19 +62,7 @@ namespace WorldServer.Services
         {
             var value = Normalize(_noise.GetPerlinFractal(x, y));
             return value;
-        }
-
-        // public (int, int) GetStartPosition(){
-        //     var r = new Random();
-            
-        //     int x,y;
-
-        //     var cx = r.Next(1000);
-        //     var cy = r.Next(1000);
-
-        //     if(cy % 2 == 0)
-        //         x = Mod(x + Columns/2, Columns);
-        // }
+        }        
 
         public TerrainType GetTerrain(int x, int y)
         {

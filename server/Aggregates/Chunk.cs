@@ -13,8 +13,8 @@ namespace WorldServer.Aggregates
 {
     public class Chunk
     {
-        const int Rows = 32;
-        const int Columns = 32;
+        const int Rows = WorldConstants.ChunkRows;
+        const int Columns = WorldConstants.ChunkColumns;
         
         private readonly TerrainType[] _generated = new TerrainType[(Rows + 1) * (Columns + 1)];
         private readonly FractalService _fractal;

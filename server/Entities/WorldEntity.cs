@@ -8,36 +8,39 @@ namespace WorldServer.Entities
 {
     public class WorldEntity
     {
-        private WorldEntity()
+        private string _json;
+
+        protected WorldEntity()
         {
 
         }
 
-        public WorldEntity(int chunkX, int chunkY, byte x, byte y, short entityId, object payload = null)
+        protected WorldEntity(string id, int chunkX, int chunkY, byte x, byte y, object payload = null)
         {
+            Id = id;
             ChunkX = chunkX;
             ChunkY = chunkY;
             X = x;
             Y = y;
-            EntityId = entityId;
 
             if (payload != null)
-                JsonConvert.SerializeObject(payload);
+                Update(payload);
         }
 
+        public string Id { get; private set; }
         public int ChunkX { get; private set; }
         public int ChunkY { get; private set; }
         public byte X { get; private set; }
         public byte Y { get; private set; }
-        public short EntityId { get; private set; }
-        public string Payload { get; private set; }
+        
+        protected T GetPayload<T>(){
+            return JsonConvert.DeserializeObject<T>(_json);
+        }        
 
-        public void Update(short entityId, object payload = null)
+        public void Update(object payload = null)
         {
-            EntityId = entityId;
-
             if (payload != null)
-                JsonConvert.SerializeObject(payload);
+                _json = JsonConvert.SerializeObject(payload);
         }
     }
 }
