@@ -22,14 +22,23 @@ namespace WorldServer
             _context = context;
         }
 
-        public async Task<GameEntity<Player>> CreatePlayer(string id, Player player, int x, int y)
+        public async Task<PlayerDto> GetPlayer(string id)
         {
-            var entity = new GameEntity<Player>(id,x,y,player);
+            var entity = await _context.FindAsync<GameEntity<Player>>(id);
+
+            if (entity == null)
+                return null;
+
+            return new PlayerDto(entity);
+        }
+
+        public async Task RegisterPlayer(string name)
+        {
+            var entity = new GameEntity<Player>(name, 0, 0, new Player(name));
 
             _context.Add(entity);
-            await _context.SaveChangesAsync();
 
-            return entity;
+            await _context.SaveChangesAsync();
         }
 
         public async Task<ChunkDto> SubscribeChunk(int x, int y)

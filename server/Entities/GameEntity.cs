@@ -9,7 +9,10 @@ namespace WorldServer.Entities
         private Lazy<T> _payload;
 
         private GameEntity()
-            : base() {}
+            : base()
+        {
+            _payload = new Lazy<T>(() => GetPayload<T>());
+        }
 
         public GameEntity(string id, int x, int y, T payload)
             : base(id,

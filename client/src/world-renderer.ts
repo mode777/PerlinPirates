@@ -1,11 +1,17 @@
 import { Chunk, Tile } from './models/chunk';
+import { Player } from './models/player';
 
-export const Tilewidth = 64;
-export const Tileheight = 64;
+
 
 export class WorldRenderer {
 
+    readonly tileWidth = 64;
+    readonly tileHeight = 64;
+    readonly tileZoom = 4;
+
     private context: CanvasRenderingContext2D;
+    private offsetX = 0;
+    private offsetY = 0;
 
     public readonly canvas: HTMLCanvasElement;
         
@@ -26,13 +32,25 @@ export class WorldRenderer {
         this.context.clearRect(0,0,this.canvas.width, this.canvas.height);
     }
 
-    renderChunk(chunk: Chunk, offsetX = 0, offsetY = 0){
+    setOffset(offsetX = 0, offsetY = 0){
+        this.offsetX = offsetX;
+        this.offsetY = offsetY;
+    }
+
+    renderChunk(chunk: Chunk){
         
-        const chunkX = chunk.x * chunk.width * Tilewidth;
-        const chunkY = chunk.y * chunk.height * Tileheight;
+        const chunkX = chunk.x * chunk.width * this.tileWidth;
+        const chunkY = chunk.y * chunk.height * this.tileHeight;
 
         chunk.getTiles().forEach(x => 
-            this.renderTile(x, offsetX + chunkX, offsetY + chunkY));        
+            this.renderTile(x, this.offsetX + chunkX, this.offsetY + chunkY));        
+    }
+
+    renderPlayer(player: Player){
+        this.context.fillStyle = 'red';
+        const x = player.x * this.tileZoom + this.offsetX - 20;
+        const y = player.y * this.tileZoom + this.offsetY - 20;
+        this.context.fillRect(x , y , 40, 40);
     }
 
     private renderTile(tile: Tile, offsetX: number, offsetY: number){
@@ -50,10 +68,10 @@ export class WorldRenderer {
             py, 
             16, 
             16, 
-            offsetX + tile[0] * Tilewidth, 
-            offsetY + tile[1] * Tileheight, 
-            Tilewidth, 
-            Tileheight);
+            offsetX + tile[0] * this.tileWidth, 
+            offsetY + tile[1] * this.tileHeight, 
+            this.tileWidth, 
+            this.tileHeight);
     }
 
 

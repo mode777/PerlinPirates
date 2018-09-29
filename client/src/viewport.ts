@@ -1,5 +1,7 @@
 import { WorldClient } from './world-client';
 import { Chunk } from './models/chunk';
+import { WorldRenderer } from './world-renderer';
+import { Player } from './models/player';
 
 const X = 0;
 const Y = 1;
@@ -8,8 +10,16 @@ const H = 3;
 
 export class Viewport {
     
-    private readonly offset = [-this.viewport[X], -this.viewport[Y]];
+    
+    readonly chunkWidth = 32;
+    readonly chunkHeight = 32;
+        
+    private readonly viewport: Int16Array = new Int16Array(4);
+    private readonly offset: [number,number] = [0,0];
     private readonly chunkLookup: { [key: string]: Chunk } = {}
+    private readonly size: [number, number];
+    private readonly position: [number, number];
+
     
     private chunks: Chunk[] = [];
     private updating = false;
@@ -17,8 +27,11 @@ export class Viewport {
         
     constructor(
         private readonly client: WorldClient,
-        private readonly viewport: [number,number,number,number],
-        private readonly chunkSize: [number, number]){
+        private readonly renderer: WorldRenderer){
+            this.viewport[X] = this.offset[X];
+            this.viewport[Y] = this.offset[Y];
+            this.viewport[W] = this.renderer.canvas.width;
+            this.viewport[H] = this.renderer.canvas.height;
     }
 
     public getChunks(){
@@ -48,7 +61,7 @@ export class Viewport {
         this.updateAsync();
     }
 
-    private async updateAsync(){
+    public async updateAsync(){
         this.requestUpdate = true;
 
         if(!this.updating){
@@ -59,10 +72,10 @@ export class Viewport {
                 const chunks = [];
                 const keyLookup: {[key: string]: boolean} = {};
 
-                const ystart = Math.floor(this.viewport[Y] / this.chunkSize[Y]); 
-                const yend = Math.floor((this.viewport[Y] + this.viewport[H]) / this.chunkSize[Y]); 
-                const xstart = Math.floor(this.viewport[X] / this.chunkSize[X]); 
-                const xend = Math.floor((this.viewport[X] + this.viewport[W]) / this.chunkSize[X]); 
+                const ystart = Math.floor(this.viewport[Y] / (this.chunkHeight * this.renderer.tileHeight)); 
+                const yend = Math.ceil((this.viewport[Y] + this.viewport[H]) / (this.chunkHeight * this.renderer.tileHeight)); 
+                const xstart = Math.floor(this.viewport[X] / (this.chunkWidth * this.renderer.tileWidth)); 
+                const xend = Math.ceil((this.viewport[X] + this.viewport[W]) / (this.chunkWidth * this.renderer.tileWidth));       
                 
                 for (let cy = ystart; cy <= yend; cy++) {
                     
@@ -105,5 +118,10 @@ export class Viewport {
 
     private getKey(x: number, y:number){
         return `${x},${y}`;
+    }
+
+    public centerPlayer(player: Player){
+        this.viewport[X] = (player.x * this.renderer.tileZoom) - this.renderer.canvas.width / 2;
+        this.viewport[Y] = (player.y * this.renderer.tileZoom) - this.renderer.canvas.height / 2;
     }
 }

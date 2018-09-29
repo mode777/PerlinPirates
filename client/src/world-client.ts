@@ -1,6 +1,6 @@
 import { HubConnection, HubConnectionBuilder } from '@aspnet/signalr';
 import { ChunkDto, Chunk } from './models/chunk';
-import { Player } from './models/player';
+import { Player, PlayerDto } from './models/player';
 
 
 export class WorldClient {
@@ -13,12 +13,19 @@ export class WorldClient {
         this.connection = new HubConnectionBuilder()
             .withUrl(url)
             .build();
-
-        this.registerCallbacks();
     }
 
-    async connect(){
+    async connectPlayer(playername: string){
         await this.connection.start();
+
+        let player = await this.getPlayer(playername);
+        
+        if(!player){
+            await this.createPlayer(playername);
+            player = await this.getPlayer(playername);
+        }
+
+        return player;
     }
 
     async subscribeChunk(cx: number, cy: number){
@@ -30,15 +37,16 @@ export class WorldClient {
         await this.connection.invoke("UnsubscribeChunk", cx, cy);
     }
 
-    async createPlayer(id: string, player: Player, x: number, y: number){
-        return await this.connection.invoke("CreatePlayer", id, player, x, y);
+    async createPlayer(id: string) {
+        await this.connection.invoke("RegisterPlayer", id);
     }
+    
+    async getPlayer(id: string){
+        const dto = await this.connection.invoke<PlayerDto>("GetPlayer", id);        
+        
+        if(!dto)
+            return null;
 
-    private registerCallbacks(){
-        this.connection.on("onTileChanged", (cx,cy,x,y,id) =>  {
-            if(this.onTileChanged)
-                this.onTileChanged(cx,cy,x,y,id);
-        });
+        return new Player(this, dto);
     }
-
 }
