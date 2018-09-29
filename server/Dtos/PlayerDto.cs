@@ -13,7 +13,7 @@ namespace WorldServer.Dtos
         {
         }
 
-        public PlayerDto(GameEntity<Player> player)
+        public PlayerDto(PlayerEntity player)
         {
             Id = player.Id;
             X = player.X + player.ChunkX * WorldConstants.ChunkColumns;

@@ -37,7 +37,16 @@ namespace WorldServer.Aggregates
         public TerrainType[] GetData()
         {
             return _generated;
-        }               
+        }       
+        
+        public Point TryMoveRectangle(Rectangle rect, Point offset, TerrainMovement movement)
+        {
+            var target = rect;
+            target.Offset(offset);
+
+            // Todo: Continue...
+            throw new NotImplementedException();
+        }
 
         private void GenerateFractal()
         {

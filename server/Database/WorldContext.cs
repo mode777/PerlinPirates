@@ -18,7 +18,7 @@ namespace WorldServer.Database
             {
 
                 w.HasDiscriminator<string>("type")
-                    .HasValue<GameEntity<Player>>("player")
+                    .HasValue<PlayerEntity>("player")
                     .HasValue<GameEntity<City>>("city");
 
                 w.Property(x => x.Id).HasMaxLength(128);
@@ -29,6 +29,15 @@ namespace WorldServer.Database
                 w.Property<string>("Json")
                     .HasField("_json")
                     .UsePropertyAccessMode(PropertyAccessMode.Field);
+                
+            });
+
+            modelBuilder.Entity<PlayerEntity>(p =>
+            {
+                p.Ignore(x => x.Hitbox);
+                p.Ignore(x => x.PixelX);
+                p.Ignore(x => x.PixelY);
+                p.Ignore(x => x.Payload);
             });
         }
 

@@ -8,7 +8,7 @@ namespace WorldServer.Entities
 {
     public class WorldEntity
     {
-        private string _json;
+        protected string _json;
 
         protected WorldEntity()
         {
@@ -27,11 +27,11 @@ namespace WorldServer.Entities
                 Update(payload);
         }
 
-        public string Id { get; private set; }
-        public int ChunkX { get; private set; }
-        public int ChunkY { get; private set; }
-        public byte X { get; private set; }
-        public byte Y { get; private set; }
+        public string Id { get; protected set; }
+        public int ChunkX { get; protected set; }
+        public int ChunkY { get; protected set; }
+        public byte X { get; protected set; }
+        public byte Y { get; protected set; }
         
         protected T GetPayload<T>(){
             return JsonConvert.DeserializeObject<T>(_json);
