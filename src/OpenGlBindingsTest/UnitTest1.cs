@@ -12,7 +12,7 @@ namespace OpenGlBindingsTest
         {
             var generator = new BindingGenerator();
 
-            var delegates = generator.Features["GL_ES_VERSION_2_0"].Commands.Values.Select(x => x.ToDelegateString()).ToArray();
+            var str = generator.Features["GL_ES_VERSION_2_0"].ToBindingClassString();
 
             Assert.NotEmpty(generator.Groups);
         }

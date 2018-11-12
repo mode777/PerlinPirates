@@ -93,7 +93,7 @@ namespace OpenGlBindingsGenerator
                 return new Command
                 {
                     Name = proto.Name,
-                    ReturnType = proto.Type,
+                    ReturnType = proto,
                     Parameters = parameters
                     .Select(y => ParseParam(y))
                     .ToArray()
@@ -218,6 +218,7 @@ namespace OpenGlBindingsGenerator
                 // Get only used groups and filter their enum values
                 f.Groups = Commands.Values
                 .SelectMany(y => y.Parameters)
+                .Concat(Commands.Values.Select(y => y.ReturnType))
                 .Where(y => y.IsGroup)
                 .Select(y => y.Type)
                 .Distinct()

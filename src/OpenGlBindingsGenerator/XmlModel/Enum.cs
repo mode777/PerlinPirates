@@ -8,5 +8,15 @@ namespace OpenGlBindingsGenerator.XmlModel
     {
         public string Name { get; set; }
         public uint Value { get; set; }
+
+        public string ToConstantString()
+        {
+            return $"public const uint {Name} = {Value};";
+        }
+
+        public string ToEnumString()
+        {
+            return $"{Name} = {Value}";
+        }
     }
 }
