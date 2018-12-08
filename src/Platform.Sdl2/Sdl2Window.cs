@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using SDL2;
 
-namespace SdlGame.Platform.Sdl2
+namespace Platform.Sdl2
 {
     internal class Sdl2Window : IDisposable
     {
@@ -35,6 +33,11 @@ namespace SdlGame.Platform.Sdl2
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        public void SwapBuffers()
+        {
+            SDL.SDL_GL_SwapWindow(_handle);
         }
 
         protected virtual void Dispose(bool disposing)

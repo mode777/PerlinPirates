@@ -1,9 +1,7 @@
-﻿using SDL2;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
+using SDL2;
 
-namespace SdlGame.Platform.Sdl2
+namespace Platform.Sdl2
 {
     public class Sdl2Exception : Exception
     {

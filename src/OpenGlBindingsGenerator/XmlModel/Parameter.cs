@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.CodeDom.Providers.DotNetCompilerPlatform;
 
 namespace OpenGlBindingsGenerator.XmlModel
 {
@@ -15,8 +16,25 @@ namespace OpenGlBindingsGenerator.XmlModel
 
         public string ToArgumentString()
         {
-            return $"{Type}{(IsPointer ? "*" : "")} {Name}";
-            
+            return $"{Type}{(IsPointer ? "*" : "")} {SafeName}";
         }
-    }
+
+        public string SafeName
+        {
+            get
+            {
+                switch (Name)
+                {
+                    case "params":
+                        return "@params";
+                    case "string":
+                        return "@string";
+                    case "ref":
+                        return "@ref";
+                    default:
+                        return Name;
+                }
+            }
+        }
+}
 }

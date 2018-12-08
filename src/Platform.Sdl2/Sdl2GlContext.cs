@@ -1,9 +1,7 @@
-﻿using SDL2;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
+using SDL2;
 
-namespace SdlGame.Platform.Sdl2
+namespace Platform.Sdl2
 {
     internal class Sdl2GlContext : IDisposable
     {
@@ -28,6 +26,18 @@ namespace SdlGame.Platform.Sdl2
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        public IntPtr GetProcAddress(string name)
+        {
+            var ptr = SDL.SDL_GL_GetProcAddress(name);
+
+            if (ptr == IntPtr.Zero)
+            {
+                throw new NotSupportedException(name);
+            }
+
+            return ptr;
         }
 
         protected virtual void Dispose(bool disposing)

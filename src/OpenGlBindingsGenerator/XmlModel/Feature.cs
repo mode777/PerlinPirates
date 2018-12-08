@@ -35,6 +35,13 @@ namespace OpenGlBindingsGenerator.XmlModel
                 "    #region Delegate instances",
                 string.Join("\n", Commands.Values.OrderBy(x => x.Name).Select(x => x.ToDelegateDeclarationString())).Indent("    "),
                 "    #endregion",
+                "",
+                "    #region Loader",
+                "    public static void LoadApi(Func<string, IntPtr> getProcAddress)",
+                "    {",
+                string.Join("\n", Commands.Values.OrderBy(x => x.Name).Select(x => x.ToProcLoaderString("getProcAddress"))).Indent("        "),
+                "    }",
+                "    #endregion",
                 "}"
             });
         }

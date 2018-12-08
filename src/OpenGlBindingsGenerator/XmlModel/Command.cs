@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace OpenGlBindingsGenerator.XmlModel
@@ -14,12 +15,17 @@ namespace OpenGlBindingsGenerator.XmlModel
 
         public string ToDelegateString()
         {
-            return $"public {(Parameters.Any(x => x.IsPointer) ? "unsafe " : "")}delegate {ReturnType.Type ?? "void"} {Name}({string.Join(", ", Parameters.Select(x => x.ToArgumentString()))});";
+            return $"[SuppressUnmanagedCodeSecurity] public {(Parameters.Any(x => x.IsPointer) ? "unsafe " : "")}delegate {ReturnType.Type ?? "void"} {Name}Delegate({string.Join(", ", Parameters.Select(x => x.ToArgumentString()))});";
         }
 
         public string ToDelegateDeclarationString()
         {
-            return $"public readonly {Name} {Name};";
+            return $"[ThreadStatic] public static {Name}Delegate {Name};";
+        }
+
+        public string ToProcLoaderString(string loaderArgument)
+        {
+            return $"{Name} = Marshal.GetDelegateForFunctionPointer<{Name}Delegate>({loaderArgument}(\"{Name}\"));";
         }
     }
 }
