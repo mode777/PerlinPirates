@@ -22,7 +22,7 @@ namespace Renderer.Gles2
             GL.glClearColor(1, 1, 0, 1);
             GL.glClear(GL.ClearBufferMask.GL_COLOR_BUFFER_BIT);
 
-            GL.glGetInteger<Vertex4i>(GL.GetPName.GL_VIEWPORT, out var i);
+            GL.GetInteger<Vertex4i>(GL.GetPName.GL_VIEWPORT, out var i);
 
             _platform.SwapBuffers();
         }

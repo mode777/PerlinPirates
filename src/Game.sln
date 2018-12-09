@@ -11,13 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenGlBindingsGenerator", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenGlBindingsTest", "OpenGlBindingsTest\OpenGlBindingsTest.csproj", "{63647434-6590-477A-8EA2-7A925B3E9776}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game.Abstractions", "Game.Abstractions\Game.Abstractions.csproj", "{85911941-BF9D-4070-B6FA-AF0A5DE8CECB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Game.Abstractions", "Game.Abstractions\Game.Abstractions.csproj", "{85911941-BF9D-4070-B6FA-AF0A5DE8CECB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleGame", "ExampleGame\ExampleGame.csproj", "{E334CC23-CA5A-4D5D-9F2B-2BF362A904EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExampleGame", "ExampleGame\ExampleGame.csproj", "{E334CC23-CA5A-4D5D-9F2B-2BF362A904EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tgl.Net", "Tgl.Net\Tgl.Net.csproj", "{23CA69D0-A9DF-4DCC-9C62-B24C44276C75}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Math", "Math\Math.csproj", "{A8E5B484-7701-483A-8FDB-F5175AB28965}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tgl.Net", "Tgl.Net\Tgl.Net.csproj", "{23CA69D0-A9DF-4DCC-9C62-B24C44276C75}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,10 +51,6 @@ Global
 		{23CA69D0-A9DF-4DCC-9C62-B24C44276C75}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{23CA69D0-A9DF-4DCC-9C62-B24C44276C75}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{23CA69D0-A9DF-4DCC-9C62-B24C44276C75}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A8E5B484-7701-483A-8FDB-F5175AB28965}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A8E5B484-7701-483A-8FDB-F5175AB28965}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A8E5B484-7701-483A-8FDB-F5175AB28965}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A8E5B484-7701-483A-8FDB-F5175AB28965}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

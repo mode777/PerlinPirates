@@ -16,20 +16,20 @@ namespace Tgl.Net.Core
         public TglState()
         {
 
-            glGetInteger<int>(GetPName.GL_ACTIVE_TEXTURE, out var textureUnit);
+            GetInteger<int>(GetPName.GL_ACTIVE_TEXTURE, out var textureUnit);
             ActiveTexture = new Accessor<uint>((uint)textureUnit - (uint)TextureUnit.GL_TEXTURE0, v => glActiveTexture((TextureUnit)((uint)TextureUnit.GL_TEXTURE0 + v)));
 
-            glGetFloat<Vertex4f>(GetPName.GL_COLOR_CLEAR_VALUE, out var clearColor);
-            ClearColor = new Accessor<Vertex4f>(clearColor, v => glClearColor(v.X, v.Y, v.Z, v.W));
+            GetFloat<Color>(GetPName.GL_COLOR_CLEAR_VALUE, out var clearColor);
+            ClearColor = new Accessor<Color>(clearColor, v => glClearColor(v.R, v.G, v.B, v.A));
 
-            glGetInteger<Vertex4i>(GetPName.GL_VIEWPORT, out var viewport);
-            Viewport = new Accessor<Vertex4i>(viewport, v => glViewport(v.X, v.Y, v.Z, v.W));
+            GetInteger<Rectangle>(GetPName.GL_VIEWPORT, out var viewport);
+            Viewport = new Accessor<Rectangle>(viewport, v => glViewport(v.X, v.Y, v.W, v.H));
 
-            BlendingEnabled = new Accessor<bool>(glIsEnabled(EnableCap.GL_BLEND), v => glEnable(EnableCap.GL_BLEND));
-            FaceCullingEnabled = new Accessor<bool>(glIsEnabled(EnableCap.GL_CULL_FACE), v => glEnable(EnableCap.GL_CULL_FACE));
-            DepthTestEnabled = new Accessor<bool>(glIsEnabled(EnableCap.GL_DEPTH_TEST), v => glEnable(EnableCap.GL_DEPTH_TEST));
-            ScissorTestEnabled = new Accessor<bool>(glIsEnabled(EnableCap.GL_SCISSOR_TEST), v => glEnable(EnableCap.GL_SCISSOR_TEST));
-            StencilTestEnabled = new Accessor<bool>(glIsEnabled(EnableCap.GL_STENCIL_TEST), v => glEnable(EnableCap.GL_STENCIL_TEST));
+            BlendingEnabled = new Accessor<bool>(glIsEnabled(EnableCap.GL_BLEND), v => SetFeature(EnableCap.GL_BLEND, v));
+            FaceCullingEnabled = new Accessor<bool>(glIsEnabled(EnableCap.GL_CULL_FACE), v => SetFeature(EnableCap.GL_CULL_FACE, v));
+            DepthTestEnabled = new Accessor<bool>(glIsEnabled(EnableCap.GL_DEPTH_TEST), v => SetFeature(EnableCap.GL_DEPTH_TEST, v));
+            ScissorTestEnabled = new Accessor<bool>(glIsEnabled(EnableCap.GL_SCISSOR_TEST), v => SetFeature(EnableCap.GL_SCISSOR_TEST, v));
+            StencilTestEnabled = new Accessor<bool>(glIsEnabled(EnableCap.GL_STENCIL_TEST), v => SetFeature(EnableCap.GL_STENCIL_TEST, v));
             Texture = new TextureAccessor(ActiveTexture, 0, v => glBindTexture(TextureTarget.GL_TEXTURE_2D, v));
             Framebuffer = new Accessor<uint>(0, v => glBindFramebuffer(FramebufferTarget.GL_FRAMEBUFFER, v));
             VertexBuffer = new Accessor<uint>(0, v => glBindBuffer(BufferTargetARB.GL_ARRAY_BUFFER, v));
@@ -39,8 +39,8 @@ namespace Tgl.Net.Core
         }
 
         public IAccessor<uint> ActiveTexture { get; }
-        public IAccessor<Vertex4f> ClearColor { get; }
-        public IAccessor<Vertex4i> Viewport { get; }
+        public IAccessor<Color> ClearColor { get; }
+        public IAccessor<Rectangle> Viewport { get; }
         public IAccessor<bool> BlendingEnabled { get; }
         public IAccessor<bool> FaceCullingEnabled { get; }
         public IAccessor<bool> DepthTestEnabled { get; }
@@ -89,7 +89,7 @@ namespace Tgl.Net.Core
 
             public TextureAccessor(IAccessor<uint> unitAccessor, uint initialValue, Action<uint> setter)
             {
-                glGetInteger<int>(GetPName.GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, out var maxUnits);
+                GetInteger<int>(GetPName.GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, out var maxUnits);
                 _values = new uint[maxUnits];
 
                 _unitAccessor = unitAccessor;

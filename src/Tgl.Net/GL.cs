@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security;
+using System.Text;
 
 namespace Tgl.Net
 {
@@ -1107,11 +1109,11 @@ namespace Tgl.Net
         [SuppressUnmanagedCodeSecurity] public unsafe delegate void glGetFloatvDelegate(GetPName pname, void* data);
         [SuppressUnmanagedCodeSecurity] public unsafe delegate void glGetFramebufferAttachmentParameterivDelegate(FramebufferTarget target, FramebufferAttachment attachment, FramebufferAttachmentParameterName pname, int* @params);
         [SuppressUnmanagedCodeSecurity] public unsafe delegate void glGetIntegervDelegate(GetPName pname, void* data);
-        [SuppressUnmanagedCodeSecurity] public unsafe delegate void glGetProgramInfoLogDelegate(uint program, int bufSize, int* length, string infoLog);
-        [SuppressUnmanagedCodeSecurity] public unsafe delegate void glGetProgramivDelegate(uint program, ProgramPropertyARB pname, int* @params);
+        [SuppressUnmanagedCodeSecurity] public unsafe delegate void glGetProgramInfoLogDelegate(uint program, int bufSize, out int length, StringBuilder infoLog);
+        [SuppressUnmanagedCodeSecurity] public unsafe delegate void glGetProgramivDelegate(uint program, ProgramPropertyARB pname, out int @params);
         [SuppressUnmanagedCodeSecurity] public unsafe delegate void glGetRenderbufferParameterivDelegate(RenderbufferTarget target, RenderbufferParameterName pname, int* @params);
-        [SuppressUnmanagedCodeSecurity] public unsafe delegate void glGetShaderInfoLogDelegate(uint shader, int bufSize, int* length, string infoLog);
-        [SuppressUnmanagedCodeSecurity] public unsafe delegate void glGetShaderivDelegate(uint shader, ShaderParameterName pname, int* @params);
+        [SuppressUnmanagedCodeSecurity] public delegate void glGetShaderInfoLogDelegate(uint shader, int bufSize, out int length, StringBuilder infoLog);
+        [SuppressUnmanagedCodeSecurity] public delegate void glGetShaderivDelegate(uint shader, ShaderParameterName pname, out int @params);
         [SuppressUnmanagedCodeSecurity] public unsafe delegate void glGetShaderPrecisionFormatDelegate(ShaderType shadertype, PrecisionType precisiontype, int* range, int* precision);
         [SuppressUnmanagedCodeSecurity] public unsafe delegate void glGetShaderSourceDelegate(uint shader, int bufSize, int* length, string source);
         [SuppressUnmanagedCodeSecurity] public delegate byte glGetStringDelegate(StringName name);
@@ -1141,7 +1143,7 @@ namespace Tgl.Net
         [SuppressUnmanagedCodeSecurity] public delegate void glSampleCoverageDelegate(float value, bool invert);
         [SuppressUnmanagedCodeSecurity] public delegate void glScissorDelegate(int x, int y, int width, int height);
         [SuppressUnmanagedCodeSecurity] public unsafe delegate void glShaderBinaryDelegate(int count, uint* shaders, uint binaryformat, void* binary, int length);
-        [SuppressUnmanagedCodeSecurity] public unsafe delegate void glShaderSourceDelegate(uint shader, int count, string @string, int* length);
+        [SuppressUnmanagedCodeSecurity] public unsafe delegate void glShaderSourceDelegate(uint shader, int count, string[] @string, int* length);
         [SuppressUnmanagedCodeSecurity] public delegate void glStencilFuncDelegate(StencilFunction func, int @ref, uint mask);
         [SuppressUnmanagedCodeSecurity] public delegate void glStencilFuncSeparateDelegate(StencilFaceDirection face, StencilFunction func, int @ref, uint mask);
         [SuppressUnmanagedCodeSecurity] public delegate void glStencilMaskDelegate(uint mask);
@@ -1482,7 +1484,7 @@ namespace Tgl.Net
 
         #region helpers
 
-        public static void glGetInteger<T>(GetPName pname, out T data)
+        public static void GetInteger<T>(GetPName pname, out T data)
             where T : struct
         {
             data = default(T);
@@ -1496,7 +1498,21 @@ namespace Tgl.Net
             }
         }
 
-        public static void glGetFloat<T>(GetPName pname, out T data)
+        public static void ShaderSource(uint shader, string[] @string)
+        {
+            var lengths = @string.Select(x => x?.Length ?? 0).ToArray();
+            var count = @string.Length;
+
+            unsafe
+            {
+                fixed (int* p_length = lengths)
+                {
+                    glShaderSource(shader, count, @string, p_length);
+                }
+            }
+        }
+
+        public static void GetFloat<T>(GetPName pname, out T data)
             where T : struct
         {
             data = default(T);
@@ -1509,6 +1525,20 @@ namespace Tgl.Net
                 glGetFloatv(pname, refDataPtr.ToPointer());
             }
         }
+
+        public static void SetFeature(EnableCap feature, bool value)
+        {
+            if (value)
+            {
+                glEnable(feature);
+            }
+            else
+            {
+                glDisable(feature);
+            }
+        }
+
+
 
         #endregion
     }
