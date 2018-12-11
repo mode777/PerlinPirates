@@ -1,50 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using static Tgl.Net.GL;
 
 namespace Tgl.Net.Core
 {
-    public class BufferOptions
-    {
-        public BufferOptions(object data, uint vertices, IEnumerable<VertexAttribute> attributes)
-        {
-            Data = data;
-            Vertices = vertices;
-            Attributes = attributes;
-        }
-
-        public object Data { get; }
-        public uint Vertices { get; }
-        public IEnumerable<VertexAttribute> Attributes { get; }
-        public BufferUsageARB Usage { get; set; } = BufferUsageARB.GL_STATIC_DRAW;
-
-    }
-
-    public class VertexAttribute
-    {
-        public VertexAttribute(string name, uint components)
-        {
-            Name = name;
-            if (components > 4 || components < 1)
-                throw new InvalidOperationException("Components has to be between 1 and 4");
-
-            Components = components;
-        }
-
-        public VertexAttribute(string name, uint components, VertexAttribType type)
-            : this(name, components)
-        {
-            DataType = type;
-        }
-
-        public string Name { get; }
-        public uint Components { get; }
-        public bool Normalized { get; set; }
-        public uint? Offset { get; set; }
-        public VertexAttribType DataType { get; set; } = VertexAttribType.GL_FLOAT;
-    }
-
     public class VertexBuffer
     {
         private readonly TglContext _context;
@@ -77,7 +38,16 @@ namespace Tgl.Net.Core
                 return res;
             }).ToArray();
 
-            _handle = glGenBuffers(1);
+            unsafe
+            {
+                var arr = new uint[0];
+
+                fixed (uint* ptr = arr)
+                {
+                    glGenBuffers(arr.Length, ptr);
+                    _handle = arr[0];
+                }
+            }
 
             Data(options.Data, options.Vertices);
         }
@@ -94,20 +64,20 @@ namespace Tgl.Net.Core
         private void SubData(object data, uint vertexOffset, uint vertexLength)
         {
             Bind();
-            using (var pinned = new MemoryLock(data))
-            {
-                glBufferSubData(BufferTargetARB.GL_ARRAY_BUFFER, (IntPtr)(_vertexSize * vertexOffset), _vertexSize * vertexLength, pinned.Address);
-            }
+
+            var handle = GCHandle.Alloc(data);
+            glBufferSubData(BufferTargetARB.GL_ARRAY_BUFFER, (IntPtr)(_vertexSize * vertexOffset), _vertexSize * vertexLength, GCHandle.ToIntPtr(handle));
+            handle.Free();
         }
 
         public void Data(object data, uint vertexLength)
         {
             Bind();
             CalculateSize(vertexLength);
-            using (var pinned = new MemoryLock(data))
-            {
-                glBufferData(BufferTargetARB.GL_ARRAY_BUFFER, _byteSize, pinned.Address, _usage);
-            }
+
+            var handle = GCHandle.Alloc(data);
+            glBufferData(BufferTargetARB.GL_ARRAY_BUFFER, _byteSize, GCHandle.ToIntPtr(handle), _usage);
+            handle.Free();
         }
 
         public void EnableAttribute(string name, int location)
@@ -125,19 +95,19 @@ namespace Tgl.Net.Core
                 (IntPtr)a.Offset);
         }
 
-        private uint GetComponentSize(VertexAttribType type)
+        private uint GetComponentSize(VertexAttribPointerType type)
         {
             switch (type)
             {
-                case VertexAttribType.GL_BYTE:
-                case VertexAttribType.GL_UNSIGNED_BYTE:
+                case VertexAttribPointerType.GL_BYTE:
+                case VertexAttribPointerType.GL_UNSIGNED_BYTE:
                     return 1;
-                case VertexAttribType.GL_SHORT:
-                case VertexAttribType.GL_UNSIGNED_SHORT:
+                case VertexAttribPointerType.GL_SHORT:
+                case VertexAttribPointerType.GL_UNSIGNED_SHORT:
                     return 2;
-                case VertexAttribType.GL_INT:
-                case VertexAttribType.GL_UNSIGNED_INT:
-                case VertexAttribType.GL_FLOAT:
+                case VertexAttribPointerType.GL_INT:
+                case VertexAttribPointerType.GL_UNSIGNED_INT:
+                case VertexAttribPointerType.GL_FLOAT:
                     return 4;
                 default:
                     throw new NotSupportedException($"DataType {type} is not supported.");

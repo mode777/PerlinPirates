@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using Game.Abstractions;
+using GlMatrix.Net;
 using Tgl.Net;
-using Tgl.Net.Math;
 
 namespace Renderer.Gles2
 {
@@ -19,11 +19,14 @@ namespace Renderer.Gles2
 
         public void Render()
         {
-            GL.glClearColor(1, 1, 0, 1);
+            GL.glClearColor(0.5f, 1, 0, 1);
             GL.glClear(GL.ClearBufferMask.GL_COLOR_BUFFER_BIT);
 
-            GL.GetInteger<Vertex4i>(GL.GetPName.GL_VIEWPORT, out var i);
+            //GL.GetInteger<Vertex4i>(GL.GetPName.GL_VIEWPORT, out var i);
+            GL.GetFloat<Vector4>(GL.GetPName.GL_COLOR_CLEAR_VALUE, out var color);
 
+            Vector4.Add(ref color, ref color, ref color);
+            
             _platform.SwapBuffers();
         }
     }

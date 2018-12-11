@@ -3,6 +3,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
+using Tgl.Net.Math;
 
 namespace Tgl.Net
 {
@@ -1057,8 +1058,8 @@ namespace Tgl.Net
         [SuppressUnmanagedCodeSecurity] public delegate void glBlendEquationSeparateDelegate(BlendEquationModeEXT modeRGB, BlendEquationModeEXT modeAlpha);
         [SuppressUnmanagedCodeSecurity] public delegate void glBlendFuncDelegate(BlendingFactor sfactor, BlendingFactor dfactor);
         [SuppressUnmanagedCodeSecurity] public delegate void glBlendFuncSeparateDelegate(BlendingFactor sfactorRGB, BlendingFactor dfactorRGB, BlendingFactor sfactorAlpha, BlendingFactor dfactorAlpha);
-        [SuppressUnmanagedCodeSecurity] public unsafe delegate void glBufferDataDelegate(BufferTargetARB target, uint size, void* data, BufferUsageARB usage);
-        [SuppressUnmanagedCodeSecurity] public unsafe delegate void glBufferSubDataDelegate(BufferTargetARB target, IntPtr offset, uint size, void* data);
+        [SuppressUnmanagedCodeSecurity] public unsafe delegate void glBufferDataDelegate(BufferTargetARB target, uint size, IntPtr data, BufferUsageARB usage);
+        [SuppressUnmanagedCodeSecurity] public unsafe delegate void glBufferSubDataDelegate(BufferTargetARB target, IntPtr offset, uint size, IntPtr ptr);
         [SuppressUnmanagedCodeSecurity] public delegate FramebufferStatus glCheckFramebufferStatusDelegate(FramebufferTarget target);
         [SuppressUnmanagedCodeSecurity] public delegate void glClearDelegate(ClearBufferMask mask);
         [SuppressUnmanagedCodeSecurity] public delegate void glClearColorDelegate(float red, float green, float blue, float alpha);
@@ -1099,11 +1100,11 @@ namespace Tgl.Net
         [SuppressUnmanagedCodeSecurity] public unsafe delegate void glGenFramebuffersDelegate(int n, uint* framebuffers);
         [SuppressUnmanagedCodeSecurity] public unsafe delegate void glGenRenderbuffersDelegate(int n, uint* renderbuffers);
         [SuppressUnmanagedCodeSecurity] public unsafe delegate void glGenTexturesDelegate(int n, uint* textures);
-        [SuppressUnmanagedCodeSecurity] public unsafe delegate void glGetActiveAttribDelegate(uint program, uint index, int bufSize, int* length, int* size, AttributeType* type, string name);
-        [SuppressUnmanagedCodeSecurity] public unsafe delegate void glGetActiveUniformDelegate(uint program, uint index, int bufSize, int* length, int* size, AttributeType* type, string name);
+        [SuppressUnmanagedCodeSecurity] public unsafe delegate void glGetActiveAttribDelegate(uint program, uint index, int bufSize, out int length, out int size, out AttributeType type, StringBuilder name);
+        [SuppressUnmanagedCodeSecurity] public unsafe delegate void glGetActiveUniformDelegate(uint program, uint index, int bufSize, out int length, out int size, out AttributeType type, StringBuilder name);
         [SuppressUnmanagedCodeSecurity] public unsafe delegate void glGetAttachedShadersDelegate(uint program, int maxCount, int* count, uint* shaders);
         [SuppressUnmanagedCodeSecurity] public delegate int glGetAttribLocationDelegate(uint program, string name);
-        [SuppressUnmanagedCodeSecurity] public unsafe delegate void glGetboolvDelegate(GetPName pname, bool* data);
+        [SuppressUnmanagedCodeSecurity] public unsafe delegate void glGetBooleanvDelegate(GetPName pname, bool* data);
         [SuppressUnmanagedCodeSecurity] public unsafe delegate void glGetBufferParameterivDelegate(BufferTargetARB target, uint pname, int* @params);
         [SuppressUnmanagedCodeSecurity] public delegate ErrorCode glGetErrorDelegate();
         [SuppressUnmanagedCodeSecurity] public unsafe delegate void glGetFloatvDelegate(GetPName pname, void* data);
@@ -1172,9 +1173,9 @@ namespace Tgl.Net
         [SuppressUnmanagedCodeSecurity] public unsafe delegate void glUniform4fvDelegate(int location, int count, float* value);
         [SuppressUnmanagedCodeSecurity] public delegate void glUniform4iDelegate(int location, int v0, int v1, int v2, int v3);
         [SuppressUnmanagedCodeSecurity] public unsafe delegate void glUniform4ivDelegate(int location, int count, int* value);
-        [SuppressUnmanagedCodeSecurity] public unsafe delegate void glUniformMatrix2fvDelegate(int location, int count, bool transpose, float* value);
-        [SuppressUnmanagedCodeSecurity] public unsafe delegate void glUniformMatrix3fvDelegate(int location, int count, bool transpose, float* value);
-        [SuppressUnmanagedCodeSecurity] public unsafe delegate void glUniformMatrix4fvDelegate(int location, int count, bool transpose, float* value);
+        [SuppressUnmanagedCodeSecurity] public unsafe delegate void glUniformMatrix2fvDelegate(int location, int count, bool transpose, ref Matrix2 value);
+        [SuppressUnmanagedCodeSecurity] public unsafe delegate void glUniformMatrix3fvDelegate(int location, int count, bool transpose, ref Matrix3 value);
+        [SuppressUnmanagedCodeSecurity] public unsafe delegate void glUniformMatrix4fvDelegate(int location, int count, bool transpose, ref Matrix4 value);
         [SuppressUnmanagedCodeSecurity] public delegate void glUseProgramDelegate(uint program);
         [SuppressUnmanagedCodeSecurity] public delegate void glValidateProgramDelegate(uint program);
         [SuppressUnmanagedCodeSecurity] public delegate void glVertexAttrib1fDelegate(uint index, float x);
@@ -1185,7 +1186,7 @@ namespace Tgl.Net
         [SuppressUnmanagedCodeSecurity] public unsafe delegate void glVertexAttrib3fvDelegate(uint index, float* v);
         [SuppressUnmanagedCodeSecurity] public delegate void glVertexAttrib4fDelegate(uint index, float x, float y, float z, float w);
         [SuppressUnmanagedCodeSecurity] public unsafe delegate void glVertexAttrib4fvDelegate(uint index, float* v);
-        [SuppressUnmanagedCodeSecurity] public unsafe delegate void glVertexAttribPointerDelegate(uint index, int size, VertexAttribPointerType type, bool normalized, int stride, void* pointer);
+        [SuppressUnmanagedCodeSecurity] public unsafe delegate void glVertexAttribPointerDelegate(uint index, int size, VertexAttribPointerType type, bool normalized, int stride, IntPtr pointer);
         [SuppressUnmanagedCodeSecurity] public delegate void glViewportDelegate(int x, int y, int width, int height);
         #endregion
 
@@ -1248,7 +1249,7 @@ namespace Tgl.Net
         [ThreadStatic] public static glGetActiveUniformDelegate glGetActiveUniform;
         [ThreadStatic] public static glGetAttachedShadersDelegate glGetAttachedShaders;
         [ThreadStatic] public static glGetAttribLocationDelegate glGetAttribLocation;
-        [ThreadStatic] public static glGetboolvDelegate glGetboolv;
+        [ThreadStatic] public static glGetBooleanvDelegate glGetBooleanv;
         [ThreadStatic] public static glGetBufferParameterivDelegate glGetBufferParameteriv;
         [ThreadStatic] public static glGetErrorDelegate glGetError;
         [ThreadStatic] public static glGetFloatvDelegate glGetFloatv;
@@ -1395,7 +1396,7 @@ namespace Tgl.Net
             glGetActiveUniform = Marshal.GetDelegateForFunctionPointer<glGetActiveUniformDelegate>(getProcAddress("glGetActiveUniform"));
             glGetAttachedShaders = Marshal.GetDelegateForFunctionPointer<glGetAttachedShadersDelegate>(getProcAddress("glGetAttachedShaders"));
             glGetAttribLocation = Marshal.GetDelegateForFunctionPointer<glGetAttribLocationDelegate>(getProcAddress("glGetAttribLocation"));
-            glGetboolv = Marshal.GetDelegateForFunctionPointer<glGetboolvDelegate>(getProcAddress("glGetboolv"));
+            glGetBooleanv = Marshal.GetDelegateForFunctionPointer<glGetBooleanvDelegate>(getProcAddress("glGetBooleanv"));
             glGetBufferParameteriv = Marshal.GetDelegateForFunctionPointer<glGetBufferParameterivDelegate>(getProcAddress("glGetBufferParameteriv"));
             glGetError = Marshal.GetDelegateForFunctionPointer<glGetErrorDelegate>(getProcAddress("glGetError"));
             glGetFloatv = Marshal.GetDelegateForFunctionPointer<glGetFloatvDelegate>(getProcAddress("glGetFloatv"));
@@ -1515,7 +1516,7 @@ namespace Tgl.Net
         public static void GetFloat<T>(GetPName pname, out T data)
             where T : struct
         {
-            data = default(T);
+            data = new T();
 
             unsafe
             {

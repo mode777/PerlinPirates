@@ -1,5 +1,4 @@
 ﻿using System;
-using Tgl.Net.Math;
 using static Tgl.Net.GL;
 
 namespace Tgl.Net.Core
@@ -20,10 +19,10 @@ namespace Tgl.Net.Core
             glClear(flags);
         }
 
-        public void Clear(ClearBufferMask flags, Color color)
-        {
-            _state.ClearColor.Set(color);
-            Clear(flags);
-        }
+        //public void Clear(ClearBufferMask flags, Color color)
+        //{
+        //    _state.ClearColor.Set(color);
+        //    Clear(flags);
+        //}
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using Tgl.Net.Math;
 using static Tgl.Net.GL;
+using Vector4 = Tgl.Net.Math.Vector4;
 
 namespace Tgl.Net.Core
 {
@@ -19,8 +20,8 @@ namespace Tgl.Net.Core
             GetInteger<int>(GetPName.GL_ACTIVE_TEXTURE, out var textureUnit);
             ActiveTexture = new Accessor<uint>((uint)textureUnit - (uint)TextureUnit.GL_TEXTURE0, v => glActiveTexture((TextureUnit)((uint)TextureUnit.GL_TEXTURE0 + v)));
 
-            GetFloat<Color>(GetPName.GL_COLOR_CLEAR_VALUE, out var clearColor);
-            ClearColor = new Accessor<Color>(clearColor, v => glClearColor(v.R, v.G, v.B, v.A));
+            GetFloat<Vector4>(GetPName.GL_COLOR_CLEAR_VALUE, out var clearColor);
+            ClearColor = new Accessor<Vector4>(clearColor, v => glClearColor(v.X, v.Y, v.Z, v.W));
 
             GetInteger<Rectangle>(GetPName.GL_VIEWPORT, out var viewport);
             Viewport = new Accessor<Rectangle>(viewport, v => glViewport(v.X, v.Y, v.W, v.H));
@@ -39,7 +40,7 @@ namespace Tgl.Net.Core
         }
 
         public IAccessor<uint> ActiveTexture { get; }
-        public IAccessor<Color> ClearColor { get; }
+        public IAccessor<Vector4> ClearColor { get; }
         public IAccessor<Rectangle> Viewport { get; }
         public IAccessor<bool> BlendingEnabled { get; }
         public IAccessor<bool> FaceCullingEnabled { get; }

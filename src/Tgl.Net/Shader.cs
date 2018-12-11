@@ -96,47 +96,51 @@ namespace Tgl.Net.Core
         }
         public void SetUniform(string name, float value) => SetUniform(_uniformsByName[name].Location, value);
 
-        public void SetUniform(int location, Vertex2f value)
+        public void SetUniform(int location, Vector2 value)
         {
             Use();
             glUniform2f(location, value.X, value.Y);
         }
-        public void SetUniform(string name, Vertex2f value) => SetUniform(_uniformsByName[name].Location, value);
+        public void SetUniform(string name, Vector2 value) => SetUniform(_uniformsByName[name].Location, value);
 
-        public void SetUniform(int location, Vertex3f value)
+        public void SetUniform(int location, Vector3 value)
         {
             Use();
-            Gl.Uniform3f(location, 1, value);
+            glUniform3f(location, value.X, value.Y, value.Z);
         }
-        public void SetUniform(string name, Vertex3f value) => SetUniform(_uniformsByName[name].Location, value);
+        public void SetUniform(string name, Vector3 value) => SetUniform(_uniformsByName[name].Location, value);
 
-        public void SetUniform(int location, Vertex4f value)
+        public void SetUniform(int location, Vector4 value)
         {
             Use();
-            Gl.Uniform4f(location, 1, value);
+            glUniform4f(location, value.X, value.Y, value.Z, value.W);
         }
-        public void SetUniform(string name, Vertex4f value) => SetUniform(_uniformsByName[name].Location, value);
+        public void SetUniform(string name, Vector4 value) => SetUniform(_uniformsByName[name].Location, value);
 
-        public void SetUniform(int location, Matrix2x2f value)
+        public void SetUniform(int location, Matrix2 value)
         {
             Use();
-            Gl.UniformMatrix2f(location, 1, false, value);
-        }
-        public void SetUniform(string name, Matrix2x2f value) => SetUniform(_uniformsByName[name].Location, value);
 
-        public void SetUniform(int location, Matrix3x3f value)
+            glUniformMatrix2fv(location, 1, false, ref value);
+        }
+        public void SetUniform(string name, Matrix2 value) => SetUniform(_uniformsByName[name].Location, value);
+
+        public void SetUniform(int location, Matrix3 value)
         {
             Use();
-            glUniformMatrix3f(location, 1, false, value);
-        }
-        public void SetUniform(string name, Matrix3x3f value) => SetUniform(_uniformsByName[name].Location, value);
 
-        public void SetUniform(int location, Matrix4x4f value)
+            glUniformMatrix3fv(location, 1, false, ref value);
+        }
+
+        public void SetUniform(string name, Matrix3 value) => SetUniform(_uniformsByName[name].Location, value);
+
+        public void SetUniform(int location, Matrix4 value)
         {
             Use();
-            glUniformMatrix4f(location, 1, false, value);
+            glUniformMatrix4fv(location, 1, false, ref value);
         }
-        public void SetUniform(string name, Matrix4x4f value) => SetUniform(_uniformsByName[name].Location, value);
+
+        public void SetUniform(string name, Matrix4 value) => SetUniform(_uniformsByName[name].Location, value);
 
         public void Dispose()
         {
@@ -148,24 +152,23 @@ namespace Tgl.Net.Core
             glGetProgramiv(_handle, ProgramPropertyARB.GL_ACTIVE_UNIFORMS, out var uniforms);
 
             StringBuilder nameBuffer = new StringBuilder(1024);
+
             nameBuffer.EnsureCapacity(1024);
             int namebufferLength;
-            int size;
-            int type;
-            int location;
-            string name;
 
             for (uint i = 0; i < uniforms; i++)
             {
+                int size;
+                AttributeType type;
                 glGetActiveUniform(_handle, i, 1024, out namebufferLength, out size, out type, nameBuffer);
-                name = nameBuffer.ToString();
-                location = glGetUniformLocation(_handle, name);
+                var name = nameBuffer.ToString();
+                var location = glGetUniformLocation(_handle, name);
                 _uniformsByName[nameBuffer.ToString()] = new ShaderVariableInfo
                 {
                     Location = location,
                     Name = name,
                     Size = size,
-                    Type = (AttributeType)type
+                    Type = type
                 };
             }
         }
@@ -177,22 +180,20 @@ namespace Tgl.Net.Core
             StringBuilder nameBuffer = new StringBuilder(1024);
             nameBuffer.EnsureCapacity(1024);
             int namebufferLength;
-            int size;
-            int type;
-            int location;
-            string name;
 
             for (uint i = 0; i < attributes; i++)
             {
+                int size;
+                AttributeType type;
                 glGetActiveAttrib(_handle, i, 1024, out namebufferLength, out size, out type, nameBuffer);
-                name = nameBuffer.ToString();
-                location = glGetAttribLocation(_handle, name);
+                var name = nameBuffer.ToString();
+                var location = glGetAttribLocation(_handle, name);
                 _attributesByName[nameBuffer.ToString()] = new ShaderVariableInfo
                 {
                     Location = location,
                     Name = name,
                     Size = size,
-                    Type = (AttributeType)type
+                    Type = type
                 };
             }
         }
