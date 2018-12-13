@@ -6,5 +6,7 @@ namespace Game.Abstractions
     {
         IntPtr GetGlProcAddress(string name);
         void SwapBuffers();
+        void Sleep(uint ms);
+        bool PollEvent(out PlatformEvent @event);
     }
 }

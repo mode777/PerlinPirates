@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using Game.Abstractions;
 using Platform.Sdl2;
 using Renderer.Gles2;
 
@@ -12,10 +13,18 @@ namespace ExampleGame
             var platform = new Sdl2Platform(new Sdl2Configuration());
             var renderer = new Gles2Renderer(platform);
 
-            while (true)
+            var quit = false;
+
+            while (!quit)
             {
+                while (platform.PollEvent(out var ev))
+                {
+                    if (ev is QuitEvent)
+                        quit = true;
+                }
+
                 renderer.Render();
-                Thread.Sleep(15);
+                platform.Sleep(15);
             }
         }
     }

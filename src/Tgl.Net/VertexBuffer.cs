@@ -40,7 +40,7 @@ namespace Tgl.Net.Core
 
             unsafe
             {
-                var arr = new uint[0];
+                var arr = new uint[1];
 
                 fixed (uint* ptr = arr)
                 {
@@ -75,8 +75,8 @@ namespace Tgl.Net.Core
             Bind();
             CalculateSize(vertexLength);
 
-            var handle = GCHandle.Alloc(data);
-            glBufferData(BufferTargetARB.GL_ARRAY_BUFFER, _byteSize, GCHandle.ToIntPtr(handle), _usage);
+            var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
+            glBufferData(BufferTargetARB.GL_ARRAY_BUFFER, _byteSize, handle.AddrOfPinnedObject(), _usage);
             handle.Free();
         }
 

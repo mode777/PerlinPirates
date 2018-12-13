@@ -35,6 +35,23 @@ namespace Platform.Sdl2
             _window.SwapBuffers();
         }
 
+        public void Sleep(uint ms)
+        {
+            SDL.SDL_Delay(ms);
+        }
+
+        public bool PollEvent(out PlatformEvent @event)
+        {
+            var more = SDL.SDL_PollEvent(out SDL.SDL_Event ev) != 0;
+
+            if(ev.type == SDL.SDL_EventType.SDL_QUIT)
+                @event = new QuitEvent();
+            else
+                @event = new PlatformEvent();
+
+            return more;
+        }
+
         private void SetGlParameters()
         {
             SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_DOUBLEBUFFER, 1);

@@ -94,28 +94,33 @@ namespace Tgl.Net.Core
             Use();
             glUniform1f(location, value);
         }
-        public void SetUniform(string name, float value) => SetUniform(_uniformsByName[name].Location, value);
+
+        public void SetUniform(string name, float value) 
+            => SetUniform(_uniformsByName[name].Location, value);
 
         public void SetUniform(int location, Vector2 value)
         {
             Use();
             glUniform2f(location, value.X, value.Y);
         }
-        public void SetUniform(string name, Vector2 value) => SetUniform(_uniformsByName[name].Location, value);
+        public void SetUniform(string name, Vector2 value) 
+            => SetUniform(_uniformsByName[name].Location, value);
 
         public void SetUniform(int location, Vector3 value)
         {
             Use();
             glUniform3f(location, value.X, value.Y, value.Z);
         }
-        public void SetUniform(string name, Vector3 value) => SetUniform(_uniformsByName[name].Location, value);
+        public void SetUniform(string name, Vector3 value) 
+            => SetUniform(_uniformsByName[name].Location, value);
 
         public void SetUniform(int location, Vector4 value)
         {
             Use();
             glUniform4f(location, value.X, value.Y, value.Z, value.W);
         }
-        public void SetUniform(string name, Vector4 value) => SetUniform(_uniformsByName[name].Location, value);
+        public void SetUniform(string name, Vector4 value) 
+            => SetUniform(_uniformsByName[name].Location, value);
 
         public void SetUniform(int location, Matrix2 value)
         {
@@ -123,7 +128,8 @@ namespace Tgl.Net.Core
 
             glUniformMatrix2fv(location, 1, false, ref value);
         }
-        public void SetUniform(string name, Matrix2 value) => SetUniform(_uniformsByName[name].Location, value);
+        public void SetUniform(string name, Matrix2 value) 
+            => SetUniform(_uniformsByName[name].Location, value);
 
         public void SetUniform(int location, Matrix3 value)
         {
@@ -132,7 +138,8 @@ namespace Tgl.Net.Core
             glUniformMatrix3fv(location, 1, false, ref value);
         }
 
-        public void SetUniform(string name, Matrix3 value) => SetUniform(_uniformsByName[name].Location, value);
+        public void SetUniform(string name, Matrix3 value) 
+            => SetUniform(_uniformsByName[name].Location, value);
 
         public void SetUniform(int location, Matrix4 value)
         {
@@ -140,7 +147,8 @@ namespace Tgl.Net.Core
             glUniformMatrix4fv(location, 1, false, ref value);
         }
 
-        public void SetUniform(string name, Matrix4 value) => SetUniform(_uniformsByName[name].Location, value);
+        public void SetUniform(string name, Matrix4 value) 
+            => SetUniform(_uniformsByName[name].Location, value);
 
         public void Dispose()
         {

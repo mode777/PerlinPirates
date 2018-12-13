@@ -234,14 +234,14 @@ namespace Tgl.Net.Math
             @out.W = scale * v4 * d;
         }
 
-        public static void TransformMat4(ref Vector4 @out, ref Vector4 a, Matrix4 m)
-        {
-            float x = a.X, y = a.Y, z = a.Z, w = a.W;
-            @out.X = m[0] * x + m[4] * y + m[8] * z + m[12] * w;
-            @out.Y = m[1] * x + m[5] * y + m[9] * z + m[13] * w;
-            @out.Z = m[2] * x + m[6] * y + m[10] * z + m[14] * w;
-            @out.W = m[3] * x + m[7] * y + m[11] * z + m[15] * w;
-        }
+        //public static void TransformMat4(ref Vector4 @out, ref Vector4 a, Matrix4 m)
+        //{
+        //    float x = a.X, y = a.Y, z = a.Z, w = a.W;
+        //    @out.X = m[0] * x + m[4] * y + m[8] * z + m[12] * w;
+        //    @out.Y = m[1] * x + m[5] * y + m[9] * z + m[13] * w;
+        //    @out.Z = m[2] * x + m[6] * y + m[10] * z + m[14] * w;
+        //    @out.W = m[3] * x + m[7] * y + m[11] * z + m[15] * w;
+        //}
 
         public static Vector4 TransformQuat(Vector4 @out, Vector4 a, Quaternion q)
         {
@@ -272,14 +272,14 @@ namespace Tgl.Net.Math
             return a.X == b.X && a.Y == b.Y && a.Z == b.Z && a.W == b.W;
         }
 
-        public static Vector4 Equals(Vector4 a, Vector4 b)
-        {
-            var a0 = a.X, a1 = a.Y, a2 = a.Z, a3 = a.W;
-            var b0 = b.X, b1 = b.Y, b2 = b.Z, b3 = b.W;
-            return (System.Math.abs(a0 - b0) <= glMatrix.EPSILON * System.Math.max(1.0, System.Math.abs(a0), System.Math.abs(b0)) &&
-                    System.Math.abs(a1 - b1) <= glMatrix.EPSILON * System.Math.max(1.0, System.Math.abs(a1), System.Math.abs(b1)) &&
-                    System.Math.abs(a2 - b2) <= glMatrix.EPSILON * System.Math.max(1.0, System.Math.abs(a2), System.Math.abs(b2)) &&
-                    System.Math.abs(a3 - b3) <= glMatrix.EPSILON * System.Math.max(1.0, System.Math.abs(a3), System.Math.abs(b3)));
-        }
+        //public static Vector4 Equals(Vector4 a, Vector4 b)
+        //{
+        //    var a0 = a.X, a1 = a.Y, a2 = a.Z, a3 = a.W;
+        //    var b0 = b.X, b1 = b.Y, b2 = b.Z, b3 = b.W;
+        //    return (System.Math.abs(a0 - b0) <= glMatrix.EPSILON * System.Math.max(1.0, System.Math.abs(a0), System.Math.abs(b0)) &&
+        //            System.Math.abs(a1 - b1) <= glMatrix.EPSILON * System.Math.max(1.0, System.Math.abs(a1), System.Math.abs(b1)) &&
+        //            System.Math.abs(a2 - b2) <= glMatrix.EPSILON * System.Math.max(1.0, System.Math.abs(a2), System.Math.abs(b2)) &&
+        //            System.Math.abs(a3 - b3) <= glMatrix.EPSILON * System.Math.max(1.0, System.Math.abs(a3), System.Math.abs(b3)));
+        //}
     }
 }
