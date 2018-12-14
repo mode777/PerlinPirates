@@ -2,11 +2,13 @@
 
 namespace Game.Abstractions
 {
-    public interface IPlatform
+    public interface IPlatform : IDisposable
     {
+        void CreateWindow();
+        void CreateGlContext();
         IntPtr GetGlProcAddress(string name);
         void SwapBuffers();
-        void Sleep(uint ms);
         bool PollEvent(out PlatformEvent @event);
+        void Sleep(uint ms);
     }
 }

@@ -7,8 +7,8 @@ namespace Platform.Sdl2
     public class Sdl2Platform : IPlatform
     {
         private readonly Sdl2Configuration _config;
-        private readonly Sdl2Window _window;
-        private readonly Sdl2GlContext _context;
+        private Sdl2Window _window;
+        private Sdl2GlContext _context;
 
         public Sdl2Platform(Sdl2Configuration config)
         {
@@ -20,8 +20,15 @@ namespace Platform.Sdl2
             }
 
             SetGlParameters();
+        }
 
+        public void CreateWindow()
+        {
             _window = new Sdl2Window(_config.Title, _config.Width, _config.Height);
+        }
+
+        public void CreateGlContext()
+        {
             _context = new Sdl2GlContext(_window);
         }
 
@@ -60,5 +67,10 @@ namespace Platform.Sdl2
             SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_CONTEXT_PROFILE_MASK, (int)SDL.SDL_GLprofile.SDL_GL_CONTEXT_PROFILE_ES);
         }
 
+        public void Dispose()
+        {
+            _window?.Dispose();
+            _context?.Dispose();
+        }
     }
 }

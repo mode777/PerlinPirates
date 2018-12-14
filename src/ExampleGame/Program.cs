@@ -11,6 +11,8 @@ namespace ExampleGame
         static void Main(string[] args)
         {
             var platform = new Sdl2Platform(new Sdl2Configuration());
+            platform.CreateWindow();
+
             var renderer = new Gles2Renderer(platform);
 
             var quit = false;

@@ -19,6 +19,7 @@ namespace Renderer.Gles2
         public Gles2Renderer(IPlatform platform)
         {
             _platform = platform;
+            platform.CreateGlContext();
             _context = new TglContext(platform.GetGlProcAddress);
 
             Init();
