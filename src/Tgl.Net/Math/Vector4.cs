@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 namespace Tgl.Net.Math
 {
     [StructLayout(LayoutKind.Sequential)]
-    public struct Vector4
+    public struct Vector4 : IEquatable<Vector4>
     {
         public float X;
         public float Y;
@@ -281,5 +281,37 @@ namespace Tgl.Net.Math
         //            System.Math.abs(a2 - b2) <= glMatrix.EPSILON * System.Math.max(1.0, System.Math.abs(a2), System.Math.abs(b2)) &&
         //            System.Math.abs(a3 - b3) <= glMatrix.EPSILON * System.Math.max(1.0, System.Math.abs(a3), System.Math.abs(b3)));
         //}
+        public bool Equals(Vector4 other)
+        {
+            return X.Equals(other.X) && Y.Equals(other.Y) && Z.Equals(other.Z) && W.Equals(other.W);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            return obj is Vector4 other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = X.GetHashCode();
+                hashCode = (hashCode * 397) ^ Y.GetHashCode();
+                hashCode = (hashCode * 397) ^ Z.GetHashCode();
+                hashCode = (hashCode * 397) ^ W.GetHashCode();
+                return hashCode;
+            }
+        }
+
+        public static bool operator ==(Vector4 left, Vector4 right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(Vector4 left, Vector4 right)
+        {
+            return !left.Equals(right);
+        }
     }
 }

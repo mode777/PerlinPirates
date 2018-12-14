@@ -1,9 +1,10 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 
 namespace Tgl.Net.Math
 {
     [StructLayout(LayoutKind.Sequential)]
-    public struct Vector3
+    public struct Vector3 : IEquatable<Vector3>
     {
         public float X;
         public float Y;
@@ -804,5 +805,36 @@ namespace Tgl.Net.Math
 
 //    return a;
 //};
+        public bool Equals(Vector3 other)
+        {
+            return X.Equals(other.X) && Y.Equals(other.Y) && Z.Equals(other.Z);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            return obj is Vector3 other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = X.GetHashCode();
+                hashCode = (hashCode * 397) ^ Y.GetHashCode();
+                hashCode = (hashCode * 397) ^ Z.GetHashCode();
+                return hashCode;
+            }
+        }
+
+        public static bool operator ==(Vector3 left, Vector3 right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(Vector3 left, Vector3 right)
+        {
+            return !left.Equals(right);
+        }
     }
 }

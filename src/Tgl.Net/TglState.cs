@@ -39,21 +39,34 @@ namespace Tgl.Net.Core
             Renderbuffer = new Accessor<uint>(0, v => glBindRenderbuffer(RenderbufferTarget.GL_RENDERBUFFER, v));
         }
 
+        // TODO: Texture Accessor
+        public IAccessor<uint> Texture { get; }
         public IAccessor<uint> ActiveTexture { get; }
-        public IAccessor<Vector4> ClearColor { get; }
-        public IAccessor<Rectangle> Viewport { get; }
+        public IAccessor<Vector4> BlendColor { get; }
+        public IAccessor<BlendEquationModeEXT> BlendEquationAlpha { get; set; }
+        public IAccessor<BlendEquationModeEXT> BlendEquationRgb { get; set; }
         public IAccessor<bool> BlendingEnabled { get; }
-        public IAccessor<bool> FaceCullingEnabled { get; }
+        public IAccessor<Vector4> ClearColor { get; }
+        public IAccessor<float> ClearDepth { get; }
+        public IAccessor<int> ClearStencil { get; }
+        public IAccessor<Vector4i> ColorMask { get; }
+        public IAccessor<CullFaceMode> CullFaceMode { get; }
         public IAccessor<bool> DepthTestEnabled { get; }
+        public IAccessor<bool> FaceCullingEnabled { get; }
+        public IAccessor<uint> Framebuffer { get; }
+        public IAccessor<uint> IndexBuffer { get; }
+        public IAccessor<bool> PolygonOffsetFillEnabled { get; }
+        public IAccessor<uint> Program { get; }
+        public IAccessor<bool> SampleAlphaToCoverageEnabled { get; }
+        public IAccessor<bool> SampleCoverageEnabled { get; }
         public IAccessor<bool> ScissorTestEnabled { get; }
         public IAccessor<bool> StencilTestEnabled { get; }
-        public IAccessor<uint> Texture { get; }
-        public IAccessor<uint> Framebuffer { get; }
         public IAccessor<uint> VertexBuffer { get; }
-        public IAccessor<uint> IndexBuffer { get; }
-        public IAccessor<uint> Program { get; }
+        public IAccessor<Rectangle> Viewport { get; }
+        public IAccessor<BlendingFactor> BlendFuncRgb { get; }
+        public IAccessor<BlendingFactor> BlendFuncAlpha { get; }
         public IAccessor<uint> Renderbuffer { get; }
-
+        
         private class Accessor<T> : IAccessor<T>
         {
             private T _value;
