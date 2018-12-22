@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using SDL2;
 
 namespace Platform.Sdl2

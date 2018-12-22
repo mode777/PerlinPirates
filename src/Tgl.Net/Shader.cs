@@ -1,42 +1,71 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using Tgl.Net.Math;
 using static Tgl.Net.GL;
 
 namespace Tgl.Net.Core
 {
-    public class ShaderOptions
+    public class ShaderBuilder
     {
-        public ShaderOptions(string vertexSource, string fragmentSource)
+        private readonly IGlState _state;
+
+        internal ShaderBuilder(IGlState state)
         {
-            VertexSource = vertexSource;
-            FragmentSource = fragmentSource;
+            _state = state;
         }
 
-        public string VertexSource { get; }
-        public string FragmentSource { get; }
+        internal string VertexSource { get; private set; }
+        internal string FragmentSource { get; private set; }
+
+        public ShaderBuilder WithVertexFile(string path)
+        {
+            return WithVertexFile(File.ReadAllText(path));
+        }
+
+        public ShaderBuilder WithVertexString(string shader)
+        {
+            VertexSource = shader;
+            return this;
+        }
+
+        public ShaderBuilder WithFragmentFile(string path)
+        {
+            return WithFragmentString(File.ReadAllText(path));
+        }
+
+        public ShaderBuilder WithFragmentString(string shader)
+        {
+            FragmentSource = shader;
+            return this;
+        }
+
+        public Shader Build()
+        {
+            return new Shader(_state, this);
+        }
     }
 
     public class Shader : IDisposable
     {
-        private readonly TglContext _context;
+        private readonly IGlState _state;
         private readonly uint _handle;
         private readonly Dictionary<string, ShaderVariableInfo> _uniformsByName
             = new Dictionary<string, ShaderVariableInfo>();
         private readonly Dictionary<string, ShaderVariableInfo> _attributesByName
             = new Dictionary<string, ShaderVariableInfo>();
 
-        public Shader(TglContext context, ShaderOptions options)
+        internal Shader(IGlState state, ShaderBuilder builder)
         {
-            _context = context;
+            _state = state;
 
             StringBuilder infolog = new StringBuilder(1024);
             infolog.EnsureCapacity(1024);
             int infologLength;
 
             var vertexShader = glCreateShader(ShaderType.GL_VERTEX_SHADER);
-            ShaderSource(vertexShader, new[] { options.VertexSource });
+            ShaderSource(vertexShader, new[] { builder.VertexSource });
             glCompileShader(vertexShader);
             glGetShaderiv(vertexShader, ShaderParameterName.GL_COMPILE_STATUS, out var compiled);
             if (compiled == 0)
@@ -46,7 +75,7 @@ namespace Tgl.Net.Core
             }
 
             var fragmentShader = glCreateShader(ShaderType.GL_FRAGMENT_SHADER);
-            ShaderSource(fragmentShader, new[] { options.FragmentSource });
+            ShaderSource(fragmentShader, new[] { builder.FragmentSource });
             glCompileShader(fragmentShader);
             glGetShaderiv(fragmentShader, ShaderParameterName.GL_COMPILE_STATUS, out compiled);
             if (compiled == 0)
@@ -76,7 +105,7 @@ namespace Tgl.Net.Core
 
         public void Use()
         {
-            _context.State.Program.Set(_handle);
+            _state.CurrentProgram = _handle;
         }
 
         public int GetUniformLocation(string name)

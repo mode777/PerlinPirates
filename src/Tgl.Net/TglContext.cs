@@ -9,15 +9,15 @@ namespace Tgl.Net.Core
 {
     public class TglContext
     {
-        private readonly TglState _state;
+        private readonly CachedState _state;
 
         public TglContext(Func<string, IntPtr> getProcAddress)
         {
             LoadApi(getProcAddress);
-            _state = new TglState();
+            _state = new CachedState();
         }
 
-        public TglState State => _state;
+        public CachedState State => _state;
 
         public void Clear(ClearBufferMask flags)
         {
@@ -26,7 +26,7 @@ namespace Tgl.Net.Core
 
         public void Clear(ClearBufferMask flags, Vector4 color)
         {
-            _state.ClearColor.Set(color);
+            _state.ColorClearValue = color;
             Clear(flags);
         }
 

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Reflection;
+using System.Runtime.Loader;
 using System.Threading;
 using Game.Abstractions;
 using Platform.Sdl2;
@@ -10,6 +12,8 @@ namespace ExampleGame
     {
         static void Main(string[] args)
         {
+            var ctx = AssemblyLoadContext.Default;
+
             var platform = new Sdl2Platform(new Sdl2Configuration());
             platform.CreateWindow();
 

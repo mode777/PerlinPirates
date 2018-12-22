@@ -2,20 +2,17 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="SDL2-CS.NetCore" Version="2.0.8" />
-  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Game.Abstractions\Game.Abstractions.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="SDL2.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+  <Target Name="CopyCustomContent" AfterTargets="AfterBuild">
+    <Copy SourceFiles="Native/linux-x64/SDL2.so" DestinationFolder="$(OutDir)" />
+    <Copy SourceFiles="Native/win-x64/SDL2.dll" DestinationFolder="$(OutDir)" />
+  </Target>
 
 </Project>

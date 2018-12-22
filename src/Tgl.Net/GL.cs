@@ -494,7 +494,9 @@ namespace Tgl.Net
             GL_POLYGON_OFFSET_FILL = 32823,
             GL_SCISSOR_TEST = 3089,
             GL_STENCIL_TEST = 2960,
-            GL_TEXTURE_2D = 3553
+            GL_TEXTURE_2D = 3553,
+            GL_SAMPLE_ALPHA_TO_COVERAGE = 32926,
+            GL_SAMPLE_COVERAGE = 32928
         }
 
         public enum ErrorCode : uint
@@ -592,8 +594,10 @@ namespace Tgl.Net
             GL_DEPTH_WRITEMASK = 2930,
             GL_DITHER = 3024,
             GL_ELEMENT_ARRAY_BUFFER_BINDING = 34965,
+            GL_FRAMEBUFFER_BINDING = 36006,
             GL_FRONT_FACE = 2886,
             GL_GREEN_BITS = 3411,
+            GL_GENERATE_MIPMAP_HINT = 33170,
             GL_IMPLEMENTATION_COLOR_READ_FORMAT = 35739,
             GL_IMPLEMENTATION_COLOR_READ_TYPE = 35738,
             GL_LINE_WIDTH = 2849,
@@ -618,6 +622,7 @@ namespace Tgl.Net
             GL_RENDERBUFFER_BINDING = 36007,
             GL_SAMPLES = 32937,
             GL_SAMPLE_BUFFERS = 32936,
+            GL_SAMPLE_ALPHA_TO_COVERAGE = 32926,
             GL_SAMPLE_COVERAGE_INVERT = 32939,
             GL_SAMPLE_COVERAGE_VALUE = 32938,
             GL_SCISSOR_BOX = 3088,
@@ -645,7 +650,8 @@ namespace Tgl.Net
             GL_TEXTURE_BINDING_2D = 32873,
             GL_TEXTURE_BINDING_CUBE_MAP = 34068,
             GL_UNPACK_ALIGNMENT = 3317,
-            GL_VIEWPORT = 2978
+            GL_VIEWPORT = 2978,
+            GL_SHADER_BINARY_FORMATS = 36345
         }
 
         public enum GetTextureParameter : uint
@@ -1104,7 +1110,7 @@ namespace Tgl.Net
         [SuppressUnmanagedCodeSecurity] public unsafe delegate void glGetActiveUniformDelegate(uint program, uint index, int bufSize, out int length, out int size, out AttributeType type, StringBuilder name);
         [SuppressUnmanagedCodeSecurity] public unsafe delegate void glGetAttachedShadersDelegate(uint program, int maxCount, int* count, uint* shaders);
         [SuppressUnmanagedCodeSecurity] public delegate int glGetAttribLocationDelegate(uint program, string name);
-        [SuppressUnmanagedCodeSecurity] public unsafe delegate void glGetBooleanvDelegate(GetPName pname, bool* data);
+        [SuppressUnmanagedCodeSecurity] public unsafe delegate void glGetBooleanvDelegate(GetPName pname, void* data);
         [SuppressUnmanagedCodeSecurity] public unsafe delegate void glGetBufferParameterivDelegate(BufferTargetARB target, uint pname, int* @params);
         [SuppressUnmanagedCodeSecurity] public delegate ErrorCode glGetErrorDelegate();
         [SuppressUnmanagedCodeSecurity] public unsafe delegate void glGetFloatvDelegate(GetPName pname, void* data);
@@ -1485,10 +1491,10 @@ namespace Tgl.Net
 
         #region helpers
 
-        public static void GetInteger<T>(GetPName pname, out T data)
+        public static T GetInteger<T>(GetPName pname)
             where T : struct
         {
-            data = default(T);
+            var data = default(T);
 
             unsafe
             {
@@ -1497,6 +1503,41 @@ namespace Tgl.Net
 
                 glGetIntegerv(pname, refDataPtr.ToPointer());
             }
+
+            return data;
+        }
+
+        public static uint[] GetIntegerArray(GetPName pname, int size)
+        {
+            var arr = new uint[size];
+            if (size == 0)
+                return arr;
+
+            unsafe
+            {
+                fixed (void* ptr = arr)
+                {
+                    glGetIntegerv(pname, ptr);
+                }
+            }
+
+            return arr;
+        }
+
+        public static T GetBoolean<T>(GetPName pname)
+            where T : struct
+        {
+            var data = default(T);
+
+            unsafe
+            {
+                TypedReference refData = __makeref(data);
+                IntPtr refDataPtr = *(IntPtr*)(&refData);
+
+                glGetBooleanv(pname, refDataPtr.ToPointer());
+            }
+
+            return data;
         }
 
         public static void ShaderSource(uint shader, string[] @string)
@@ -1513,10 +1554,10 @@ namespace Tgl.Net
             }
         }
 
-        public static void GetFloat<T>(GetPName pname, out T data)
+        public static T GetFloat<T>(GetPName pname)
             where T : struct
         {
-            data = new T();
+            var data = new T();
 
             unsafe
             {
@@ -1525,9 +1566,11 @@ namespace Tgl.Net
 
                 glGetFloatv(pname, refDataPtr.ToPointer());
             }
+
+            return data;
         }
 
-        public static void SetFeature(EnableCap feature, bool value)
+        public static void SetEnabled(EnableCap feature, bool value)
         {
             if (value)
             {

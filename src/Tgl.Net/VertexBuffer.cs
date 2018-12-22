@@ -8,7 +8,7 @@ namespace Tgl.Net.Core
 {
     public class VertexBuffer
     {
-        private readonly TglContext _context;
+        private readonly IGlState _state;
         private readonly VertexAttribute[] _attributes;
         private readonly Dictionary<string, VertexAttribute> _attributesByName = new Dictionary<string, VertexAttribute>();
         private readonly BufferUsageARB _usage;
@@ -17,9 +17,9 @@ namespace Tgl.Net.Core
         private uint _vertexSize;
         private uint _vertices;
 
-        public VertexBuffer(TglContext context, BufferOptions options)
+        public VertexBuffer(IGlState state, BufferOptions options)
         {
-            _context = context;
+            _state = state;
             _usage = options.Usage;
 
             uint offset = 0;
@@ -58,7 +58,7 @@ namespace Tgl.Net.Core
 
         public void Bind()
         {
-            _context.State.VertexBuffer.Set(_handle);
+            _state.ArrayBufferBinding = _handle;
         }
 
         private void SubData(object data, uint vertexOffset, uint vertexLength)
