@@ -12,7 +12,7 @@ namespace Renderer.Gles2
     {
         private readonly IPlatform _platform;
 
-        private GlState _state;
+        private GlStateCache _state;
         private VertexBuffer _buffer;
         private Shader _shader;
 
@@ -27,7 +27,10 @@ namespace Renderer.Gles2
 
         public void Init()
         {
-            _state = new GlState();
+            _state = new GlStateCache();
+
+            _state.PropertyChanged += (s, args) => Console.WriteLine(args.PropertyName);
+
             _shader = _state.BuildShader()
                 .WithVertexString(@"attribute vec2 aPosition;
                     void main(void)

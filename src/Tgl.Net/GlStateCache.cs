@@ -1,10 +1,11 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Tgl.Net.Math;
 
 namespace Tgl.Net.Core
 {
-    public class CachedState : GlState, INotifyPropertyChanged
+    public class GlStateCache : GlState, INotifyPropertyChanged
     {
         private GL.TextureUnit _activeTexture;
         private uint _arrayBufferBinding;
@@ -61,7 +62,7 @@ namespace Tgl.Net.Core
         private uint _unpackAlignment;
         private Vector4i _viewport;
 
-        public CachedState()
+        public GlStateCache()
         {
         }
 
@@ -123,328 +124,338 @@ namespace Tgl.Net.Core
             _viewport = state.Viewport;
         }
 
+        private void TrySetValue<T>(ref T oldValue, ref T newValue, Action setter, [CallerMemberName]string propertyName = null)
+        {
+            if (!oldValue.Equals(newValue))
+            {
+                setter();
+                oldValue = newValue;
+                OnPropertyChanged(propertyName);
+            }
+        }
+
         public override GL.TextureUnit ActiveTexture
         {
             get => _activeTexture;
-            set => _activeTexture = value;
+            set => TrySetValue(ref _activeTexture, ref value, () => base.ActiveTexture = value);
         }
 
         public override uint ArrayBufferBinding
         {
             get => _arrayBufferBinding;
-            set => _arrayBufferBinding = value;
+            set => TrySetValue(ref _arrayBufferBinding, ref value, () => base.ArrayBufferBinding = value);
         }
 
         public override bool Blend
         {
             get => _blend;
-            set => _blend = value;
+            set => TrySetValue(ref _blend, ref value, () => base.Blend = value);
         }
 
         public override Vector4 BlendColor
         {
             get => _blendColor;
-            set => _blendColor = value;
+            set => TrySetValue(ref _blendColor, ref value, () => base.BlendColor = value);
         }
 
         public override GL.BlendingFactor BlendDstAlpha
         {
             get => _blendDstAlpha;
-            set => _blendDstAlpha = value;
+            set => TrySetValue(ref _blendDstAlpha, ref value,() => base.BlendDstAlpha = value);
         }
 
         public override GL.BlendingFactor BlendDstRgb
         {
             get => _blendDstRgb;
-            set => _blendDstRgb = value;
+            set => TrySetValue(ref _blendDstRgb, ref value, () => base.BlendDstRgb = value);
         }
 
         public override GL.BlendEquationModeEXT BlendEquationAlpha
         {
             get => _blendEquationAlpha;
-            set => _blendEquationAlpha = value;
+            set => TrySetValue(ref _blendEquationAlpha, ref value, () => base.BlendEquationAlpha = value);
         }
 
         public override GL.BlendEquationModeEXT BlendEquationRgb
         {
             get => _blendEquationRgb;
-            set => _blendEquationRgb = value;
+            set => TrySetValue(ref _blendEquationRgb, ref value, () => base.BlendEquationRgb = value);
         }
 
         public override GL.BlendingFactor BlendSrcAlpha
         {
             get => _blendSrcAlpha;
-            set => _blendSrcAlpha = value;
+            set => TrySetValue(ref _blendSrcAlpha, ref value, () => base.BlendSrcAlpha = value);
         }
 
         public override GL.BlendingFactor BlendSrcRgb
         {
             get => _blendSrcRgb;
-            set => _blendSrcRgb = value;
+            set => TrySetValue(ref _blendSrcRgb, ref value, () => base.BlendSrcRgb = value);
         }
 
         public override Vector4 ColorClearValue
         {
             get => _colorClearValue;
-            set => _colorClearValue = value;
+            set => TrySetValue(ref _colorClearValue, ref value, () => base.ColorClearValue = value);
         }
 
         public override Vector4b ColorWritemask
         {
             get => _colorWritemask;
-            set => _colorWritemask = value;
+            set => TrySetValue(ref _colorWritemask, ref value, () => base.ColorWritemask = value);
         }
 
         public override bool CullFace
         {
             get => _cullFace;
-            set => _cullFace = value;
+            set => TrySetValue(ref _cullFace, ref value, () => base.CullFace = value);
         }
 
         public override GL.CullFaceMode CullFaceMode
         {
             get => _cullFaceMode;
-            set => _cullFaceMode = value;
+            set => TrySetValue(ref _cullFaceMode, ref value, () => base.CullFaceMode = value);
         }
 
         public override uint CurrentProgram
         {
             get => _currentProgram;
-            set => _currentProgram = value;
+            set => TrySetValue(ref _currentProgram, ref value, () => base.CurrentProgram = value);
         }
 
         public override float DepthClearValue
         {
             get => _depthClearValue;
-            set => _depthClearValue = value;
+            set => TrySetValue(ref _depthClearValue, ref value, () => base.DepthClearValue = value);
         }
 
         public override GL.DepthFunction DepthFunc
         {
             get => _depthFunc;
-            set => _depthFunc = value;
+            set => TrySetValue(ref _depthFunc, ref value, () => base.DepthFunc = value);
         }
 
         public override Vector2 DepthRange
         {
             get => _depthRange;
-            set => _depthRange = value;
+            set => TrySetValue(ref _depthRange, ref value, () => base.DepthRange = value);
         }
 
         public override bool DepthTest
         {
             get => _depthTest;
-            set => _depthTest = value;
+            set => TrySetValue(ref _depthTest, ref value, () => base.DepthTest = value);
         }
 
         public override bool DepthWritemask
         {
             get => _depthWritemask;
-            set => _depthWritemask = value;
+            set => TrySetValue(ref _depthWritemask, ref value, () => base.DepthWritemask = value);
         }
 
         public override bool Dither
         {
             get => _dither;
-            set => _dither = value;
+            set => TrySetValue(ref _dither, ref value, () => base.Dither = value);
         }
 
         public override uint ElementArrayBufferBinding
         {
             get => _elementArrayBufferBinding;
-            set => _elementArrayBufferBinding = value;
+            set => TrySetValue(ref _elementArrayBufferBinding, ref value, () => base.ElementArrayBufferBinding = value);
         }
 
         public override uint FramebufferBinding
         {
             get => _framebufferBinding;
-            set => _framebufferBinding = value;
+            set => TrySetValue(ref _framebufferBinding, ref value, () => base.FramebufferBinding = value);
         }
 
         public override GL.FrontFaceDirection FrontFace
         {
             get => _frontFace;
-            set => _frontFace = value;
+            set => TrySetValue(ref _frontFace, ref value, () => base.FrontFace = value);
         }
 
         public override GL.HintMode GenerateMipmapHint
         {
             get => _generateMipmapHint;
-            set => _generateMipmapHint = value;
+            set => TrySetValue(ref _generateMipmapHint, ref value, () => base.GenerateMipmapHint = value);
         }
 
         public override float LineWidth
         {
             get => _lineWidth;
-            set => _lineWidth = value;
+            set => TrySetValue(ref _lineWidth, ref value, () => base.LineWidth = value);
         }
 
         public override uint PackAlignment
         {
             get => _packAlignment;
-            set => _packAlignment = value;
+            set => TrySetValue(ref _packAlignment, ref value, () => base.PackAlignment = value);
         }
 
         public override float PolygonOffsetFactor
         {
             get => _polygonOffsetFactor;
-            set => _polygonOffsetFactor = value;
+            set => TrySetValue(ref _polygonOffsetFactor, ref value, () => base.PolygonOffsetFactor = value);
         }
 
         public override bool PolygonOffsetFill
         {
             get => _polygonOffsetFill;
-            set => _polygonOffsetFill = value;
+            set => TrySetValue(ref _polygonOffsetFill, ref value, () => base.PolygonOffsetFill = value);
         }
 
         public override float PolygonOffsetUnits
         {
             get => _polygonOffsetUnits;
-            set => _polygonOffsetUnits = value;
+            set => TrySetValue(ref _polygonOffsetUnits, ref value, () => base.PolygonOffsetUnits = value);
         }
 
         public override uint RenderbufferBinding
         {
             get => _renderbufferBinding;
-            set => _renderbufferBinding = value;
+            set => TrySetValue(ref _renderbufferBinding, ref value, () => base.RenderbufferBinding = value);
         }
 
         public override bool SampleAlphaToCoverage
         {
             get => _sampleAlphaToCoverage;
-            set => _sampleAlphaToCoverage = value;
+            set => TrySetValue(ref _sampleAlphaToCoverage, ref value, () => base.SampleAlphaToCoverage = value);
         }
 
         public override Vector4i ScissorBox
         {
             get => _scissorBox;
-            set => _scissorBox = value;
+            set => TrySetValue(ref _scissorBox, ref value, () => base.ScissorBox = value);
         }
 
         public override bool ScissorTest
         {
             get => _scissorTest;
-            set => _scissorTest = value;
+            set => TrySetValue(ref _scissorTest, ref value, () => base.ScissorTest = value);
         }
 
         public override GL.StencilOp StencilBackFail
         {
             get => _stencilBackFail;
-            set => _stencilBackFail = value;
+            set => TrySetValue(ref _stencilBackFail, ref value, () => base.StencilBackFail = value);
         }
 
         public override GL.StencilFunction StencilBackFunc
         {
             get => _stencilBackFunc;
-            set => _stencilBackFunc = value;
+            set => TrySetValue(ref _stencilBackFunc, ref value, () => base.StencilBackFunc = value);
         }
 
         public override GL.StencilOp StencilBackPassDepthFail
         {
             get => _stencilBackPassDepthFail;
-            set => _stencilBackPassDepthFail = value;
+            set => TrySetValue(ref _stencilBackPassDepthFail, ref value, () => base.StencilBackPassDepthFail = value);
         }
 
         public override GL.StencilOp StencilBackPassDepthPass
         {
             get => _stencilBackPassDepthPass;
-            set => _stencilBackPassDepthPass = value;
+            set => TrySetValue(ref _stencilBackPassDepthPass, ref value, () => base.StencilBackPassDepthPass = value);
         }
 
         public override int StencilBackRef
         {
             get => _stencilBackRef;
-            set => _stencilBackRef = value;
+            set => TrySetValue(ref _stencilBackRef, ref value, () => base.StencilBackRef = value);
         }
 
         public override uint StencilBackValueMask
         {
             get => _stencilBackValueMask;
-            set => _stencilBackValueMask = value;
+            set => TrySetValue(ref _stencilBackValueMask, ref value, () => base.StencilBackValueMask = value);
         }
 
         public override uint StencilBackWriteMask
         {
             get => _stencilBackWriteMask;
-            set => _stencilBackWriteMask = value;
+            set => TrySetValue(ref _stencilBackWriteMask, ref value, () => base.StencilBackWriteMask = value);
         }
 
         public override int StencilClearValue
         {
             get => _stencilClearValue;
-            set => _stencilClearValue = value;
+            set => TrySetValue(ref _stencilClearValue, ref value, () => base.StencilClearValue = value);
         }
 
         public override GL.StencilOp StencilFail
         {
             get => _stencilFail;
-            set => _stencilFail = value;
+            set => TrySetValue(ref _stencilFail, ref value, () => base.StencilFail = value);
         }
 
         public override GL.StencilFunction StencilFuncValue
         {
             get => _stencilFunc;
-            set => _stencilFunc = value;
+            set => TrySetValue(ref _stencilFunc, ref value, () => base.StencilFuncValue = value);
         }
 
         public override GL.StencilOp StencilPassDepthFail
         {
             get => _stencilPassDepthFail;
-            set => _stencilPassDepthFail = value;
+            set => TrySetValue(ref _stencilPassDepthFail, ref value, () => base.StencilPassDepthFail = value);
         }
 
         public override GL.StencilOp StencilPassDepthPass
         {
             get => _stencilPassDepthPass;
-            set => _stencilPassDepthPass = value;
+            set => TrySetValue(ref _stencilPassDepthPass, ref value, () => base.StencilPassDepthPass = value);
         }
 
         public override int StencilRef
         {
             get => _stencilRef;
-            set => _stencilRef = value;
+            set => TrySetValue(ref _stencilRef, ref value, () => base.StencilRef = value);
         }
 
         public override bool StencilTest
         {
             get => _stencilTest;
-            set => _stencilTest = value;
+            set => TrySetValue(ref _stencilTest, ref value, () => base.StencilTest = value);
         }
 
         public override uint StencilValueMask
         {
             get => _stencilValueMask;
-            set => _stencilValueMask = value;
+            set => TrySetValue(ref _stencilValueMask, ref value, () => base.StencilValueMask = value);
         }
 
         public override uint StencilWriteMask
         {
             get => _stencilWriteMask;
-            set => _stencilWriteMask = value;
+            set => TrySetValue(ref _stencilWriteMask, ref value, () => base.StencilWriteMask = value);
         }
 
         public override uint TextureBinding2D
         {
             get => _textureBinding2D;
-            set => _textureBinding2D = value;
+            set => TrySetValue(ref _textureBinding2D, ref value, () => base.TextureBinding2D = value);
         }
 
         public override uint TextureBindingCubeMap
         {
             get => _textureBindingCubeMap;
-            set => _textureBindingCubeMap = value;
+            set => TrySetValue(ref _textureBindingCubeMap, ref value, () => base.TextureBindingCubeMap = value);
         }
 
         public override uint UnpackAlignment
         {
             get => _unpackAlignment;
-            set => _unpackAlignment = value;
+            set => TrySetValue(ref _unpackAlignment, ref value, () => base.UnpackAlignment = value);
         }
 
         public override Vector4i Viewport
         {
             get => _viewport;
-            set => _viewport = value;
+            set => TrySetValue(ref _viewport, ref value, () => base.Viewport = value);
         }
 
         //public override RefreshState()
@@ -463,7 +474,7 @@ namespace Tgl.Net.Core
         //}
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        protected virtual void OnPropertyChanged(string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
