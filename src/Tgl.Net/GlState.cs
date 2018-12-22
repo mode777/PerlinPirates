@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Tgl.Net.Math;
 
@@ -6,12 +7,18 @@ namespace Tgl.Net.Core
 {
     public class GlState : IGlState
     {
+
+
         public GlState()
         {
             Info = new GlInfo();
+            TextureBindingAccessor = new TextureBindingAccessor(Info.MaxCombinedTextureImageUnits);
         }
 
         public GlInfo Info { get; }
+
+        public IEnumerable<uint> TextureBindings => TextureBindingAccessor;
+        public TextureBindingAccessor TextureBindingAccessor { get; }
 
         public virtual GL.TextureUnit ActiveTexture
         {

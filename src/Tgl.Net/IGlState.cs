@@ -1,9 +1,11 @@
-﻿using Tgl.Net.Math;
+﻿using System.Collections.Generic;
+using Tgl.Net.Math;
 
 namespace Tgl.Net.Core
 {
     public interface IGlState
     {
+        IEnumerable<uint> TextureBindings { get; }
         GL.TextureUnit ActiveTexture { get; set; }
         uint ArrayBufferBinding { get; set; }
         bool Blend { get; set; }
