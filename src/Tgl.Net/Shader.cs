@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Text;
+using Tgl.Net.Helpers;
 using Tgl.Net.Math;
 using static Tgl.Net.GL;
 
@@ -21,13 +23,26 @@ namespace Tgl.Net.Core
 
         public ShaderBuilder WithVertexFile(string path)
         {
-            return WithVertexFile(File.ReadAllText(path));
+            return WithVertexString(File.ReadAllText(path));
         }
 
         public ShaderBuilder WithVertexString(string shader)
         {
             VertexSource = shader;
             return this;
+        }
+
+        public ShaderBuilder WithVertexResource(string path)
+        {
+            return WithVertexString(
+                ResourceHelpers.GetResourceString(Assembly.GetCallingAssembly(), path));
+        }
+
+        public ShaderBuilder WithFragmentResource(string path)
+        {
+            return WithFragmentString(
+                ResourceHelpers.GetResourceString(Assembly.GetCallingAssembly(), path));
+
         }
 
         public ShaderBuilder WithFragmentFile(string path)

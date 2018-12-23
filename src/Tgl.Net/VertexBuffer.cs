@@ -13,30 +13,20 @@ namespace Tgl.Net.Core
         private readonly Dictionary<string, VertexAttribute> _attributesByName = new Dictionary<string, VertexAttribute>();
         private readonly BufferUsageARB _usage;
         private readonly uint _handle;
-        private uint _byteSize;
-        private uint _vertexSize;
-        private uint _vertices;
+        private int _byteSize;
+        private int _vertexSize;
+        private int _vertices;
 
-        public VertexBuffer(IGlState state, BufferOptions options)
+        public VertexBuffer(IGlState state, BufferBuilder options)
         {
             _state = state;
             _usage = options.Usage;
-
-            uint offset = 0;
-
-            _attributes = options.Attributes.Select(x =>
+            
+            _attributes = options.Attributes.ToArray();
+            foreach (var vertexAttribute in _attributes)
             {
-                var res = new VertexAttribute(x.Name, x.Components)
-                {
-                    Normalized = x.Normalized,
-                    Offset = x.Offset.HasValue ? x.Offset : offset
-                };
-
-                offset += GetComponentSize(x.DataType) * x.Components;
-
-                _attributesByName[res.Name] = res;
-                return res;
-            }).ToArray();
+                _attributesByName[vertexAttribute.Name] = vertexAttribute;
+            }
 
             unsafe
             {
@@ -52,9 +42,9 @@ namespace Tgl.Net.Core
             Data(options.Data, options.Vertices);
         }
 
-        public uint VertexCount => _vertices;
-        public uint VertexSize => _vertexSize;
-        public uint Size => _byteSize;
+        public int VertexCount => _vertices;
+        public int VertexSize => _vertexSize;
+        public int Size => _byteSize;
 
         public void Bind()
         {
@@ -66,17 +56,17 @@ namespace Tgl.Net.Core
             Bind();
 
             var handle = GCHandle.Alloc(data);
-            glBufferSubData(BufferTargetARB.GL_ARRAY_BUFFER, (IntPtr)(_vertexSize * vertexOffset), _vertexSize * vertexLength, GCHandle.ToIntPtr(handle));
+            glBufferSubData(BufferTargetARB.GL_ARRAY_BUFFER, (IntPtr)(_vertexSize * vertexOffset), (uint)_vertexSize * vertexLength, GCHandle.ToIntPtr(handle));
             handle.Free();
         }
 
-        public void Data(object data, uint vertexLength)
+        public void Data(object data, int vertexLength)
         {
             Bind();
             CalculateSize(vertexLength);
 
             var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
-            glBufferData(BufferTargetARB.GL_ARRAY_BUFFER, _byteSize, handle.AddrOfPinnedObject(), _usage);
+            glBufferData(BufferTargetARB.GL_ARRAY_BUFFER, (uint)_byteSize, handle.AddrOfPinnedObject(), _usage);
             handle.Free();
         }
 
@@ -94,30 +84,11 @@ namespace Tgl.Net.Core
                 (int)_vertexSize,
                 (IntPtr)a.Offset);
         }
-
-        private uint GetComponentSize(VertexAttribPointerType type)
-        {
-            switch (type)
-            {
-                case VertexAttribPointerType.GL_BYTE:
-                case VertexAttribPointerType.GL_UNSIGNED_BYTE:
-                    return 1;
-                case VertexAttribPointerType.GL_SHORT:
-                case VertexAttribPointerType.GL_UNSIGNED_SHORT:
-                    return 2;
-                case VertexAttribPointerType.GL_INT:
-                case VertexAttribPointerType.GL_UNSIGNED_INT:
-                case VertexAttribPointerType.GL_FLOAT:
-                    return 4;
-                default:
-                    throw new NotSupportedException($"DataType {type} is not supported.");
-            }
-        }
-
-        private void CalculateSize(uint vertices)
+        
+        private void CalculateSize(int vertices)
         {
             _vertices = vertices;
-            _vertexSize = (uint)_attributes.Sum(x => GetComponentSize(x.DataType) * x.Components);
+            _vertexSize = _attributes.Sum(x => x.AttributeSize);
             _byteSize = _vertexSize * _vertices;
         }
     }

@@ -418,5 +418,10 @@ namespace Tgl.Net.Core
         {
             return new ShaderBuilder(this);
         }
+
+        public virtual BufferBuilder BuildBuffer()
+        {
+            return new BufferBuilder(this);
+        }
     }
 }

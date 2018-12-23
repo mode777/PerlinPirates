@@ -9,6 +9,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Shaders\minimal_fragment.glsl" />
+    <None Remove="Resources\Shaders\minimal_vertex.glsl" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Shaders\minimal_fragment.glsl" />
+    <EmbeddedResource Include="Resources\Shaders\minimal_vertex.glsl" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Game.Abstractions\Game.Abstractions.csproj" />
     <ProjectReference Include="..\Tgl.Net\Tgl.Net.csproj" />
   </ItemGroup>

@@ -32,22 +32,14 @@ namespace Renderer.Gles2
             _state.PropertyChanged += (s, args) => Console.WriteLine(args.PropertyName);
 
             _shader = _state.BuildShader()
-                .WithVertexString(@"attribute vec2 aPosition;
-                    void main(void)
-                    {
-                        gl_Position = vec4(aPosition, 1.0, 1.0);
-                    }")
-                .WithFragmentString(@"precision mediump float;
-                    void main(void)
-                    {
-                        gl_FragColor = vec4(1, 1, 1, 1);
-                    }")
+                .WithVertexResource("Resources.Shaders.minimal_vertex.glsl")
+                .WithFragmentResource("Resources.Shaders.minimal_fragment.glsl")
                 .Build();
 
-            _buffer = new VertexBuffer(_state, new BufferOptions(
-                new float[] { -0.5f, -0.5f, 0.5f, -0.5f, 0, 0.5f },
-                3,
-                new[] { new VertexAttribute("aPosition", 2) }));
+            _buffer = _state.BuildBuffer()
+                .WithData(3, -0.5f, -0.5f, 0.5f, -0.5f, 0, 0.5f)
+                .HasAttribute("aPosition", 2)
+                .Build();
         }
 
         public void Render()

@@ -428,33 +428,7 @@ namespace Tgl.Net.Core
         public override void BlendFunc(GL.BlendingFactor blendSrc,
             GL.BlendingFactor blendDst)
         {
-            var srcRgbChanged = blendSrc != _blendSrcRgb;
-            var dstRgbChanged = blendDst != _blendDstRgb;
-            var srcAlphaChanged = blendSrc != _blendSrcAlpha;
-            var dstAlphaChanged = blendDst != _blendDstAlpha;
-
-            if (srcRgbChanged || dstRgbChanged || srcAlphaChanged || dstAlphaChanged)
-            {
-                base.BlendFunc(blendSrc, blendDst);
-                OnPropertyChanged(nameof(BlendFunc));
-            }
-
-            _blendSrcRgb = blendSrc;
-            _blendDstRgb = blendDst;
-            _blendSrcAlpha = blendSrc;
-            _blendDstAlpha = blendDst;
-
-            if (srcRgbChanged)
-                OnPropertyChanged(nameof(BlendSrcRgb));
-
-            if (dstRgbChanged)
-                OnPropertyChanged(nameof(BlendDstRgb));
-
-            if (srcAlphaChanged)
-                OnPropertyChanged(nameof(BlendSrcAlpha));
-
-            if (dstAlphaChanged)
-                OnPropertyChanged(nameof(BlendDstAlpha));
+            BlendFuncSeparate(blendSrc, blendDst, blendSrc, blendDst);
         }
 
         public override void BlendEquationSeparate(GL.BlendEquationModeEXT blendEquationRgb,
@@ -481,23 +455,7 @@ namespace Tgl.Net.Core
 
         public override void BlendEquation(GL.BlendEquationModeEXT blendEquation)
         {
-            var rgbChanged = blendEquation != _blendEquationRgb;
-            var alphaChanged = blendEquation != _blendEquationAlpha;
-
-            if (rgbChanged || alphaChanged)
-            {
-                base.BlendEquation(blendEquation);
-                OnPropertyChanged(nameof(BlendEquation));
-            }
-
-            _blendEquationRgb = blendEquation;
-            _blendEquationAlpha = blendEquation;
-
-            if (rgbChanged)
-                OnPropertyChanged(nameof(BlendEquationRgb));
-
-            if (alphaChanged)
-                OnPropertyChanged(nameof(BlendEquationAlpha));
+            BlendEquationSeparate(blendEquation, blendEquation);
         }
 
         public override void PolygonOffset(float factor, float units)
@@ -615,19 +573,102 @@ namespace Tgl.Net.Core
             GL.StencilOp depthFail,
             GL.StencilOp pass)
         {
-            GL.glStencilOp(stencilFail, depthFail, pass);
+            StencilOpSeparate(GL.StencilFaceDirection.GL_FRONT_AND_BACK, stencilFail, depthFail, pass);
         }
 
         public override void StencilFuncSeparate(GL.StencilFaceDirection direction,
             GL.StencilFunction func, int @ref, uint mask)
         {
-            GL.glStencilFuncSeparate(direction, func, @ref, mask);
+            bool funcChange = false, refChange = false, maskChange = false;
+
+            if (direction == GL.StencilFaceDirection.GL_FRONT)
+            {
+                funcChange = func != _stencilFunc;
+                refChange = @ref != _stencilRef;
+                maskChange = mask != _stencilValueMask;
+            }
+            else if (direction == GL.StencilFaceDirection.GL_BACK)
+            {
+                funcChange = func != _stencilBackFunc;
+                refChange = @ref != _stencilBackRef;
+                maskChange = mask != _stencilBackValueMask;
+            }
+            else if (direction == GL.StencilFaceDirection.GL_FRONT_AND_BACK)
+            {
+                funcChange = func != _stencilFunc || func != _stencilBackFunc;
+                refChange = @ref != _stencilRef || @ref != _stencilBackRef;
+                maskChange = mask != _stencilValueMask || mask != _stencilBackValueMask;
+            }
+
+            if (funcChange || refChange || maskChange)
+            {
+                base.StencilFuncSeparate(direction, func, @ref, mask);
+                OnPropertyChanged(nameof(StencilFunc));
+            }
+
+            if (direction == GL.StencilFaceDirection.GL_FRONT)
+            {
+                _stencilFunc = func;
+                _stencilRef = @ref;
+                _stencilValueMask = mask;
+
+                if (funcChange)
+                    OnPropertyChanged(nameof(StencilFunc));
+
+                if (refChange)
+                    OnPropertyChanged(nameof(StencilRef));
+
+                if (maskChange)
+                    OnPropertyChanged(nameof(StencilValueMask));
+            }
+            else if (direction == GL.StencilFaceDirection.GL_BACK)
+            {
+                _stencilBackFunc = func;
+                _stencilBackRef = @ref;
+                _stencilBackValueMask = mask;
+
+                if (funcChange)
+                    OnPropertyChanged(nameof(StencilBackFunc));
+
+                if (refChange)
+                    OnPropertyChanged(nameof(StencilBackRef));
+
+                if (maskChange)
+                    OnPropertyChanged(nameof(StencilBackValueMask));
+            }
+            else if (direction == GL.StencilFaceDirection.GL_FRONT_AND_BACK)
+            {
+                _stencilFunc = func;
+                _stencilBackFunc = func;
+                _stencilRef = @ref;
+                _stencilBackRef = @ref;
+                _stencilValueMask = mask;
+                _stencilBackValueMask = mask;
+
+                if (funcChange)
+                {
+                    OnPropertyChanged(nameof(StencilFunc));
+                    OnPropertyChanged(nameof(StencilBackFunc));
+                }
+
+                if (refChange)
+                {
+                    OnPropertyChanged(nameof(StencilRef));
+                    OnPropertyChanged(nameof(StencilBackRef));
+                }
+
+                if (maskChange)
+                {
+                    OnPropertyChanged(nameof(StencilValueMask));
+                    OnPropertyChanged(nameof(StencilBackValueMask));
+                }
+            }
         }
 
         public override void StencilFunc(GL.StencilFunction func,
             int @ref, uint mask)
         {
-            GL.glStencilFunc(func, @ref, mask);
+            StencilFuncSeparate(GL.StencilFaceDirection.GL_FRONT_AND_BACK, func, @ref, mask);
         }
 
         public void SyncState()
