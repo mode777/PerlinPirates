@@ -64,74 +64,7 @@ namespace Tgl.Net.Core
 
         public GlStateCache()
         {
-        }
-
-        public void ApplyState(IGlState state)
-        {
-            _activeTexture = state.ActiveTexture;
-            _arrayBufferBinding = state.ArrayBufferBinding;
-            _blend = state.Blend;
-            _blendColor = state.BlendColor;
-            _blendDstAlpha = state.BlendDstAlpha;
-            _blendDstRgb = state.BlendDstRgb;
-            _blendEquationAlpha = state.BlendEquationAlpha;
-            _blendEquationRgb = state.BlendEquationRgb;
-            _blendSrcRgb = state.BlendSrcRgb;
-            _blendSrcAlpha = state.BlendSrcAlpha;
-            _colorClearValue = state.ColorClearValue;
-            _colorWritemask = state.ColorWritemask;
-            _cullFace = state.CullFace;
-            _cullFaceMode = state.CullFaceMode;
-            _currentProgram = state.CurrentProgram;
-            _depthClearValue = state.DepthClearValue;
-            _depthFunc = state.DepthFunc;
-            _depthRange = state.DepthRange;
-            _depthTest = state.DepthTest;
-            _depthWritemask = state.DepthWritemask;
-            _dither = state.Dither;
-            _elementArrayBufferBinding = state.ElementArrayBufferBinding;
-            _framebufferBinding = state.FramebufferBinding;
-            _frontFace = state.FrontFace;
-            _generateMipmapHint = state.GenerateMipmapHint;
-            _lineWidth = state.LineWidth;
-            _packAlignment = state.PackAlignment;
-            _polygonOffsetFactor = state.PolygonOffsetFactor;
-            _polygonOffsetFill = state.PolygonOffsetFill;
-            _polygonOffsetUnits = state.PolygonOffsetUnits;
-            _renderbufferBinding = state.RenderbufferBinding;
-            _sampleAlphaToCoverage = state.SampleAlphaToCoverage;
-            _scissorBox = state.ScissorBox;
-            _scissorTest = state.ScissorTest;
-            _stencilBackFail = state.StencilBackFail;
-            _stencilBackFunc = state.StencilBackFunc;
-            _stencilBackPassDepthFail = state.StencilBackPassDepthFail;
-            _stencilBackPassDepthPass = state.StencilBackPassDepthPass;
-            _stencilBackRef = state.StencilBackRef;
-            _stencilBackValueMask = state.StencilBackValueMask;
-            _stencilBackWriteMask = state.StencilBackWriteMask;
-            _stencilClearValue = state.StencilClearValue;
-            _stencilFail = state.StencilFail;
-            _stencilFunc = state.StencilFuncValue;
-            _stencilPassDepthFail = state.StencilPassDepthFail;
-            _stencilPassDepthPass = state.StencilPassDepthPass;
-            _stencilRef = state.StencilRef;
-            _stencilTest = state.StencilTest;
-            _stencilValueMask = state.StencilValueMask;
-            _stencilWriteMask = state.StencilWriteMask;
-            _textureBinding2D = state.TextureBinding2D;
-            _textureBindingCubeMap = state.TextureBindingCubeMap;
-            _unpackAlignment = state.UnpackAlignment;
-            _viewport = state.Viewport;
-        }
-
-        private void TrySetValue<T>(ref T oldValue, ref T newValue, Action setter, [CallerMemberName]string propertyName = null)
-        {
-            if (!oldValue.Equals(newValue))
-            {
-                setter();
-                oldValue = newValue;
-                OnPropertyChanged(propertyName);
-            }
+            SyncState();
         }
 
         public override GL.TextureUnit ActiveTexture
@@ -458,10 +391,362 @@ namespace Tgl.Net.Core
             set => TrySetValue(ref _viewport, ref value, () => base.Viewport = value);
         }
 
-        //public override RefreshState()
-        //{
+        public override void BlendFuncSeparate(GL.BlendingFactor blendSrcRgb,
+            GL.BlendingFactor blendDstRgb,
+            GL.BlendingFactor blendSrcAlpha,
+            GL.BlendingFactor blendDstAlpha)
+        {
+            var srcRgbChanged = blendSrcRgb != _blendSrcRgb;
+            var dstRgbChanged = blendDstRgb != _blendDstRgb;
+            var srcAlphaChanged = blendSrcAlpha != _blendSrcAlpha;
+            var dstAlphaChanged = blendDstAlpha != _blendDstAlpha;
 
-        //}
+            if (srcRgbChanged || dstRgbChanged || srcAlphaChanged || dstAlphaChanged)
+            {
+                base.BlendFuncSeparate(blendSrcRgb, blendDstRgb, blendSrcAlpha, blendDstAlpha);
+                OnPropertyChanged(nameof(BlendFunc));
+            }
+
+            _blendSrcRgb = blendSrcRgb;
+            _blendDstRgb = blendDstRgb;
+            _blendSrcAlpha = blendSrcAlpha;
+            _blendDstAlpha = blendDstAlpha;
+
+            if(srcRgbChanged)
+                OnPropertyChanged(nameof(BlendSrcRgb));
+
+            if(dstRgbChanged)
+                OnPropertyChanged(nameof(BlendDstRgb));
+
+            if(srcAlphaChanged)
+                OnPropertyChanged(nameof(BlendSrcAlpha));
+
+            if (dstAlphaChanged)
+                OnPropertyChanged(nameof(BlendDstAlpha));
+        }
+
+        public override void BlendFunc(GL.BlendingFactor blendSrc,
+            GL.BlendingFactor blendDst)
+        {
+            var srcRgbChanged = blendSrc != _blendSrcRgb;
+            var dstRgbChanged = blendDst != _blendDstRgb;
+            var srcAlphaChanged = blendSrc != _blendSrcAlpha;
+            var dstAlphaChanged = blendDst != _blendDstAlpha;
+
+            if (srcRgbChanged || dstRgbChanged || srcAlphaChanged || dstAlphaChanged)
+            {
+                base.BlendFunc(blendSrc, blendDst);
+                OnPropertyChanged(nameof(BlendFunc));
+            }
+
+            _blendSrcRgb = blendSrc;
+            _blendDstRgb = blendDst;
+            _blendSrcAlpha = blendSrc;
+            _blendDstAlpha = blendDst;
+
+            if (srcRgbChanged)
+                OnPropertyChanged(nameof(BlendSrcRgb));
+
+            if (dstRgbChanged)
+                OnPropertyChanged(nameof(BlendDstRgb));
+
+            if (srcAlphaChanged)
+                OnPropertyChanged(nameof(BlendSrcAlpha));
+
+            if (dstAlphaChanged)
+                OnPropertyChanged(nameof(BlendDstAlpha));
+        }
+
+        public override void BlendEquationSeparate(GL.BlendEquationModeEXT blendEquationRgb,
+            GL.BlendEquationModeEXT blendEquationAlpha)
+        {
+            var rgbChanged = blendEquationRgb != _blendEquationRgb;
+            var alphaChanged = blendEquationAlpha != _blendEquationAlpha;
+
+            if (rgbChanged || alphaChanged)
+            {
+                base.BlendEquationSeparate(blendEquationRgb, blendEquationAlpha);
+                OnPropertyChanged(nameof(BlendEquation));
+            }
+
+            _blendEquationRgb = blendEquationRgb;
+            _blendEquationAlpha = blendEquationAlpha;
+
+            if(rgbChanged)
+                OnPropertyChanged(nameof(BlendEquationRgb));
+
+            if(alphaChanged)
+                OnPropertyChanged(nameof(BlendEquationAlpha));
+        }
+
+        public override void BlendEquation(GL.BlendEquationModeEXT blendEquation)
+        {
+            var rgbChanged = blendEquation != _blendEquationRgb;
+            var alphaChanged = blendEquation != _blendEquationAlpha;
+
+            if (rgbChanged || alphaChanged)
+            {
+                base.BlendEquation(blendEquation);
+                OnPropertyChanged(nameof(BlendEquation));
+            }
+
+            _blendEquationRgb = blendEquation;
+            _blendEquationAlpha = blendEquation;
+
+            if (rgbChanged)
+                OnPropertyChanged(nameof(BlendEquationRgb));
+
+            if (alphaChanged)
+                OnPropertyChanged(nameof(BlendEquationAlpha));
+        }
+
+        public override void PolygonOffset(float factor, float units)
+        {
+            var factorChanged = factor != _polygonOffsetFactor;
+            var unitsChanged = units != _polygonOffsetUnits;
+
+            if (factorChanged || unitsChanged)
+            {
+                base.PolygonOffset(factor, units);
+            }
+
+            _polygonOffsetFactor = factor;
+            _polygonOffsetUnits = units;
+
+            if(factorChanged)
+                OnPropertyChanged(nameof(PolygonOffsetFactor));
+
+            if(unitsChanged)
+                OnPropertyChanged(nameof(PolygonOffsetUnits));
+        }
+
+        public override void StencilOpSeparate(GL.StencilFaceDirection direction,
+            GL.StencilOp stencilFail,
+            GL.StencilOp depthFail,
+            GL.StencilOp pass)
+        {
+            bool stencilFailChange = false, depthFailChange = false, passChange = false; 
+
+            if (direction == GL.StencilFaceDirection.GL_FRONT)
+            {
+                stencilFailChange = stencilFail != _stencilFail;
+                depthFailChange = depthFail != _stencilPassDepthFail;
+                passChange = pass != _stencilPassDepthPass;
+            }
+            else if (direction == GL.StencilFaceDirection.GL_BACK)
+            {
+                stencilFailChange = stencilFail != _stencilBackFail;
+                depthFailChange = depthFail != _stencilBackPassDepthFail;
+                passChange = pass != _stencilBackPassDepthPass;
+            }
+            else if (direction == GL.StencilFaceDirection.GL_FRONT_AND_BACK)
+            {
+                stencilFailChange = stencilFail != _stencilFail || stencilFail != _stencilBackFail;
+                depthFailChange = depthFail != _stencilPassDepthFail || depthFail != _stencilBackPassDepthFail;
+                passChange = pass != _stencilPassDepthPass || pass != _stencilBackPassDepthPass;
+            }
+
+            if (stencilFailChange || depthFailChange || passChange)
+            {
+                base.StencilOpSeparate(direction, stencilFail, depthFail, pass);
+                OnPropertyChanged(nameof(StencilOp));
+            }
+
+            if (direction == GL.StencilFaceDirection.GL_FRONT)
+            {
+                _stencilFail = stencilFail;
+                _stencilPassDepthFail = depthFail;
+                _stencilPassDepthPass = pass;
+
+                if(stencilFailChange)
+                    OnPropertyChanged(nameof(StencilFail));
+
+                if(depthFailChange)
+                    OnPropertyChanged(nameof(StencilPassDepthFail));
+
+                if(passChange)
+                    OnPropertyChanged(nameof(StencilPassDepthPass));
+            }
+            else if (direction == GL.StencilFaceDirection.GL_BACK)
+            {
+                _stencilBackFail = stencilFail;
+                _stencilBackPassDepthFail = depthFail;
+                _stencilBackPassDepthPass = pass;
+
+                if (stencilFailChange)
+                    OnPropertyChanged(nameof(StencilBackFail));
+
+                if (depthFailChange)
+                    OnPropertyChanged(nameof(StencilBackPassDepthFail));
+
+                if (passChange)
+                    OnPropertyChanged(nameof(StencilBackPassDepthPass));
+            }
+            else if (direction == GL.StencilFaceDirection.GL_FRONT_AND_BACK)
+            {
+                _stencilFail = stencilFail;
+                _stencilBackFail = stencilFail;
+                _stencilPassDepthFail = depthFail;
+                _stencilBackPassDepthFail = depthFail;
+                _stencilPassDepthPass = pass;
+                _stencilBackPassDepthPass = pass;
+
+                // TODO: Continue
+
+                if (stencilFailChange)
+                {
+                    OnPropertyChanged(nameof(StencilBackFail));
+
+                }
+
+                if (depthFailChange)
+                {
+                    OnPropertyChanged(nameof(StencilBackPassDepthFail));
+
+                }
+
+                if (passChange)
+                {
+
+                    OnPropertyChanged(nameof(StencilBackPassDepthPass));
+                }
+            }
+        }
+
+        public override void StencilOp(GL.StencilOp stencilFail,
+            GL.StencilOp depthFail,
+            GL.StencilOp pass)
+        {
+            GL.glStencilOp(stencilFail, depthFail, pass);
+        }
+
+        public override void StencilFuncSeparate(GL.StencilFaceDirection direction,
+            GL.StencilFunction func, int @ref, uint mask)
+        {
+            GL.glStencilFuncSeparate(direction, func, @ref, mask);
+        }
+
+        public override void StencilFunc(GL.StencilFunction func,
+            int @ref, uint mask)
+        {
+            GL.glStencilFunc(func, @ref, mask);
+        }
+
+        public void SyncState()
+        {
+            _activeTexture = base.ActiveTexture;
+            _arrayBufferBinding = base.ArrayBufferBinding;
+            _blend = base.Blend;
+            _blendColor = base.BlendColor;
+            _blendDstAlpha = base.BlendDstAlpha;
+            _blendDstRgb = base.BlendDstRgb;
+            _blendEquationAlpha = base.BlendEquationAlpha;
+            _blendEquationRgb = base.BlendEquationRgb;
+            _blendSrcRgb = base.BlendSrcRgb;
+            _blendSrcAlpha = base.BlendSrcAlpha;
+            _colorClearValue = base.ColorClearValue;
+            _colorWritemask = base.ColorWritemask;
+            _cullFace = base.CullFace;
+            _cullFaceMode = base.CullFaceMode;
+            _currentProgram = base.CurrentProgram;
+            _depthClearValue = base.DepthClearValue;
+            _depthFunc = base.DepthFunc;
+            _depthRange = base.DepthRange;
+            _depthTest = base.DepthTest;
+            _depthWritemask = base.DepthWritemask;
+            _dither = base.Dither;
+            _elementArrayBufferBinding = base.ElementArrayBufferBinding;
+            _framebufferBinding = base.FramebufferBinding;
+            _frontFace = base.FrontFace;
+            _generateMipmapHint = base.GenerateMipmapHint;
+            _lineWidth = base.LineWidth;
+            _packAlignment = base.PackAlignment;
+            _polygonOffsetFactor = base.PolygonOffsetFactor;
+            _polygonOffsetFill = base.PolygonOffsetFill;
+            _polygonOffsetUnits = base.PolygonOffsetUnits;
+            _renderbufferBinding = base.RenderbufferBinding;
+            _sampleAlphaToCoverage = base.SampleAlphaToCoverage;
+            _scissorBox = base.ScissorBox;
+            _scissorTest = base.ScissorTest;
+            _stencilBackFail = base.StencilBackFail;
+            _stencilBackFunc = base.StencilBackFunc;
+            _stencilBackPassDepthFail = base.StencilBackPassDepthFail;
+            _stencilBackPassDepthPass = base.StencilBackPassDepthPass;
+            _stencilBackRef = base.StencilBackRef;
+            _stencilBackValueMask = base.StencilBackValueMask;
+            _stencilBackWriteMask = base.StencilBackWriteMask;
+            _stencilClearValue = base.StencilClearValue;
+            _stencilFail = base.StencilFail;
+            _stencilFunc = base.StencilFuncValue;
+            _stencilPassDepthFail = base.StencilPassDepthFail;
+            _stencilPassDepthPass = base.StencilPassDepthPass;
+            _stencilRef = base.StencilRef;
+            _stencilTest = base.StencilTest;
+            _stencilValueMask = base.StencilValueMask;
+            _stencilWriteMask = base.StencilWriteMask;
+            _textureBinding2D = base.TextureBinding2D;
+            _textureBindingCubeMap = base.TextureBindingCubeMap;
+            _unpackAlignment = base.UnpackAlignment;
+            _viewport = base.Viewport;
+        }
+
+        public void ApplyState(IGlState state)
+        {
+            _activeTexture = state.ActiveTexture;
+            _arrayBufferBinding = state.ArrayBufferBinding;
+            _blend = state.Blend;
+            _blendColor = state.BlendColor;
+            _blendDstAlpha = state.BlendDstAlpha;
+            _blendDstRgb = state.BlendDstRgb;
+            _blendEquationAlpha = state.BlendEquationAlpha;
+            _blendEquationRgb = state.BlendEquationRgb;
+            _blendSrcRgb = state.BlendSrcRgb;
+            _blendSrcAlpha = state.BlendSrcAlpha;
+            _colorClearValue = state.ColorClearValue;
+            _colorWritemask = state.ColorWritemask;
+            _cullFace = state.CullFace;
+            _cullFaceMode = state.CullFaceMode;
+            _currentProgram = state.CurrentProgram;
+            _depthClearValue = state.DepthClearValue;
+            _depthFunc = state.DepthFunc;
+            _depthRange = state.DepthRange;
+            _depthTest = state.DepthTest;
+            _depthWritemask = state.DepthWritemask;
+            _dither = state.Dither;
+            _elementArrayBufferBinding = state.ElementArrayBufferBinding;
+            _framebufferBinding = state.FramebufferBinding;
+            _frontFace = state.FrontFace;
+            _generateMipmapHint = state.GenerateMipmapHint;
+            _lineWidth = state.LineWidth;
+            _packAlignment = state.PackAlignment;
+            _polygonOffsetFactor = state.PolygonOffsetFactor;
+            _polygonOffsetFill = state.PolygonOffsetFill;
+            _polygonOffsetUnits = state.PolygonOffsetUnits;
+            _renderbufferBinding = state.RenderbufferBinding;
+            _sampleAlphaToCoverage = state.SampleAlphaToCoverage;
+            _scissorBox = state.ScissorBox;
+            _scissorTest = state.ScissorTest;
+            _stencilBackFail = state.StencilBackFail;
+            _stencilBackFunc = state.StencilBackFunc;
+            _stencilBackPassDepthFail = state.StencilBackPassDepthFail;
+            _stencilBackPassDepthPass = state.StencilBackPassDepthPass;
+            _stencilBackRef = state.StencilBackRef;
+            _stencilBackValueMask = state.StencilBackValueMask;
+            _stencilBackWriteMask = state.StencilBackWriteMask;
+            _stencilClearValue = state.StencilClearValue;
+            _stencilFail = state.StencilFail;
+            _stencilFunc = state.StencilFuncValue;
+            _stencilPassDepthFail = state.StencilPassDepthFail;
+            _stencilPassDepthPass = state.StencilPassDepthPass;
+            _stencilRef = state.StencilRef;
+            _stencilTest = state.StencilTest;
+            _stencilValueMask = state.StencilValueMask;
+            _stencilWriteMask = state.StencilWriteMask;
+            _textureBinding2D = state.TextureBinding2D;
+            _textureBindingCubeMap = state.TextureBindingCubeMap;
+            _unpackAlignment = state.UnpackAlignment;
+            _viewport = state.Viewport;
+        }
 
         //public ApplyState(IGlState state)
         //{
@@ -477,6 +762,16 @@ namespace Tgl.Net.Core
         protected virtual void OnPropertyChanged(string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void TrySetValue<T>(ref T oldValue, ref T newValue, Action setter, [CallerMemberName]string propertyName = null)
+        {
+            if (!oldValue.Equals(newValue))
+            {
+                setter();
+                oldValue = newValue;
+                OnPropertyChanged(propertyName);
+            }
         }
     }
 }
