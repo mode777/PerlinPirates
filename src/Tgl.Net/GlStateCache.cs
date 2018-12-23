@@ -591,23 +591,21 @@ namespace Tgl.Net.Core
                 _stencilPassDepthPass = pass;
                 _stencilBackPassDepthPass = pass;
 
-                // TODO: Continue
-
                 if (stencilFailChange)
                 {
+                    OnPropertyChanged(nameof(StencilFail));
                     OnPropertyChanged(nameof(StencilBackFail));
-
                 }
 
                 if (depthFailChange)
                 {
+                    OnPropertyChanged(nameof(StencilPassDepthFail));
                     OnPropertyChanged(nameof(StencilBackPassDepthFail));
-
                 }
 
                 if (passChange)
                 {
-
+                    OnPropertyChanged(nameof(StencilPassDepthPass));
                     OnPropertyChanged(nameof(StencilBackPassDepthPass));
                 }
             }
