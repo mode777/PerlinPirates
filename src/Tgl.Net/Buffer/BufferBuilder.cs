@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Tgl.Net.Bindings;
+using Tgl.Net.State;
 
-namespace Tgl.Net.Core
+namespace Tgl.Net.Buffer
 {
     public class BufferBuilder
     {
@@ -25,12 +27,12 @@ namespace Tgl.Net.Core
             _attributes = new List<VertexAttribute>();
         }
 
-        public BufferBuilder WithData(int vertices, params float[] values)
+        public BufferBuilder HasData(int vertices, params float[] values)
         {
-            return WithData(vertices, (object)values);
+            return HasData(vertices, (object)values);
         }
 
-        public BufferBuilder WithData(int vertices, object data)
+        public BufferBuilder HasData(int vertices, object data)
         {
             Data = data;
             Vertices = vertices;

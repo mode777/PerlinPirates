@@ -1,67 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
 using System.Text;
-using Tgl.Net.Helpers;
+using Tgl.Net.Bindings;
 using Tgl.Net.Math;
-using static Tgl.Net.GL;
+using Tgl.Net.State;
 
-namespace Tgl.Net.Core
+namespace Tgl.Net.Shader
 {
-    public class ShaderBuilder
-    {
-        private readonly IGlState _state;
-
-        internal ShaderBuilder(IGlState state)
-        {
-            _state = state;
-        }
-
-        internal string VertexSource { get; private set; }
-        internal string FragmentSource { get; private set; }
-
-        public ShaderBuilder WithVertexFile(string path)
-        {
-            return WithVertexString(File.ReadAllText(path));
-        }
-
-        public ShaderBuilder WithVertexString(string shader)
-        {
-            VertexSource = shader;
-            return this;
-        }
-
-        public ShaderBuilder WithVertexResource(string path)
-        {
-            return WithVertexString(
-                ResourceHelpers.GetResourceString(Assembly.GetCallingAssembly(), path));
-        }
-
-        public ShaderBuilder WithFragmentResource(string path)
-        {
-            return WithFragmentString(
-                ResourceHelpers.GetResourceString(Assembly.GetCallingAssembly(), path));
-
-        }
-
-        public ShaderBuilder WithFragmentFile(string path)
-        {
-            return WithFragmentString(File.ReadAllText(path));
-        }
-
-        public ShaderBuilder WithFragmentString(string shader)
-        {
-            FragmentSource = shader;
-            return this;
-        }
-
-        public Shader Build()
-        {
-            return new Shader(_state, this);
-        }
-    }
-
     public class Shader : IDisposable
     {
         private readonly IGlState _state;
@@ -79,39 +24,39 @@ namespace Tgl.Net.Core
             infolog.EnsureCapacity(1024);
             int infologLength;
 
-            var vertexShader = glCreateShader(ShaderType.GL_VERTEX_SHADER);
-            ShaderSource(vertexShader, new[] { builder.VertexSource });
-            glCompileShader(vertexShader);
-            glGetShaderiv(vertexShader, ShaderParameterName.GL_COMPILE_STATUS, out var compiled);
+            var vertexShader = GL.glCreateShader(GL.ShaderType.GL_VERTEX_SHADER);
+            GL.ShaderSource(vertexShader, new[] { builder.VertexSource });
+            GL.glCompileShader(vertexShader);
+            GL.glGetShaderiv(vertexShader, GL.ShaderParameterName.GL_COMPILE_STATUS, out var compiled);
             if (compiled == 0)
             {
-                glGetShaderInfoLog(vertexShader, 1024, out infologLength, infolog);
+                GL.glGetShaderInfoLog(vertexShader, 1024, out infologLength, infolog);
                 throw new InvalidProgramException(infolog.ToString());
             }
 
-            var fragmentShader = glCreateShader(ShaderType.GL_FRAGMENT_SHADER);
-            ShaderSource(fragmentShader, new[] { builder.FragmentSource });
-            glCompileShader(fragmentShader);
-            glGetShaderiv(fragmentShader, ShaderParameterName.GL_COMPILE_STATUS, out compiled);
+            var fragmentShader = GL.glCreateShader(GL.ShaderType.GL_FRAGMENT_SHADER);
+            GL.ShaderSource(fragmentShader, new[] { builder.FragmentSource });
+            GL.glCompileShader(fragmentShader);
+            GL.glGetShaderiv(fragmentShader, GL.ShaderParameterName.GL_COMPILE_STATUS, out compiled);
             if (compiled == 0)
             {
-                glGetShaderInfoLog(fragmentShader, 1024, out infologLength, infolog);
+                GL.glGetShaderInfoLog(fragmentShader, 1024, out infologLength, infolog);
                 throw new InvalidProgramException(infolog.ToString());
             }
 
-            _handle = glCreateProgram();
-            glAttachShader(_handle, vertexShader);
-            glAttachShader(_handle, fragmentShader);
-            glLinkProgram(_handle);
-            glGetProgramiv(_handle, ProgramPropertyARB.GL_LINK_STATUS, out var linked);
+            _handle = GL.glCreateProgram();
+            GL.glAttachShader(_handle, vertexShader);
+            GL.glAttachShader(_handle, fragmentShader);
+            GL.glLinkProgram(_handle);
+            GL.glGetProgramiv(_handle, GL.ProgramPropertyARB.GL_LINK_STATUS, out var linked);
             if (linked == 0)
             {
-                glGetProgramInfoLog(_handle, 1024, out infologLength, infolog);
+                GL.glGetProgramInfoLog(_handle, 1024, out infologLength, infolog);
                 throw new InvalidProgramException(infolog.ToString());
             }
 
-            glDeleteShader(vertexShader);
-            glDeleteShader(fragmentShader);
+            GL.glDeleteShader(vertexShader);
+            GL.glDeleteShader(fragmentShader);
 
             Use();
             CollectAttributeInformation();
@@ -136,7 +81,7 @@ namespace Tgl.Net.Core
         public void SetUniform(int location, float value)
         {
             Use();
-            glUniform1f(location, value);
+            GL.glUniform1f(location, value);
         }
 
         public void SetUniform(string name, float value) 
@@ -145,7 +90,7 @@ namespace Tgl.Net.Core
         public void SetUniform(int location, Vector2 value)
         {
             Use();
-            glUniform2f(location, value.X, value.Y);
+            GL.glUniform2f(location, value.X, value.Y);
         }
         public void SetUniform(string name, Vector2 value) 
             => SetUniform(_uniformsByName[name].Location, value);
@@ -153,7 +98,7 @@ namespace Tgl.Net.Core
         public void SetUniform(int location, Vector3 value)
         {
             Use();
-            glUniform3f(location, value.X, value.Y, value.Z);
+            GL.glUniform3f(location, value.X, value.Y, value.Z);
         }
         public void SetUniform(string name, Vector3 value) 
             => SetUniform(_uniformsByName[name].Location, value);
@@ -161,7 +106,7 @@ namespace Tgl.Net.Core
         public void SetUniform(int location, Vector4 value)
         {
             Use();
-            glUniform4f(location, value.X, value.Y, value.Z, value.W);
+            GL.glUniform4f(location, value.X, value.Y, value.Z, value.W);
         }
         public void SetUniform(string name, Vector4 value) 
             => SetUniform(_uniformsByName[name].Location, value);
@@ -170,7 +115,7 @@ namespace Tgl.Net.Core
         {
             Use();
 
-            glUniformMatrix2fv(location, 1, false, ref value);
+            GL.glUniformMatrix2fv(location, 1, false, ref value);
         }
         public void SetUniform(string name, Matrix2 value) 
             => SetUniform(_uniformsByName[name].Location, value);
@@ -179,7 +124,7 @@ namespace Tgl.Net.Core
         {
             Use();
 
-            glUniformMatrix3fv(location, 1, false, ref value);
+            GL.glUniformMatrix3fv(location, 1, false, ref value);
         }
 
         public void SetUniform(string name, Matrix3 value) 
@@ -188,7 +133,7 @@ namespace Tgl.Net.Core
         public void SetUniform(int location, Matrix4 value)
         {
             Use();
-            glUniformMatrix4fv(location, 1, false, ref value);
+            GL.glUniformMatrix4fv(location, 1, false, ref value);
         }
 
         public void SetUniform(string name, Matrix4 value) 
@@ -196,12 +141,12 @@ namespace Tgl.Net.Core
 
         public void Dispose()
         {
-            glDeleteProgram(_handle);
+            GL.glDeleteProgram(_handle);
         }
 
         private void CollectUniformInformation()
         {
-            glGetProgramiv(_handle, ProgramPropertyARB.GL_ACTIVE_UNIFORMS, out var uniforms);
+            GL.glGetProgramiv(_handle, GL.ProgramPropertyARB.GL_ACTIVE_UNIFORMS, out var uniforms);
 
             StringBuilder nameBuffer = new StringBuilder(1024);
 
@@ -211,10 +156,10 @@ namespace Tgl.Net.Core
             for (uint i = 0; i < uniforms; i++)
             {
                 int size;
-                AttributeType type;
-                glGetActiveUniform(_handle, i, 1024, out namebufferLength, out size, out type, nameBuffer);
+                GL.AttributeType type;
+                GL.glGetActiveUniform(_handle, i, 1024, out namebufferLength, out size, out type, nameBuffer);
                 var name = nameBuffer.ToString();
-                var location = glGetUniformLocation(_handle, name);
+                var location = GL.glGetUniformLocation(_handle, name);
                 _uniformsByName[nameBuffer.ToString()] = new ShaderVariableInfo
                 {
                     Location = location,
@@ -227,7 +172,7 @@ namespace Tgl.Net.Core
 
         private void CollectAttributeInformation()
         {
-            glGetProgramiv(_handle, ProgramPropertyARB.GL_ACTIVE_ATTRIBUTES, out var attributes);
+            GL.glGetProgramiv(_handle, GL.ProgramPropertyARB.GL_ACTIVE_ATTRIBUTES, out var attributes);
 
             StringBuilder nameBuffer = new StringBuilder(1024);
             nameBuffer.EnsureCapacity(1024);
@@ -236,10 +181,10 @@ namespace Tgl.Net.Core
             for (uint i = 0; i < attributes; i++)
             {
                 int size;
-                AttributeType type;
-                glGetActiveAttrib(_handle, i, 1024, out namebufferLength, out size, out type, nameBuffer);
+                GL.AttributeType type;
+                GL.glGetActiveAttrib(_handle, i, 1024, out namebufferLength, out size, out type, nameBuffer);
                 var name = nameBuffer.ToString();
-                var location = glGetAttribLocation(_handle, name);
+                var location = GL.glGetAttribLocation(_handle, name);
                 _attributesByName[nameBuffer.ToString()] = new ShaderVariableInfo
                 {
                     Location = location,
@@ -255,7 +200,7 @@ namespace Tgl.Net.Core
             public string Name { get; set; }
             public int Location { get; set; }
             public int Size { get; set; }
-            public AttributeType Type { get; set; }
+            public GL.AttributeType Type { get; set; }
         }
     }
 }

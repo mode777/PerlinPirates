@@ -11,11 +11,15 @@
   <ItemGroup>
     <None Remove="Resources\Shaders\minimal_fragment.glsl" />
     <None Remove="Resources\Shaders\minimal_vertex.glsl" />
+    <None Remove="Resources\Shaders\texture_checker_fragment.glsl" />
+    <None Remove="Resources\Shaders\texture_checker_vertex.glsl" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Resources\Shaders\minimal_fragment.glsl" />
     <EmbeddedResource Include="Resources\Shaders\minimal_vertex.glsl" />
+    <EmbeddedResource Include="Resources\Shaders\texture_checker_fragment.glsl" />
+    <EmbeddedResource Include="Resources\Shaders\texture_checker_vertex.glsl" />
   </ItemGroup>
 
   <ItemGroup>

@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
-using static Tgl.Net.GL;
+using Tgl.Net.Bindings;
+using Tgl.Net.State;
 
-namespace Tgl.Net.Core
+namespace Tgl.Net.Buffer
 {
     public class VertexBuffer
     {
         private readonly IGlState _state;
         private readonly VertexAttribute[] _attributes;
         private readonly Dictionary<string, VertexAttribute> _attributesByName = new Dictionary<string, VertexAttribute>();
-        private readonly BufferUsageARB _usage;
+        private readonly GL.BufferUsageARB _usage;
         private readonly uint _handle;
         private int _byteSize;
         private int _vertexSize;
@@ -34,7 +35,7 @@ namespace Tgl.Net.Core
 
                 fixed (uint* ptr = arr)
                 {
-                    glGenBuffers(arr.Length, ptr);
+                    GL.glGenBuffers(arr.Length, ptr);
                     _handle = arr[0];
                 }
             }
@@ -56,7 +57,7 @@ namespace Tgl.Net.Core
             Bind();
 
             var handle = GCHandle.Alloc(data);
-            glBufferSubData(BufferTargetARB.GL_ARRAY_BUFFER, (IntPtr)(_vertexSize * vertexOffset), (uint)_vertexSize * vertexLength, GCHandle.ToIntPtr(handle));
+            GL.glBufferSubData(GL.BufferTargetARB.GL_ARRAY_BUFFER, (IntPtr)(_vertexSize * vertexOffset), (uint)_vertexSize * vertexLength, GCHandle.ToIntPtr(handle));
             handle.Free();
         }
 
@@ -66,7 +67,7 @@ namespace Tgl.Net.Core
             CalculateSize(vertexLength);
 
             var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
-            glBufferData(BufferTargetARB.GL_ARRAY_BUFFER, (uint)_byteSize, handle.AddrOfPinnedObject(), _usage);
+            GL.glBufferData(GL.BufferTargetARB.GL_ARRAY_BUFFER, (uint)_byteSize, handle.AddrOfPinnedObject(), _usage);
             handle.Free();
         }
 
@@ -75,8 +76,8 @@ namespace Tgl.Net.Core
             Bind();
             var a = _attributesByName[name];
 
-            glEnableVertexAttribArray((uint)location);
-            glVertexAttribPointer(
+            GL.glEnableVertexAttribArray((uint)location);
+            GL.glVertexAttribPointer(
                 (uint)location,
                 (int)a.Components,
                 a.DataType,

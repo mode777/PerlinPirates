@@ -1,7 +1,8 @@
 ﻿using System.Linq;
+using Tgl.Net.Bindings;
 using Tgl.Net.Math;
 
-namespace Tgl.Net.Core
+namespace Tgl.Net.State
 {
     public class GlInfo
     {

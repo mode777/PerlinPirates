@@ -1,9 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Tgl.Net.Bindings;
 using Tgl.Net.Math;
 
-namespace Tgl.Net.Core
+namespace Tgl.Net.State
 {
     public class GlStateCache : GlState, INotifyPropertyChanged
     {

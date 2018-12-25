@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using Tgl.Net.Bindings;
+using Tgl.Net.Buffer;
 using Tgl.Net.Math;
+using Tgl.Net.Shader;
+using Tgl.Net.Texture;
 
-namespace Tgl.Net.Core
+namespace Tgl.Net.State
 {
     public class GlState : IGlState
     {
-
-
         public GlState()
         {
             Info = new GlInfo();
@@ -414,6 +414,11 @@ namespace Tgl.Net.Core
             GL.glDrawArrays(type, first, count);
         }
 
+        public virtual void DrawElements(GL.PrimitiveType type, int first, int count)
+        {
+            GL.glDrawElements(type, count, GL.DrawElementsType.GL_UNSIGNED_SHORT, first);
+        }
+
         public virtual ShaderBuilder BuildShader()
         {
             return new ShaderBuilder(this);
@@ -422,6 +427,16 @@ namespace Tgl.Net.Core
         public virtual BufferBuilder BuildBuffer()
         {
             return new BufferBuilder(this);
+        }
+
+        public virtual TextureBuilder BuildTexture()
+        {
+            return new TextureBuilder(this);
+        }
+
+        public virtual IndexBuffer CreateIndexBuffer(params ushort[] indices)
+        {
+            return new IndexBuffer(this, indices);
         }
     }
 }

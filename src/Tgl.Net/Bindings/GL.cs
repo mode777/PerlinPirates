@@ -5,7 +5,7 @@ using System.Security;
 using System.Text;
 using Tgl.Net.Math;
 
-namespace Tgl.Net
+namespace Tgl.Net.Bindings
 {
     public static class GL
     {
@@ -938,6 +938,29 @@ namespace Tgl.Net
             GL_TEXTURE_WRAP_T = 10243
         }
 
+        public enum TextureWrapMode : uint
+        {
+            GL_REPEAT = 0x2901,
+            GL_CLAMP_TO_EDGE = 0x812F,
+            GL_MIRRORED_REPEAT = 0x8370,
+        }
+
+        public enum TextureMagType : uint
+        {
+            GL_NEAREST = 0x2600,
+            GL_LINEAR = 0x2601,
+        }
+
+        public enum TextureMinType : uint
+        {
+            GL_NEAREST = 0x2600,
+            GL_LINEAR = 0x2601,
+            GL_NEAREST_MIPMAP_NEAREST = 0x2700,
+            GL_LINEAR_MIPMAP_NEAREST = 0x2701,
+            GL_NEAREST_MIPMAP_LINEAR = 0x2702,
+            GL_LINEAR_MIPMAP_LINEAR = 0x2703
+        }
+
         public enum TextureTarget : uint
         {
             GL_TEXTURE_2D = 3553,
@@ -1093,7 +1116,7 @@ namespace Tgl.Net
         [SuppressUnmanagedCodeSecurity] public delegate void glDisableDelegate(EnableCap cap);
         [SuppressUnmanagedCodeSecurity] public delegate void glDisableVertexAttribArrayDelegate(uint index);
         [SuppressUnmanagedCodeSecurity] public delegate void glDrawArraysDelegate(PrimitiveType mode, int first, int count);
-        [SuppressUnmanagedCodeSecurity] public unsafe delegate void glDrawElementsDelegate(PrimitiveType mode, int count, DrawElementsType type, void* indices);
+        [SuppressUnmanagedCodeSecurity] public delegate void glDrawElementsDelegate(PrimitiveType mode, int count, DrawElementsType type, int indices);
         [SuppressUnmanagedCodeSecurity] public delegate void glEnableDelegate(EnableCap cap);
         [SuppressUnmanagedCodeSecurity] public delegate void glEnableVertexAttribArrayDelegate(uint index);
         [SuppressUnmanagedCodeSecurity] public delegate void glFinishDelegate();
@@ -1157,7 +1180,7 @@ namespace Tgl.Net
         [SuppressUnmanagedCodeSecurity] public delegate void glStencilMaskSeparateDelegate(StencilFaceDirection face, uint mask);
         [SuppressUnmanagedCodeSecurity] public delegate void glStencilOpDelegate(StencilOp fail, StencilOp zfail, StencilOp zpass);
         [SuppressUnmanagedCodeSecurity] public delegate void glStencilOpSeparateDelegate(StencilFaceDirection face, StencilOp sfail, StencilOp dpfail, StencilOp dppass);
-        [SuppressUnmanagedCodeSecurity] public unsafe delegate void glTexImage2DDelegate(TextureTarget target, int level, InternalFormat internalformat, int width, int height, int border, PixelFormat format, PixelType type, void* pixels);
+        [SuppressUnmanagedCodeSecurity] public unsafe delegate void glTexImage2DDelegate(TextureTarget target, int level, InternalFormat internalformat, int width, int height, int border, PixelFormat format, PixelType type, IntPtr pixels);
         [SuppressUnmanagedCodeSecurity] public delegate void glTexParameterfDelegate(TextureTarget target, TextureParameterName pname, float param);
         [SuppressUnmanagedCodeSecurity] public unsafe delegate void glTexParameterfvDelegate(TextureTarget target, TextureParameterName pname, float* @params);
         [SuppressUnmanagedCodeSecurity] public delegate void glTexParameteriDelegate(TextureTarget target, TextureParameterName pname, int param);

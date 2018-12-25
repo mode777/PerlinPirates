@@ -1,7 +1,7 @@
 ﻿using System;
-using static Tgl.Net.GL;
+using Tgl.Net.Bindings;
 
-namespace Tgl.Net.Core
+namespace Tgl.Net.Buffer
 {
     public class VertexAttribute
     {
@@ -49,15 +49,15 @@ namespace Tgl.Net.Core
             {
                 switch (DataType)
                 {
-                    case VertexAttribPointerType.GL_BYTE:
-                    case VertexAttribPointerType.GL_UNSIGNED_BYTE:
+                    case GL.VertexAttribPointerType.GL_BYTE:
+                    case GL.VertexAttribPointerType.GL_UNSIGNED_BYTE:
                         return 1;
-                    case VertexAttribPointerType.GL_SHORT:
-                    case VertexAttribPointerType.GL_UNSIGNED_SHORT:
+                    case GL.VertexAttribPointerType.GL_SHORT:
+                    case GL.VertexAttribPointerType.GL_UNSIGNED_SHORT:
                         return 2;
-                    case VertexAttribPointerType.GL_INT:
-                    case VertexAttribPointerType.GL_UNSIGNED_INT:
-                    case VertexAttribPointerType.GL_FLOAT:
+                    case GL.VertexAttribPointerType.GL_INT:
+                    case GL.VertexAttribPointerType.GL_UNSIGNED_INT:
+                    case GL.VertexAttribPointerType.GL_FLOAT:
                         return 4;
                     default:
                         throw new NotSupportedException($"DataType {DataType} is not supported.");

@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
-using Tgl.Net.Core;
+using Tgl.Net.Bindings;
 
-namespace Tgl.Net
+namespace Tgl.Net.State
 {
     public class TextureBindingAccessor : IEnumerable<uint>
     {
