@@ -21,8 +21,8 @@ namespace Renderer.Gles2.Tests
                 .HasFragmentResource("Resources.Shaders.minimal_fragment.glsl")
                 .Build();
 
-            _buffer = state.BuildBuffer()
-                .HasData(3, -0.5f, -0.5f, 0.5f, -0.5f, 0, 0.5f)
+            _buffer = state.BuildBuffer<float>()
+                .HasData(-0.5f, -0.5f, 0.5f, -0.5f, 0, 0.5f)
                 .HasAttribute("aPosition", 2)
                 .Build();
         }

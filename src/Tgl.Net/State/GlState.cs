@@ -424,9 +424,10 @@ namespace Tgl.Net.State
             return new ShaderBuilder(this);
         }
 
-        public virtual BufferBuilder BuildBuffer()
+        public virtual BufferBuilder<T> BuildBuffer<T>()
+            where T : struct
         {
-            return new BufferBuilder(this);
+            return new BufferBuilder<T>(this);
         }
 
         public virtual TextureBuilder BuildTexture()

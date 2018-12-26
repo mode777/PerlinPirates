@@ -24,8 +24,8 @@ namespace Renderer.Gles2.Tests
                 .HasFragmentResource("Resources.Shaders.texture_checker_fragment.glsl")
                 .Build();
 
-            _buffer = state.BuildBuffer()
-                .HasData(4,
+            _buffer = state.BuildBuffer<float>()
+                .HasData(
                     -0.5f, -0.5f, 0, 0,
                     0.5f, -0.5f, 1, 0,
                     0.5f, 0.5f, 1, 1,
@@ -53,7 +53,7 @@ namespace Renderer.Gles2.Tests
         {
             _buffer.EnableAttribute("aPosition", _shader.GetAttributeLocation("aPosition"));
             _buffer.EnableAttribute("aTexcoord", _shader.GetAttributeLocation("aTexcoord"));
-            _shader.SetUniform(_shader.GetUniformLocation("uTexture"), 0);
+            _shader.SetUniform(_shader.GetUniformLocation("uTexture"), state.ActiveTexture);
 
             state.ColorClearValue = new Vector4(0,1,0,1);
 

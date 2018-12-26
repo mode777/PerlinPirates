@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using Tgl.Net.Bindings;
+using Tgl.Net.Helpers;
 using Tgl.Net.State;
 
 namespace Tgl.Net.Buffer
@@ -39,8 +40,6 @@ namespace Tgl.Net.Buffer
                     _handle = arr[0];
                 }
             }
-
-            Data(options.Data, options.Vertices);
         }
 
         public int VertexCount => _vertices;
@@ -52,25 +51,40 @@ namespace Tgl.Net.Buffer
             _state.ArrayBufferBinding = _handle;
         }
 
-        private void SubData(object data, uint vertexOffset, uint vertexLength)
+        // TODO: Check if recalculation of attributes is needed
+        //private void SubData(object data, uint vertexOffset, uint vertexLength)
+        //{
+        //    Bind();
+
+        //    var handle = GCHandle.Alloc(data);
+        //    GL.glBufferSubData(GL.BufferTargetARB.GL_ARRAY_BUFFER, (IntPtr)(_vertexSize * vertexOffset), (uint)_vertexSize * vertexLength, GCHandle.ToIntPtr(handle));
+        //    handle.Free();
+        //}
+
+        //public void Data(object data, int vertexLength)
+        //{
+        //    Bind();
+        //    CalculateSize(vertexLength);
+
+        //    var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
+            
+        //    handle.Free();
+        //}
+
+        public void Data<T>(T[] data)
+            where T : struct
         {
+            _vertexSize = _attributes.Sum(x => x.AttributeSize);
+            _byteSize = data.Length * Marshal.SizeOf<T>();
+            _vertices = _byteSize / _vertexSize;
+
             Bind();
-
-            var handle = GCHandle.Alloc(data);
-            GL.glBufferSubData(GL.BufferTargetARB.GL_ARRAY_BUFFER, (IntPtr)(_vertexSize * vertexOffset), (uint)_vertexSize * vertexLength, GCHandle.ToIntPtr(handle));
-            handle.Free();
+            using (var handle = new PinnedGCHandle(data))
+            {
+                GL.glBufferData(GL.BufferTargetARB.GL_ARRAY_BUFFER, (uint)_byteSize, handle.Pointer, _usage);
+            }
         }
-
-        public void Data(object data, int vertexLength)
-        {
-            Bind();
-            CalculateSize(vertexLength);
-
-            var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
-            GL.glBufferData(GL.BufferTargetARB.GL_ARRAY_BUFFER, (uint)_byteSize, handle.AddrOfPinnedObject(), _usage);
-            handle.Free();
-        }
-
+        
         public void EnableAttribute(string name, int location)
         {
             Bind();
@@ -84,13 +98,6 @@ namespace Tgl.Net.Buffer
                 a.Normalized,
                 (int)_vertexSize,
                 (IntPtr)a.Offset);
-        }
-        
-        private void CalculateSize(int vertices)
-        {
-            _vertices = vertices;
-            _vertexSize = _attributes.Sum(x => x.AttributeSize);
-            _byteSize = _vertexSize * _vertices;
         }
     }
 

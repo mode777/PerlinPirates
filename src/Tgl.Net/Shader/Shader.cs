@@ -84,6 +84,19 @@ namespace Tgl.Net.Shader
             GL.glUniform1f(location, value);
         }
 
+        public void SetUniform(int location, GL.TextureUnit unit)
+        {
+            Use();
+            int value = (int)(unit - GL.TextureUnit.GL_TEXTURE0);
+            GL.glUniform1i(location, value);
+        }
+
+        public void SetUniform(int location, int value)
+        {
+            Use();
+            GL.glUniform1i(location, value);
+        }
+
         public void SetUniform(string name, float value) 
             => SetUniform(_uniformsByName[name].Location, value);
 
