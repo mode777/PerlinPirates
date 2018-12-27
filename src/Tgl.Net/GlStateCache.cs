@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 using Tgl.Net.Bindings;
 using Tgl.Net.Math;
 
-namespace Tgl.Net.State
+namespace Tgl.Net
 {
     public class GlStateCache : GlState, INotifyPropertyChanged
     {

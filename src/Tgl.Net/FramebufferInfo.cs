@@ -1,4 +1,4 @@
-﻿namespace Tgl.Net.Framebuffer
+﻿namespace Tgl.Net
 {
     public class FramebufferInfo
     {

@@ -1,9 +1,8 @@
 ﻿using System.IO;
 using System.Reflection;
 using Tgl.Net.Helpers;
-using Tgl.Net.State;
 
-namespace Tgl.Net.Shader
+namespace Tgl.Net
 {
     public class ShaderBuilder
     {
@@ -54,7 +53,14 @@ namespace Tgl.Net.Shader
 
         public Shader Build()
         {
-            return new Shader(_state, this);
+            var shader = new Shader(_state);
+
+            if(FragmentSource != null && VertexSource != null)
+            {
+                shader.CompileAndLink(VertexSource, FragmentSource);
+            }
+
+            return shader;
         }
     }
 }

@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Tgl.Net.Bindings;
-using Tgl.Net.State;
+﻿using Tgl.Net.Bindings;
 
-namespace Tgl.Net.Texture
+namespace Tgl.Net
 {
-    public class TextureBuilder
+    public class TextureBuilder<T>
+        where T : struct
     {
         private readonly IGlState _state;
 
-        public object Source { get; private set; } = null;
+        public T[] Data { get; private set; } = null;
         public int Width { get; private set; } = 1;
         public int Height { get; private set; } = 1;
         public GL.PixelFormat PixelFormat { get; private set; } = GL.PixelFormat.GL_RGBA;
@@ -27,28 +24,35 @@ namespace Tgl.Net.Texture
             _state = state;
         }
 
-        public TextureBuilder HasData(object source, 
-            GL.PixelFormat format = GL.PixelFormat.GL_RGBA, 
-            GL.InternalFormat internalFormat = GL.InternalFormat.GL_RGBA, 
-            GL.PixelType type = GL.PixelType.GL_UNSIGNED_BYTE)
+        public TextureBuilder<T> HasData(params T[] data)
         {
-            Source = source;
+            Data = data;
+
+            return this;
+        }
+
+        public TextureBuilder<T> HasPixelFormat(GL.PixelFormat format)
+        {
             PixelFormat = format;
+
+            return this;
+        }
+
+        public TextureBuilder<T> HasPixelType(GL.PixelType type)
+        {
             PixelType = type;
+
+            return this;
+        }
+
+        public TextureBuilder<T> HasInternalFormat(GL.InternalFormat internalFormat)
+        {
             InternalFormat = internalFormat;
 
             return this;
         }
 
-        public TextureBuilder HasData(
-            GL.PixelFormat format, 
-            GL.InternalFormat internalFormat,
-            params byte[] bytes)
-        {
-            return HasData(bytes, format, internalFormat);
-        }
-
-        public TextureBuilder HasSize(int width, int height)
+        public TextureBuilder<T> HasSize(int width, int height)
         {
             Width = width;
             Height = height;
@@ -56,7 +60,7 @@ namespace Tgl.Net.Texture
             return this;
         }
 
-        public TextureBuilder HasFiltering(GL.TextureMinType minify, GL.TextureMagType magnify)
+        public TextureBuilder<T> HasFiltering(GL.TextureMinType minify, GL.TextureMagType magnify)
         {
             FilterMinify = minify;
             FilterMagnify = magnify;
@@ -64,7 +68,7 @@ namespace Tgl.Net.Texture
             return this;
         }
 
-        public TextureBuilder HasWrapping(GL.TextureWrapMode x, GL.TextureWrapMode y)
+        public TextureBuilder<T> HasWrapping(GL.TextureWrapMode x, GL.TextureWrapMode y)
         {
             WrapX = x;
             WrapY = y;
@@ -72,7 +76,7 @@ namespace Tgl.Net.Texture
             return this;
         }
 
-        public TextureBuilder HasMipmaps(bool useMipmaps = true)
+        public TextureBuilder<T> HasMipmaps(bool useMipmaps = true)
         {
             GenerateMipmaps = useMipmaps;
 
@@ -81,7 +85,23 @@ namespace Tgl.Net.Texture
 
         public Texture Build()
         {
-            return new Texture(_state, this);
+            var texture = new Texture(_state);
+            if (Data != null)
+            {
+                texture.TexImage2d(Width, Height, Data, PixelFormat, InternalFormat, PixelType, 0);
+            }
+
+            texture.FilterMagnify = FilterMagnify;
+            texture.FilterMinify = FilterMinify;
+            texture.WrapX = WrapX;
+            texture.WrapY = WrapY;
+
+            if(GenerateMipmaps)
+            {
+                texture.GenerateMipmaps();
+            }
+
+            return texture;
         }
     }
 }

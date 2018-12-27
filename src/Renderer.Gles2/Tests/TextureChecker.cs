@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Tgl.Net;
 using Tgl.Net.Bindings;
-using Tgl.Net.Buffer;
 using Tgl.Net.Math;
-using Tgl.Net.Shader;
-using Tgl.Net.State;
-using Tgl.Net.Texture;
 
 namespace Renderer.Gles2.Tests
 {
@@ -27,21 +24,19 @@ namespace Renderer.Gles2.Tests
             _buffer = state.BuildBuffer<float>()
                 .HasData(
                     -0.5f, -0.5f, 0, 0,
-                    0.5f, -0.5f, 1, 0,
-                    0.5f, 0.5f, 1, 1,
-                    -0.5f, 0.5f, 0, 1)
+                    0.5f, -0.5f, 5, 0,
+                    0.5f, 0.5f, 5, 5,
+                    -0.5f, 0.5f, 0, 5)
                 .HasAttribute("aPosition", 2)
                 .HasAttribute("aTexcoord", 2)
                 .Build();
 
             _indexBuffer = state.CreateIndexBuffer(3, 0, 1, 3, 1, 2);
 
-            _texture = state.BuildTexture()
+            _texture = state.BuildTexture<byte>()
                 .HasSize(2, 2)
                 .HasFiltering(GL.TextureMinType.GL_NEAREST, GL.TextureMagType.GL_NEAREST)
                 .HasData(
-                    GL.PixelFormat.GL_RGBA,
-                    GL.InternalFormat.GL_RGBA,
                     0, 0, 255, 255,
                     255, 255, 0, 255,
                     255, 255, 0, 255,

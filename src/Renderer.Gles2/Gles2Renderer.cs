@@ -5,10 +5,7 @@ using Game.Abstractions;
 using Renderer.Gles2.Tests;
 using Tgl.Net;
 using Tgl.Net.Bindings;
-using Tgl.Net.Buffer;
 using Tgl.Net.Math;
-using Tgl.Net.Shader;
-using Tgl.Net.State;
 
 namespace Renderer.Gles2
 {

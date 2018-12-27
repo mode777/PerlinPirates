@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Game.Abstractions;
-using Tgl.Net.State;
+using Tgl.Net;
 
 namespace Renderer.Gles2.Tests
 {

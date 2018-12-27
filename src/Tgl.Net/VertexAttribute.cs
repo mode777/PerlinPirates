@@ -1,7 +1,7 @@
 ﻿using System;
 using Tgl.Net.Bindings;
 
-namespace Tgl.Net.Buffer
+namespace Tgl.Net
 {
     public class VertexAttribute
     {

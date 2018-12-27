@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Tgl.Net.Bindings;
 
-namespace Tgl.Net.State
+namespace Tgl.Net
 {
     public class TextureBindingAccessor : IEnumerable<uint>
     {

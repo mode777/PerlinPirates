@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Tgl.Net;
 using Tgl.Net.Bindings;
-using Tgl.Net.Buffer;
 using Tgl.Net.Math;
-using Tgl.Net.Shader;
-using Tgl.Net.State;
 
 namespace Renderer.Gles2.Tests
 {

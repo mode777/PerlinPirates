@@ -1,11 +1,8 @@
 ﻿using System.Collections.Generic;
 using Tgl.Net.Bindings;
-using Tgl.Net.Buffer;
 using Tgl.Net.Math;
-using Tgl.Net.Shader;
-using Tgl.Net.Texture;
 
-namespace Tgl.Net.State
+namespace Tgl.Net
 {
     public class GlState : IGlState
     {
@@ -430,9 +427,10 @@ namespace Tgl.Net.State
             return new BufferBuilder<T>(this);
         }
 
-        public virtual TextureBuilder BuildTexture()
+        public virtual TextureBuilder<T> BuildTexture<T>()
+            where T : struct
         {
-            return new TextureBuilder(this);
+            return new TextureBuilder<T>(this);
         }
 
         public virtual IndexBuffer CreateIndexBuffer(params ushort[] indices)

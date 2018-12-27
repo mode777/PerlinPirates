@@ -4,41 +4,28 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using Tgl.Net.Bindings;
 using Tgl.Net.Helpers;
-using Tgl.Net.State;
 
-namespace Tgl.Net.Buffer
+namespace Tgl.Net
 {
     public class VertexBuffer
     {
         private readonly IGlState _state;
-        private readonly VertexAttribute[] _attributes;
-        private readonly Dictionary<string, VertexAttribute> _attributesByName = new Dictionary<string, VertexAttribute>();
-        private readonly GL.BufferUsageARB _usage;
-        private readonly uint _handle;
+        private VertexAttribute[] _attributes;
+        private Dictionary<string, VertexAttribute> _attributesByName;
+        private GL.BufferUsageARB _usage;
         private int _byteSize;
         private int _vertexSize;
         private int _vertices;
 
-        public VertexBuffer(IGlState state, BufferBuilder options)
+        public VertexBuffer(IGlState state)
         {
             _state = state;
-            _usage = options.Usage;
-            
-            _attributes = options.Attributes.ToArray();
-            foreach (var vertexAttribute in _attributes)
-            {
-                _attributesByName[vertexAttribute.Name] = vertexAttribute;
-            }
 
             unsafe
             {
-                var arr = new uint[1];
-
-                fixed (uint* ptr = arr)
-                {
-                    GL.glGenBuffers(arr.Length, ptr);
-                    _handle = arr[0];
-                }
+                var handle = Handle;
+                GL.glGenTextures(1, &handle);
+                Handle = handle;
             }
         }
 
@@ -46,9 +33,22 @@ namespace Tgl.Net.Buffer
         public int VertexSize => _vertexSize;
         public int Size => _byteSize;
 
+        public uint Handle { get; }
+
         public void Bind()
         {
-            _state.ArrayBufferBinding = _handle;
+            _state.ArrayBufferBinding = Handle;
+        }
+        
+        public void DefineAttributes(IEnumerable<VertexAttribute> attributes)
+        {
+            _attributes = attributes.ToArray();
+            _attributesByName = new Dictionary<string, VertexAttribute>();
+
+            foreach (var vertexAttribute in _attributes)
+            {
+                _attributesByName[vertexAttribute.Name] = vertexAttribute;
+            }
         }
 
         // TODO: Check if recalculation of attributes is needed
@@ -60,20 +60,12 @@ namespace Tgl.Net.Buffer
         //    GL.glBufferSubData(GL.BufferTargetARB.GL_ARRAY_BUFFER, (IntPtr)(_vertexSize * vertexOffset), (uint)_vertexSize * vertexLength, GCHandle.ToIntPtr(handle));
         //    handle.Free();
         //}
-
-        //public void Data(object data, int vertexLength)
-        //{
-        //    Bind();
-        //    CalculateSize(vertexLength);
-
-        //    var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
-            
-        //    handle.Free();
-        //}
-
-        public void Data<T>(T[] data)
+        
+        public void Data<T>(T[] data, GL.BufferUsageARB usage = GL.BufferUsageARB.GL_STATIC_DRAW)
             where T : struct
         {
+            _usage = usage;
+
             _vertexSize = _attributes.Sum(x => x.AttributeSize);
             _byteSize = data.Length * Marshal.SizeOf<T>();
             _vertices = _byteSize / _vertexSize;
@@ -81,7 +73,10 @@ namespace Tgl.Net.Buffer
             Bind();
             using (var handle = new PinnedGCHandle(data))
             {
-                GL.glBufferData(GL.BufferTargetARB.GL_ARRAY_BUFFER, (uint)_byteSize, handle.Pointer, _usage);
+                GL.glBufferData(GL.BufferTargetARB.GL_ARRAY_BUFFER, 
+                    (uint)_byteSize, 
+                    handle.Pointer, 
+                    _usage);
             }
         }
         

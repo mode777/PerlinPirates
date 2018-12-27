@@ -2,19 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using Tgl.Net.Bindings;
-using Tgl.Net.State;
 
-namespace Tgl.Net.Buffer
+namespace Tgl.Net
 {
     public abstract class BufferBuilder
     {
         protected readonly IGlState _state;
         protected List<VertexAttribute> _attributes;
-        
-        public IEnumerable<VertexAttribute> Attributes
-        {
-            get => _attributes;
-        }
+
+        public IEnumerable<VertexAttribute> Attributes => _attributes;
 
         public GL.BufferUsageARB Usage { get; private set; } = GL.BufferUsageARB.GL_STATIC_DRAW;
         
@@ -90,9 +86,15 @@ namespace Tgl.Net.Buffer
 
         public VertexBuffer Build()
         {
+            var buffer = new VertexBuffer(_state);
+
             _attributes = CalculateAttributeOffsets();
-            var buffer = new VertexBuffer(_state, this);
-            buffer.Data(Data);
+            buffer.DefineAttributes(_attributes);
+
+            if (Data != null)
+            {
+                buffer.Data(Data, Usage);
+            }
 
             return buffer;
         }

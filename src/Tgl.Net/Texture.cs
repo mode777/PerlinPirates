@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
 using Tgl.Net.Bindings;
-using Tgl.Net.Shader;
-using Tgl.Net.State;
+using Tgl.Net.Helpers;
 
-namespace Tgl.Net.Texture
+namespace Tgl.Net
 {
     public class Texture : IDisposable
     {
@@ -16,11 +15,8 @@ namespace Tgl.Net.Texture
         private GL.TextureMinType _filterMinify;
         private GL.TextureMagType _filterMagnify;
 
-        internal Texture(IGlState state, TextureBuilder builder)
+        internal Texture(IGlState state)
         {
-            if (builder.Source == null)
-                throw new InvalidOperationException("Texture has no data");
-
             _state = state;
 
             unsafe
@@ -29,24 +25,6 @@ namespace Tgl.Net.Texture
                 GL.glGenTextures(1, &handle);
                 Handle = handle;
             }
-
-            if (builder.Source != null)
-            {
-                TexImage2d(builder.Width,
-                    builder.Height,
-                    builder.Source,
-                    builder.PixelFormat,
-                    builder.InternalFormat,
-                    builder.PixelType);
-
-                if(builder.GenerateMipmaps)
-                    GenerateMipmaps();
-            }
-
-            FilterMagnify = builder.FilterMagnify;
-            FilterMinify = builder.FilterMinify;
-            WrapX = builder.WrapX;
-            WrapY = builder.WrapY;
         }
 
         public uint Handle { get; }
@@ -125,29 +103,31 @@ namespace Tgl.Net.Texture
             }
         }
 
-        public void TexImage2d(
+        public void TexImage2d<T>(
             int width,
             int height,
-            object data,
+            T[] data,
             GL.PixelFormat format = GL.PixelFormat.GL_RGBA,
             GL.InternalFormat internalFormat = GL.InternalFormat.GL_RGBA,
             GL.PixelType type = GL.PixelType.GL_UNSIGNED_BYTE,
             int lod = 0)
+            where T : struct
         {
             Bind();
 
-            var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
-            GL.glTexImage2D(
-                GL.TextureTarget.GL_TEXTURE_2D,
-                lod,
-                internalFormat,
-                width,
-                height,
-                0,
-                format,
-                type,
-                handle.AddrOfPinnedObject());
-            handle.Free();
+            using (var handle = new PinnedGCHandle(data))
+            {
+                GL.glTexImage2D(
+                    GL.TextureTarget.GL_TEXTURE_2D,
+                    lod,
+                    internalFormat,
+                    width,
+                    height,
+                    lod,
+                    format,
+                    type,
+                    handle.Pointer);
+            }
 
             if (lod == 0)
             {

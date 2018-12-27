@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Text;
+﻿using System.Runtime.InteropServices;
 using Tgl.Net.Bindings;
-using Tgl.Net.State;
 
-namespace Tgl.Net.Buffer
+namespace Tgl.Net
 {
     public class IndexBuffer
     {
