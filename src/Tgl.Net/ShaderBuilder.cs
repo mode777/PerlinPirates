@@ -8,7 +8,7 @@ namespace Tgl.Net
     {
         private readonly IGlState _state;
 
-        internal ShaderBuilder(IGlState state)
+        public ShaderBuilder(IGlState state)
         {
             _state = state;
         }

@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Runtime.Loader;
 using System.Threading;
 using Game.Abstractions;
+using ImageSharpLoader;
 using Platform.Sdl2;
 using Renderer.Gles2;
 
@@ -17,7 +18,9 @@ namespace ExampleGame
             var platform = new Sdl2Platform(new Sdl2Configuration());
             platform.CreateWindow();
 
-            var renderer = new Gles2Renderer(platform);
+            var loader = new ImageLoader();
+
+            var renderer = new Gles2Renderer(platform, loader);
 
             var quit = false;
 

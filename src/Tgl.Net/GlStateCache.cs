@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Tgl.Net.Bindings;
@@ -8,6 +9,8 @@ namespace Tgl.Net
 {
     public class GlStateCache : GlState, INotifyPropertyChanged
     {
+        private CachedTextureBindingAccessor _accessor;
+
         private GL.TextureUnit _activeTexture;
         private uint _arrayBufferBinding;
         private bool _blend;
@@ -65,13 +68,20 @@ namespace Tgl.Net
 
         public GlStateCache()
         {
+            _accessor = new CachedTextureBindingAccessor(TextureBindingAccessor);
             SyncState();
         }
+
+        public override IEnumerable<uint> TextureBindings => _accessor;
 
         public override GL.TextureUnit ActiveTexture
         {
             get => _activeTexture;
-            set => TrySetValue(ref _activeTexture, ref value, () => base.ActiveTexture = value);
+            set
+            {
+                TrySetValue(ref _activeTexture, ref value, () => base.ActiveTexture = value);
+                _textureBinding2D = _accessor[value];
+            }
         }
 
         public override uint ArrayBufferBinding
@@ -371,7 +381,11 @@ namespace Tgl.Net
         public override uint TextureBinding2D
         {
             get => _textureBinding2D;
-            set => TrySetValue(ref _textureBinding2D, ref value, () => base.TextureBinding2D = value);
+            set
+            {
+                TrySetValue(ref _textureBinding2D, ref value, () => base.TextureBinding2D = value);
+                _accessor[ActiveTexture] = value;
+            }
         }
 
         public override uint TextureBindingCubeMap

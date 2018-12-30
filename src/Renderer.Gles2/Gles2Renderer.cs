@@ -12,18 +12,22 @@ namespace Renderer.Gles2
     public class Gles2Renderer : IRenderer
     {
         private readonly IPlatform _platform;
+        private readonly IImageLoader _loader;
         private readonly IRenderTest _test;
 
         private GlStateCache _state;
-        
-        public Gles2Renderer(IPlatform platform)
+        private GlContext _context;
+
+        public Gles2Renderer(IPlatform platform, IImageLoader loader)
         {
             _platform = platform;
+            _loader = loader;
             platform.CreateGlContext();
             GL.LoadApi(platform.GetGlProcAddress);
 
             //_test = new SimpleTriangle();            
-            _test = new TextureChecker();            
+            //_test = new TextureChecker();            
+            _test = new PngTexture(loader);            
 
             Init();
         }
@@ -31,15 +35,16 @@ namespace Renderer.Gles2
         public void Init()
         {
             _state = new GlStateCache();
+            _context = new GlContext(_state);
 
             _state.PropertyChanged += (s, args) => Console.WriteLine(args.PropertyName);
 
-            _test.Init(_state);
+            _test.Init(_state, _context);
         }
 
         public void Render()
         {
-            _test.Render(_state);
+            _test.Render(_state, _context);
 
             _platform.SwapBuffers();
         }

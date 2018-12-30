@@ -55,7 +55,6 @@ namespace Tgl.Net
 
             public bool MoveNext()
             {
-                Console.WriteLine(_position +";"+ _max);
                 return ++_position < _max;
             }
 

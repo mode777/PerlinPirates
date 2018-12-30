@@ -32,6 +32,7 @@ namespace Tgl.Net
         public int VertexCount => _vertices;
         public int VertexSize => _vertexSize;
         public int Size => _byteSize;
+        public IEnumerable<VertexAttribute> Attributes => _attributes;
 
         public uint Handle { get; }
 

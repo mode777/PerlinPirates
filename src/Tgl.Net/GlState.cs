@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Tgl.Net.Bindings;
 using Tgl.Net.Math;
 
@@ -14,7 +15,7 @@ namespace Tgl.Net
 
         public GlInfo Info { get; }
 
-        public IEnumerable<uint> TextureBindings => TextureBindingAccessor;
+        public virtual IEnumerable<uint> TextureBindings => TextureBindingAccessor;
         public TextureBindingAccessor TextureBindingAccessor { get; }
 
         public virtual GL.TextureUnit ActiveTexture
@@ -399,43 +400,6 @@ namespace Tgl.Net
             int @ref, uint mask)
         {
             GL.glStencilFunc(func, @ref, mask);
-        }
-
-        public virtual void Clear(GL.ClearBufferMask mask)
-        {
-            GL.glClear(mask);
-        }
-
-        public virtual void DrawArrays(GL.PrimitiveType type, int first, int count)
-        {
-            GL.glDrawArrays(type, first, count);
-        }
-
-        public virtual void DrawElements(GL.PrimitiveType type, int first, int count)
-        {
-            GL.glDrawElements(type, count, GL.DrawElementsType.GL_UNSIGNED_SHORT, first);
-        }
-
-        public virtual ShaderBuilder BuildShader()
-        {
-            return new ShaderBuilder(this);
-        }
-
-        public virtual BufferBuilder<T> BuildBuffer<T>()
-            where T : struct
-        {
-            return new BufferBuilder<T>(this);
-        }
-
-        public virtual TextureBuilder<T> BuildTexture<T>()
-            where T : struct
-        {
-            return new TextureBuilder<T>(this);
-        }
-
-        public virtual IndexBuffer CreateIndexBuffer(params ushort[] indices)
-        {
-            return new IndexBuffer(this, indices);
         }
     }
 }

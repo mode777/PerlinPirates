@@ -7,15 +7,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Platform.Sdl2", "Platform.S
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Renderer.Gles2", "Renderer.Gles2\Renderer.Gles2.csproj", "{3B0D39AE-1196-4AB3-BF1D-D763B1E6E7E3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenGlBindingsGenerator", "OpenGlBindingsGenerator\OpenGlBindingsGenerator.csproj", "{249D77D6-4014-4F95-A524-7E72769AE2AF}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenGlBindingsTest", "OpenGlBindingsTest\OpenGlBindingsTest.csproj", "{63647434-6590-477A-8EA2-7A925B3E9776}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Game.Abstractions", "Game.Abstractions\Game.Abstractions.csproj", "{85911941-BF9D-4070-B6FA-AF0A5DE8CECB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExampleGame", "ExampleGame\ExampleGame.csproj", "{E334CC23-CA5A-4D5D-9F2B-2BF362A904EA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tgl.Net", "Tgl.Net\Tgl.Net.csproj", "{23CA69D0-A9DF-4DCC-9C62-B24C44276C75}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageSharpLoader", "ImageLoader\ImageSharpLoader.csproj", "{C3297A2D-7DF9-4FBC-AD64-36A9B9BC8539}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,14 +29,6 @@ Global
 		{3B0D39AE-1196-4AB3-BF1D-D763B1E6E7E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B0D39AE-1196-4AB3-BF1D-D763B1E6E7E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3B0D39AE-1196-4AB3-BF1D-D763B1E6E7E3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{249D77D6-4014-4F95-A524-7E72769AE2AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{249D77D6-4014-4F95-A524-7E72769AE2AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{249D77D6-4014-4F95-A524-7E72769AE2AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{249D77D6-4014-4F95-A524-7E72769AE2AF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{63647434-6590-477A-8EA2-7A925B3E9776}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{63647434-6590-477A-8EA2-7A925B3E9776}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{63647434-6590-477A-8EA2-7A925B3E9776}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{63647434-6590-477A-8EA2-7A925B3E9776}.Release|Any CPU.Build.0 = Release|Any CPU
 		{85911941-BF9D-4070-B6FA-AF0A5DE8CECB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{85911941-BF9D-4070-B6FA-AF0A5DE8CECB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{85911941-BF9D-4070-B6FA-AF0A5DE8CECB}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -51,6 +41,10 @@ Global
 		{23CA69D0-A9DF-4DCC-9C62-B24C44276C75}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{23CA69D0-A9DF-4DCC-9C62-B24C44276C75}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{23CA69D0-A9DF-4DCC-9C62-B24C44276C75}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3297A2D-7DF9-4FBC-AD64-36A9B9BC8539}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3297A2D-7DF9-4FBC-AD64-36A9B9BC8539}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3297A2D-7DF9-4FBC-AD64-36A9B9BC8539}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3297A2D-7DF9-4FBC-AD64-36A9B9BC8539}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
