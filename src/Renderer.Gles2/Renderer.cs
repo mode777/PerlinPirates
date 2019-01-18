@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Text;
 using Game.Abstractions;
 using Tgl.Net;
@@ -51,9 +52,17 @@ namespace Renderer.Gles2
 
         private void SetTexture(Texture texture)
         {
-            _context.State.ActiveTexture = TextureUnit.GL_TEXTURE0;
-            texture.Bind();
-            //_shader.SetUniform("uTexture", TextureUnit.GL_TEXTURE0);
+            _drawable.AddTexture("uTexture", texture);
+            _drawable.AddUniformSetter("uTextureSize", s
+                => s.SetUniform("uTextureSize", texture.Width, texture.Height));
+        }
+
+        public void RenderSprites(SpriteBatch batch)
+        {
+            foreach (var (start, end, text) in batch.EnumerateSlices())
+            {
+                SetTexture(text);
+            }
         }
 
     }

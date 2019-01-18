@@ -53,15 +53,16 @@ namespace Tgl.Net
         }
 
         // TODO: Check if recalculation of attributes is needed
-        //private void SubData(object data, uint vertexOffset, uint vertexLength)
-        //{
-        //    Bind();
+        public void SubData(object data, uint vertexOffset, uint vertexLength)
+        {
+            Bind();
 
-        //    var handle = GCHandle.Alloc(data);
-        //    GL.glBufferSubData(GL.BufferTargetARB.GL_ARRAY_BUFFER, (IntPtr)(_vertexSize * vertexOffset), (uint)_vertexSize * vertexLength, GCHandle.ToIntPtr(handle));
-        //    handle.Free();
-        //}
-        
+            using (var handle = new PinnedGCHandle(data))
+            {
+                GL.glBufferSubData(BufferTargetARB.GL_ARRAY_BUFFER, (IntPtr)(_vertexSize * vertexOffset), (uint)_vertexSize * vertexLength, handle.Pointer);
+            }
+        }
+
         public void Data<T>(T[] data, BufferUsageARB usage = BufferUsageARB.GL_STATIC_DRAW)
             where T : struct
         {

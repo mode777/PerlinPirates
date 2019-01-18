@@ -93,6 +93,9 @@ namespace Tgl.Net
             GL.glUniform1i(location, value);
         }
 
+        public void SetUniform(string location, TextureUnit unit)
+            => SetUniform(_uniformsByName[location].Location, unit);
+
         public void SetUniform(int location, int value)
         {
             Use();
@@ -102,13 +105,13 @@ namespace Tgl.Net
         public void SetUniform(string name, float value) 
             => SetUniform(_uniformsByName[name].Location, value);
 
-        public void SetUniform(int location, Vector2 value)
+        public void SetUniform(int location, float x, float y)
         {
             Use();
-            GL.glUniform2f(location, value.X, value.Y);
+            GL.glUniform2f(location, x, y);
         }
-        public void SetUniform(string name, Vector2 value) 
-            => SetUniform(_uniformsByName[name].Location, value);
+        public void SetUniform(string name, float x, float y) 
+            => SetUniform(_uniformsByName[name].Location, x, y);
 
         public void SetUniform(int location, Vector3 value)
         {
