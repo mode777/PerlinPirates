@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Game.Abstractions;
 using Tgl.Net;
 using Tgl.Net.Bindings;
 using Tgl.Net.Math;
@@ -11,12 +12,12 @@ namespace Renderer.Gles2.Tests
     {
         private IDrawable _drawable;
 
-        public void Init(GlState state, GlContext context)
+        public void Init(GlContext context, ResourceManager res)
         {
-            _drawable = new DrawableBuilder(state)
-                .UseShader(s => s
-                    .HasVertexResource("Resources.Shaders.texture_checker_vertex.glsl")
-                    .HasFragmentResource("Resources.Shaders.texture_checker_fragment.glsl"))
+            var shader = res.LoadResource<Shader>("Resources.Shaders.texture_checker");
+
+            _drawable = context.BuildDrawable()
+                .UseShader(shader)
                 .AddBuffer<float>(b => b
                     .HasAttribute("aPosition", 2)
                     .HasAttribute("aTexcoord", 2)
@@ -27,7 +28,7 @@ namespace Renderer.Gles2.Tests
                         -0.5f, 0.5f, 0, 5))
                 .AddTexture<byte>("uTexture", t => t
                     .HasSize(2, 2)
-                    .HasFiltering(GL.TextureMinType.GL_NEAREST, GL.TextureMagType.GL_NEAREST)
+                    .HasFiltering(TextureMinType.GL_NEAREST, TextureMagType.GL_NEAREST)
                     .HasData(
                         0, 0, 255, 255,
                         255, 255, 0, 255,
@@ -37,11 +38,11 @@ namespace Renderer.Gles2.Tests
                 .Build();
         }
 
-        public void Render(GlState state, GlContext context)
+        public void Render(GlContext context)
         {
-            state.ColorClearValue = new Vector4(0,1,0,1);
+            context.State.ColorClearValue = new Vector4(0,1,0,1);
 
-            context.Clear(GL.ClearBufferMask.GL_COLOR_BUFFER_BIT);
+            context.Clear(ClearBufferMask.GL_COLOR_BUFFER_BIT);
 
             context.DrawDrawable(_drawable);
         }

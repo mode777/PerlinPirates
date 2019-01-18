@@ -6,6 +6,7 @@ using Game.Abstractions;
 using ImageSharpLoader;
 using Platform.Sdl2;
 using Renderer.Gles2;
+using Tgl.Net.Abstractions;
 
 namespace ExampleGame
 {
@@ -18,9 +19,9 @@ namespace ExampleGame
             var platform = new Sdl2Platform(new Sdl2Configuration());
             platform.CreateWindow();
 
-            var loader = new ImageLoader();
-
-            var renderer = new Gles2Renderer(platform, loader);
+            var resourceManager = new ResourceManager();
+            
+            var renderer = new TestRunner(platform, resourceManager);
 
             var quit = false;
 

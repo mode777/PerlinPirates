@@ -12,7 +12,7 @@ namespace Tgl.Net
 
         public IEnumerable<VertexAttribute> Attributes => _attributes;
 
-        public GL.BufferUsageARB Usage { get; private set; } = GL.BufferUsageARB.GL_STATIC_DRAW;
+        public BufferUsageARB Usage { get; private set; } = BufferUsageARB.GL_STATIC_DRAW;
         
         public BufferBuilder(IGlState state)
         {
@@ -60,7 +60,7 @@ namespace Tgl.Net
             return this;
         }
 
-        public BufferBuilder<T> HasAttribute(string attribute, int components, GL.VertexAttribPointerType type = GL.VertexAttribPointerType.GL_FLOAT)
+        public BufferBuilder<T> HasAttribute(string attribute, int components, VertexAttribPointerType type = VertexAttribPointerType.GL_FLOAT)
         {
             _attributes.Add(new VertexAttribute(attribute, components));
 

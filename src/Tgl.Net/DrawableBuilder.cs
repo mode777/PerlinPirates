@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
+using Tgl.Net.Abstractions;
 using Tgl.Net.Bindings;
 using Tgl.Net.Math;
 
@@ -8,14 +10,14 @@ namespace Tgl.Net
 {
     public class DrawableBuilder : IDrawable
     {
-        private readonly IGlState _state;
+        private readonly GlContext _context;
         private List<VertexBuffer> _buffers = new List<VertexBuffer>();
         private Dictionary<string, Action<Shader>> _uniformSetters = new Dictionary<string, Action<Shader>>();
         private Dictionary<string, Texture> _textures = new Dictionary<string, Texture>();
 
-        public DrawableBuilder(IGlState state)
+        public DrawableBuilder(GlContext context)
         {
-            _state = state;
+            _context = context;
         }
 
         public Shader Shader { get; private set; }
@@ -33,7 +35,7 @@ namespace Tgl.Net
 
         public DrawableBuilder UseShader(Action<ShaderBuilder> buildAction)
         {
-            var builder = new ShaderBuilder(_state);
+            var builder = new ShaderBuilder(_context.State);
             buildAction(builder);
             Shader = builder.Build();
 
@@ -50,7 +52,7 @@ namespace Tgl.Net
         public DrawableBuilder AddBuffer<T>(Action<BufferBuilder<T>> buildAction)
             where T : struct
         {
-            var builder = new BufferBuilder<T>(_state);
+            var builder = new BufferBuilder<T>(_context.State);
             buildAction(builder);
             var buffer = builder.Build();
 
@@ -68,7 +70,7 @@ namespace Tgl.Net
 
         public DrawableBuilder UseIndices(params ushort[] indices)
         {
-            IndexBuffer = new IndexBuffer(_state, indices);
+            IndexBuffer = new IndexBuffer(_context.State, indices);
 
             return this;
         }
@@ -101,7 +103,7 @@ namespace Tgl.Net
             return this;
         }
 
-        public DrawableBuilder AddUniform(string variable, GL.TextureUnit value)
+        public DrawableBuilder AddUniform(string variable, TextureUnit value)
         {
             _uniformSetters[variable] = shader => shader.SetUniform(shader.GetUniformLocation(variable), value);
 
@@ -125,10 +127,17 @@ namespace Tgl.Net
         public DrawableBuilder AddTexture<T>(string name, Action<TextureBuilder<T>> buildAction)
             where T : struct
         {
-            var builder = new TextureBuilder<T>(_state);
+            var builder = new TextureBuilder<T>(_context.State);
             buildAction(builder);
 
             _textures[name] = builder.Build();
+
+            return this;
+        }
+
+        public DrawableBuilder AddTexture(string name, IImage image)
+        {
+            _textures[name] = _context.TextureFromImage(image);
 
             return this;
         }

@@ -4,16 +4,17 @@ using System.Runtime.InteropServices;
 using System.Text;
 using Tgl.Net.Bindings;
 using Tgl.Net.Helpers;
+using static Tgl.Net.Bindings.GL;
 
 namespace Tgl.Net
 {
     public class Texture : IDisposable
     {
         private readonly IGlState _state;
-        private GL.TextureWrapMode _wrapX;
-        private GL.TextureWrapMode _wrapY;
-        private GL.TextureMinType _filterMinify;
-        private GL.TextureMagType _filterMagnify;
+        private TextureWrapMode _wrapX;
+        private TextureWrapMode _wrapY;
+        private TextureMinType _filterMinify;
+        private TextureMagType _filterMagnify;
 
         internal Texture(IGlState state)
         {
@@ -22,7 +23,7 @@ namespace Tgl.Net
             unsafe
             {
                 var handle = Handle;
-                GL.glGenTextures(1, &handle);
+                glGenTextures(1, &handle);
                 Handle = handle;
             }
         }
@@ -30,11 +31,11 @@ namespace Tgl.Net
         public uint Handle { get; }
         public int Width { get; private set; }
         public int Height { get; private set; }
-        public GL.PixelFormat PixelFormat { get; private set; }
-        public GL.PixelType PixelType { get; private set; }
-        public GL.InternalFormat InternalFormat { get; private set; }
+        public PixelFormat PixelFormat { get; private set; }
+        public PixelType PixelType { get; private set; }
+        public InternalFormat InternalFormat { get; private set; }
         public bool HasMipmaps { get; private set; }
-        public GL.TextureWrapMode WrapX
+        public TextureWrapMode WrapX
         {
             get => _wrapX;
             set
@@ -43,15 +44,15 @@ namespace Tgl.Net
                 {
                     Bind();
 
-                    GL.glTexParameteri(GL.TextureTarget.GL_TEXTURE_2D,
-                        GL.TextureParameterName.GL_TEXTURE_WRAP_S,
+                    glTexParameteri(TextureTarget.GL_TEXTURE_2D,
+                        TextureParameterName.GL_TEXTURE_WRAP_S,
                         (int)value);
 
                     _wrapX = value;
                 }
             }
         }
-        public GL.TextureWrapMode WrapY
+        public TextureWrapMode WrapY
         {
             get => _wrapY;
             set
@@ -60,15 +61,15 @@ namespace Tgl.Net
 
                 if (_wrapY != value)
                 {
-                    GL.glTexParameteri(GL.TextureTarget.GL_TEXTURE_2D,
-                        GL.TextureParameterName.GL_TEXTURE_WRAP_T,
+                    glTexParameteri(TextureTarget.GL_TEXTURE_2D,
+                        TextureParameterName.GL_TEXTURE_WRAP_T,
                         (int)value);
 
                     _wrapY = value;
                 }
             }
         }
-        public GL.TextureMinType FilterMinify
+        public TextureMinType FilterMinify
         {
             get => _filterMinify;
             set
@@ -77,15 +78,15 @@ namespace Tgl.Net
                 {
                     Bind();
 
-                    GL.glTexParameteri(GL.TextureTarget.GL_TEXTURE_2D,
-                        GL.TextureParameterName.GL_TEXTURE_MIN_FILTER,
+                    glTexParameteri(TextureTarget.GL_TEXTURE_2D,
+                        TextureParameterName.GL_TEXTURE_MIN_FILTER,
                         (int) value);
 
                     _filterMinify = value;
                 }
             }
         }
-        public GL.TextureMagType FilterMagnify
+        public TextureMagType FilterMagnify
         {
             get => _filterMagnify;
             set
@@ -94,8 +95,8 @@ namespace Tgl.Net
                 {
                     Bind();
 
-                    GL.glTexParameteri(GL.TextureTarget.GL_TEXTURE_2D,
-                        GL.TextureParameterName.GL_TEXTURE_MAG_FILTER,
+                    glTexParameteri(TextureTarget.GL_TEXTURE_2D,
+                        TextureParameterName.GL_TEXTURE_MAG_FILTER,
                         (int)value);
 
                     _filterMagnify = value;
@@ -107,9 +108,9 @@ namespace Tgl.Net
             int width,
             int height,
             T[] data,
-            GL.PixelFormat format = GL.PixelFormat.GL_RGBA,
-            GL.InternalFormat internalFormat = GL.InternalFormat.GL_RGBA,
-            GL.PixelType type = GL.PixelType.GL_UNSIGNED_BYTE,
+            PixelFormat format = PixelFormat.GL_RGBA,
+            InternalFormat internalFormat = InternalFormat.GL_RGBA,
+            PixelType type = PixelType.GL_UNSIGNED_BYTE,
             int lod = 0)
             where T : struct
         {
@@ -117,8 +118,8 @@ namespace Tgl.Net
 
             using (var handle = new PinnedGCHandle(data))
             {
-                GL.glTexImage2D(
-                    GL.TextureTarget.GL_TEXTURE_2D,
+                glTexImage2D(
+                    TextureTarget.GL_TEXTURE_2D,
                     lod,
                     internalFormat,
                     width,
@@ -144,23 +145,23 @@ namespace Tgl.Net
             _state.TextureBinding2D = Handle;
         }
 
-        public void SetWrapping(GL.TextureWrapMode wrap)
+        public void SetWrapping(TextureWrapMode wrap)
         {
             WrapX = wrap;
             WrapY = wrap;
         }
 
-        public void SetFilter(GL.TextureMagType filter)
+        public void SetFilter(TextureMagType filter)
         {
             FilterMagnify = filter;
-            FilterMinify = (GL.TextureMinType) filter;
+            FilterMinify = (TextureMinType) filter;
         }
 
         public void GenerateMipmaps()
         {
             Bind();
 
-            GL.glGenerateMipmap(GL.TextureTarget.GL_TEXTURE_2D);
+            glGenerateMipmap(TextureTarget.GL_TEXTURE_2D);
         }
 
         public void Dispose()
@@ -168,7 +169,7 @@ namespace Tgl.Net
             unsafe
             {
                 var handle = (uint)Handle;
-                GL.glDeleteTextures(1, &handle);
+                glDeleteTextures(1, &handle);
             }
         }
     }

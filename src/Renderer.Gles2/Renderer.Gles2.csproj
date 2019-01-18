@@ -9,23 +9,24 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Resources\Shaders\minimal_fragment.glsl" />
-    <None Remove="Resources\Shaders\minimal_vertex.glsl" />
-    <None Remove="Resources\Shaders\texture_checker_fragment.glsl" />
-    <None Remove="Resources\Shaders\texture_checker_vertex.glsl" />
+    <None Remove="Resources\Shaders\minimal.fragment.glsl" />
+    <None Remove="Resources\Shaders\minimal.vertex.glsl" />
+    <None Remove="Resources\Shaders\texture_checker.fragment.glsl" />
+    <None Remove="Resources\Shaders\texture_checker.vertex.glsl" />
     <None Remove="Resources\Textures\grid.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Resources\Shaders\minimal_fragment.glsl" />
-    <EmbeddedResource Include="Resources\Shaders\minimal_vertex.glsl" />
-    <EmbeddedResource Include="Resources\Shaders\texture_checker_fragment.glsl" />
-    <EmbeddedResource Include="Resources\Shaders\texture_checker_vertex.glsl" />
+    <EmbeddedResource Include="Resources\Shaders\minimal.fragment.glsl" />
+    <EmbeddedResource Include="Resources\Shaders\minimal.vertex.glsl" />
+    <EmbeddedResource Include="Resources\Shaders\texture_checker.fragment.glsl" />
+    <EmbeddedResource Include="Resources\Shaders\texture_checker.vertex.glsl" />
     <EmbeddedResource Include="Resources\Textures\grid.png" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Game.Abstractions\Game.Abstractions.csproj" />
+    <ProjectReference Include="..\ImageLoader\ImageSharpLoader.csproj" />
     <ProjectReference Include="..\Tgl.Net\Tgl.Net.csproj" />
   </ItemGroup>
 

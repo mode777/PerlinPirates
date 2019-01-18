@@ -3,28 +3,24 @@ using System.Collections.Generic;
 using System.Text;
 using Game.Abstractions;
 using Tgl.Net;
+using Tgl.Net.Abstractions;
 using Tgl.Net.Bindings;
 using Tgl.Net.Helpers;
 using Tgl.Net.Math;
 
 namespace Renderer.Gles2.Tests
 {
-    public class PngTexture : IRenderTest
+    public class PngTextureTest : IRenderTest
     {
-        private readonly IImageLoader _loader;
         private IDrawable _drawable;
-
-        public PngTexture(IImageLoader loader)
+        
+        public void Init(GlContext context, ResourceManager resources)
         {
-            _loader = loader;
-        }
+            var shader = resources.LoadResource<Shader>("Resources.Shaders.texture_checker");
+            var image = resources.LoadResource<IImage>("Resources.Textures.grid.png");
 
-        public void Init(GlState state, GlContext context)
-        {
-            _drawable = new DrawableBuilder(state)
-                .UseShader(s => s
-                    .HasVertexResource("Resources.Shaders.texture_checker_vertex.glsl")
-                    .HasFragmentResource("Resources.Shaders.texture_checker_fragment.glsl"))
+            _drawable = context.BuildDrawable()
+                .UseShader(shader)
                 .AddBuffer<float>(b => b
                     .HasAttribute("aPosition", 2)
                     .HasAttribute("aTexcoord", 2)
@@ -33,18 +29,16 @@ namespace Renderer.Gles2.Tests
                         1, -1, 1, 1,
                         1, 1, 1, 0,
                         -1, 1, 0, 0))
-                .AddTexture<byte>("uTexture", t => t
-                    .HasSize(256, 256)
-                    .HasData(_loader.Load(ResourceHelpers.GetResourceStream("Resources.Textures.grid.png"), PixelFormat.Rgba).Data))
+                .AddTexture("uTexture", image)
                 .UseIndices(3, 0, 1, 3, 1, 2)
                 .Build();
         }
 
-        public void Render(GlState state, GlContext context)
+        public void Render(GlContext context)
         {
-            state.ColorClearValue = new Vector4(0,1,0,1);
+            context.State.ColorClearValue = new Vector4(0,1,0,1);
 
-            context.Clear(GL.ClearBufferMask.GL_COLOR_BUFFER_BIT);
+            context.Clear(ClearBufferMask.GL_COLOR_BUFFER_BIT);
 
             context.DrawDrawable(_drawable);
         }

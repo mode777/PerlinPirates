@@ -1,4 +1,7 @@
-﻿using Tgl.Net.Bindings;
+﻿using System.IO;
+using Tgl.Net.Abstractions;
+using Tgl.Net.Bindings;
+using PixelFormat = Tgl.Net.Bindings.PixelFormat;
 
 namespace Tgl.Net
 {
@@ -10,13 +13,13 @@ namespace Tgl.Net
         public T[] Data { get; private set; } = null;
         public int Width { get; private set; } = 1;
         public int Height { get; private set; } = 1;
-        public GL.PixelFormat PixelFormat { get; private set; } = GL.PixelFormat.GL_RGBA;
-        public GL.InternalFormat InternalFormat { get; private set; } = GL.InternalFormat.GL_RGBA;
-        public GL.PixelType PixelType { get; private set; } = GL.PixelType.GL_UNSIGNED_BYTE;
-        public GL.TextureMagType FilterMagnify { get; private set; } = GL.TextureMagType.GL_LINEAR;
-        public GL.TextureMinType FilterMinify { get; private set; } = GL.TextureMinType.GL_LINEAR;
-        public GL.TextureWrapMode WrapX { get; private set; } = GL.TextureWrapMode.GL_REPEAT;
-        public GL.TextureWrapMode WrapY { get; private set; } = GL.TextureWrapMode.GL_REPEAT;
+        public PixelFormat PixelFormat { get; private set; } = PixelFormat.GL_RGBA;
+        public InternalFormat InternalFormat { get; private set; } = InternalFormat.GL_RGBA;
+        public PixelType PixelType { get; private set; } = PixelType.GL_UNSIGNED_BYTE;
+        public TextureMagType FilterMagnify { get; private set; } = TextureMagType.GL_LINEAR;
+        public TextureMinType FilterMinify { get; private set; } = TextureMinType.GL_LINEAR;
+        public TextureWrapMode WrapX { get; private set; } = TextureWrapMode.GL_REPEAT;
+        public TextureWrapMode WrapY { get; private set; } = TextureWrapMode.GL_REPEAT;
         public bool GenerateMipmaps { get; private set; } = false;
 
         public TextureBuilder(IGlState state)
@@ -31,21 +34,21 @@ namespace Tgl.Net
             return this;
         }
 
-        public TextureBuilder<T> HasPixelFormat(GL.PixelFormat format)
+        public TextureBuilder<T> HasPixelFormat(PixelFormat format)
         {
             PixelFormat = format;
 
             return this;
         }
 
-        public TextureBuilder<T> HasPixelType(GL.PixelType type)
+        public TextureBuilder<T> HasPixelType(PixelType type)
         {
             PixelType = type;
 
             return this;
         }
 
-        public TextureBuilder<T> HasInternalFormat(GL.InternalFormat internalFormat)
+        public TextureBuilder<T> HasInternalFormat(InternalFormat internalFormat)
         {
             InternalFormat = internalFormat;
 
@@ -60,7 +63,7 @@ namespace Tgl.Net
             return this;
         }
 
-        public TextureBuilder<T> HasFiltering(GL.TextureMinType minify, GL.TextureMagType magnify)
+        public TextureBuilder<T> HasFiltering(TextureMinType minify, TextureMagType magnify)
         {
             FilterMinify = minify;
             FilterMagnify = magnify;
@@ -68,7 +71,7 @@ namespace Tgl.Net
             return this;
         }
 
-        public TextureBuilder<T> HasWrapping(GL.TextureWrapMode x, GL.TextureWrapMode y)
+        public TextureBuilder<T> HasWrapping(TextureWrapMode x, TextureWrapMode y)
         {
             WrapX = x;
             WrapY = y;

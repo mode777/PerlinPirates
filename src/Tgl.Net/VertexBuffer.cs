@@ -12,7 +12,7 @@ namespace Tgl.Net
         private readonly IGlState _state;
         private VertexAttribute[] _attributes;
         private Dictionary<string, VertexAttribute> _attributesByName;
-        private GL.BufferUsageARB _usage;
+        private BufferUsageARB _usage;
         private int _byteSize;
         private int _vertexSize;
         private int _vertices;
@@ -62,7 +62,7 @@ namespace Tgl.Net
         //    handle.Free();
         //}
         
-        public void Data<T>(T[] data, GL.BufferUsageARB usage = GL.BufferUsageARB.GL_STATIC_DRAW)
+        public void Data<T>(T[] data, BufferUsageARB usage = BufferUsageARB.GL_STATIC_DRAW)
             where T : struct
         {
             _usage = usage;
@@ -74,7 +74,7 @@ namespace Tgl.Net
             Bind();
             using (var handle = new PinnedGCHandle(data))
             {
-                GL.glBufferData(GL.BufferTargetARB.GL_ARRAY_BUFFER, 
+                GL.glBufferData(BufferTargetARB.GL_ARRAY_BUFFER, 
                     (uint)_byteSize, 
                     handle.Pointer, 
                     _usage);

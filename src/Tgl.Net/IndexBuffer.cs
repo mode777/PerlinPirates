@@ -20,10 +20,10 @@ namespace Tgl.Net
                 Bind();
 
                 var pinned = GCHandle.Alloc(data, GCHandleType.Pinned);
-                GL.glBufferData(GL.BufferTargetARB.GL_ELEMENT_ARRAY_BUFFER,
+                GL.glBufferData(BufferTargetARB.GL_ELEMENT_ARRAY_BUFFER,
                     (uint)data.Length * sizeof(ushort),
                     pinned.AddrOfPinnedObject(),
-                    GL.BufferUsageARB.GL_STATIC_DRAW);
+                    BufferUsageARB.GL_STATIC_DRAW);
                 pinned.Free();
             }
 

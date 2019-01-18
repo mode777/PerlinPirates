@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Game.Abstractions;
 using Tgl.Net;
 using Tgl.Net.Bindings;
 using Tgl.Net.Math;
@@ -9,31 +10,26 @@ namespace Renderer.Gles2.Tests
 {
     public class SimpleTriangle : IRenderTest
     {
-        private VertexBuffer _buffer;
-        private Shader _shader;
+        private IDrawable _drawable;
         
-        public void Init(GlState state, GlContext context)
+        public void Init(GlContext context, ResourceManager manager)
         {
-            _shader = new ShaderBuilder(state)
-                .HasVertexResource("Resources.Shaders.minimal_vertex.glsl")
-                .HasFragmentResource("Resources.Shaders.minimal_fragment.glsl")
-                .Build();
+            var shader = manager.LoadResource<Shader>("Resources.Shaders.minimal");
 
-            _buffer = new BufferBuilder<float>(state)
-                .HasData(-0.5f, -0.5f, 0.5f, -0.5f, 0, 0.5f)
-                .HasAttribute("aPosition", 2)
+            _drawable = context.BuildDrawable()
+                .UseShader(shader)
+                .AddBuffer<float>(b => b
+                    .HasAttribute("aPosition", 2)
+                    .HasData(-0.5f, -0.5f, 0.5f, -0.5f, 0, 0.5f))
                 .Build();
         }
 
-        public void Render(GlState state, GlContext context)
+        public void Render(GlContext context)
         {
-            _buffer.Bind();
-            _buffer.EnableAttribute("aPosition", _shader.GetAttributeLocation("aPosition"));
-            
-            state.ColorClearValue = new Vector4(1, 0.5f, 0, 1);
+            context.State.ColorClearValue = new Vector4(1, 0.5f, 0, 1);
 
-            context.Clear(GL.ClearBufferMask.GL_COLOR_BUFFER_BIT);
-            context.DrawArrays(GL.PrimitiveType.GL_TRIANGLES, 0, 3);
+            context.Clear(ClearBufferMask.GL_COLOR_BUFFER_BIT);
+            context.DrawDrawable(_drawable);
         }
     }
 }

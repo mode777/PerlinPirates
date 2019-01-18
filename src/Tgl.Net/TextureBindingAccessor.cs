@@ -14,17 +14,17 @@ namespace Tgl.Net
             _maxCombinedTextureUnits = maxCombinedTextureUnits;
         }
 
-        public uint this[GL.TextureUnit index]
+        public uint this[TextureUnit index]
         {
             get
             {
                 GL.glActiveTexture(index);
-                return GL.GetInteger<uint>(GL.GetPName.GL_TEXTURE_BINDING_2D);
+                return GL.GetInteger<uint>(GetPName.GL_TEXTURE_BINDING_2D);
             }
             set
             {
                 GL.glActiveTexture(index);
-                GL.glBindTexture(GL.TextureTarget.GL_TEXTURE_2D, value);
+                GL.glBindTexture(TextureTarget.GL_TEXTURE_2D, value);
             }
         }
 
@@ -37,15 +37,15 @@ namespace Tgl.Net
             private readonly TextureBindingAccessor _accessor;
             private readonly uint _max;
 
-            private int _position = (int)GL.TextureUnit.GL_TEXTURE0 - 1;
+            private int _position = (int)TextureUnit.GL_TEXTURE0 - 1;
 
             internal TextureBindingEnumerator(TextureBindingAccessor accessor)
             {
                 _accessor = accessor;
-                _max = _accessor._maxCombinedTextureUnits + (uint)GL.TextureUnit.GL_TEXTURE0;
+                _max = _accessor._maxCombinedTextureUnits + (uint)TextureUnit.GL_TEXTURE0;
             }
 
-            public uint Current => _accessor[(GL.TextureUnit)_position];
+            public uint Current => _accessor[(TextureUnit)_position];
 
             object IEnumerator.Current => Current;
 
@@ -58,7 +58,7 @@ namespace Tgl.Net
                 return ++_position < _max;
             }
 
-            public void Reset() => _position = (int)GL.TextureUnit.GL_TEXTURE0 - 1;
+            public void Reset() => _position = (int)TextureUnit.GL_TEXTURE0 - 1;
         }
     }
 }

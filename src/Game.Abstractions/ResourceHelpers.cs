@@ -5,9 +5,9 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tgl.Net.Helpers
+namespace Game.Abstractions
 {
-    public static class ResourceHelpers
+    internal static class ResourceHelpers
     {
         public static string GetResourceString(Assembly assembly, string resource)
         {

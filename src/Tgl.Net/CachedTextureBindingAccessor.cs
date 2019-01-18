@@ -16,10 +16,10 @@ namespace Tgl.Net
             _bindings = accessor.ToArray();
         }
 
-        public uint this[GL.TextureUnit index]
+        public uint this[TextureUnit index]
         {
-            get => _bindings[index - GL.TextureUnit.GL_TEXTURE0];
-            set => _bindings[index - GL.TextureUnit.GL_TEXTURE0] = value;
+            get => _bindings[index - TextureUnit.GL_TEXTURE0];
+            set => _bindings[index - TextureUnit.GL_TEXTURE0] = value;
         }
 
         public IEnumerator<uint> GetEnumerator()

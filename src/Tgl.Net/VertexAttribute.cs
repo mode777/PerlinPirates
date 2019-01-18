@@ -18,7 +18,7 @@ namespace Tgl.Net
             Components = components;
         }
 
-        public VertexAttribute(string name, int components, GL.VertexAttribPointerType type)
+        public VertexAttribute(string name, int components, VertexAttribPointerType type)
             : this(name, components)
         {
             DataType = type;
@@ -40,8 +40,8 @@ namespace Tgl.Net
         public bool Normalized { get; set; }
         public int Order { get; set; } = -1;
         public int Offset { get; set; } = -1;
-        public GL.VertexAttribPointerType DataType { get; set; }
-            = GL.VertexAttribPointerType.GL_FLOAT;
+        public VertexAttribPointerType DataType { get; set; }
+            = VertexAttribPointerType.GL_FLOAT;
 
         public int ComponentSize
         {
@@ -49,15 +49,15 @@ namespace Tgl.Net
             {
                 switch (DataType)
                 {
-                    case GL.VertexAttribPointerType.GL_BYTE:
-                    case GL.VertexAttribPointerType.GL_UNSIGNED_BYTE:
+                    case VertexAttribPointerType.GL_BYTE:
+                    case VertexAttribPointerType.GL_UNSIGNED_BYTE:
                         return 1;
-                    case GL.VertexAttribPointerType.GL_SHORT:
-                    case GL.VertexAttribPointerType.GL_UNSIGNED_SHORT:
+                    case VertexAttribPointerType.GL_SHORT:
+                    case VertexAttribPointerType.GL_UNSIGNED_SHORT:
                         return 2;
-                    case GL.VertexAttribPointerType.GL_INT:
-                    case GL.VertexAttribPointerType.GL_UNSIGNED_INT:
-                    case GL.VertexAttribPointerType.GL_FLOAT:
+                    case VertexAttribPointerType.GL_INT:
+                    case VertexAttribPointerType.GL_UNSIGNED_INT:
+                    case VertexAttribPointerType.GL_FLOAT:
                         return 4;
                     default:
                         throw new NotSupportedException($"DataType {DataType} is not supported.");

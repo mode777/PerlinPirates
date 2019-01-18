@@ -26,20 +26,20 @@ namespace Tgl.Net
             infolog.EnsureCapacity(1024);
             int infologLength;
 
-            var vertexShader = GL.glCreateShader(GL.ShaderType.GL_VERTEX_SHADER);
+            var vertexShader = GL.glCreateShader(ShaderType.GL_VERTEX_SHADER);
             GL.ShaderSource(vertexShader, new[] { vertexSource });
             GL.glCompileShader(vertexShader);
-            GL.glGetShaderiv(vertexShader, GL.ShaderParameterName.GL_COMPILE_STATUS, out var compiled);
+            GL.glGetShaderiv(vertexShader, ShaderParameterName.GL_COMPILE_STATUS, out var compiled);
             if (compiled == 0)
             {
                 GL.glGetShaderInfoLog(vertexShader, 1024, out infologLength, infolog);
                 throw new InvalidProgramException(infolog.ToString());
             }
 
-            var fragmentShader = GL.glCreateShader(GL.ShaderType.GL_FRAGMENT_SHADER);
+            var fragmentShader = GL.glCreateShader(ShaderType.GL_FRAGMENT_SHADER);
             GL.ShaderSource(fragmentShader, new[] { fragmentSource });
             GL.glCompileShader(fragmentShader);
-            GL.glGetShaderiv(fragmentShader, GL.ShaderParameterName.GL_COMPILE_STATUS, out compiled);
+            GL.glGetShaderiv(fragmentShader, ShaderParameterName.GL_COMPILE_STATUS, out compiled);
             if (compiled == 0)
             {
                 GL.glGetShaderInfoLog(fragmentShader, 1024, out infologLength, infolog);
@@ -49,7 +49,7 @@ namespace Tgl.Net
             GL.glAttachShader(Handle, vertexShader);
             GL.glAttachShader(Handle, fragmentShader);
             GL.glLinkProgram(Handle);
-            GL.glGetProgramiv(Handle, GL.ProgramPropertyARB.GL_LINK_STATUS, out var linked);
+            GL.glGetProgramiv(Handle, ProgramPropertyARB.GL_LINK_STATUS, out var linked);
             if (linked == 0)
             {
                 GL.glGetProgramInfoLog(Handle, 1024, out infologLength, infolog);
@@ -84,11 +84,12 @@ namespace Tgl.Net
             Use();
             GL.glUniform1f(location, value);
         }
+        
 
-        public void SetUniform(int location, GL.TextureUnit unit)
+        public void SetUniform(int location, TextureUnit unit)
         {
             Use();
-            int value = (int)(unit - GL.TextureUnit.GL_TEXTURE0);
+            int value = (int)(unit - TextureUnit.GL_TEXTURE0);
             GL.glUniform1i(location, value);
         }
 
@@ -125,24 +126,24 @@ namespace Tgl.Net
         public void SetUniform(string name, Vector4 value) 
             => SetUniform(_uniformsByName[name].Location, value);
 
-        public void SetUniform(int location, Matrix2 value)
+        public void SetUniform(int location, ref Matrix2 value)
         {
             Use();
 
             GL.glUniformMatrix2fv(location, 1, false, ref value);
         }
         public void SetUniform(string name, Matrix2 value) 
-            => SetUniform(_uniformsByName[name].Location, value);
+            => SetUniform(_uniformsByName[name].Location, ref value);
 
-        public void SetUniform(int location, Matrix3 value)
+        public void SetUniform(int location, ref Matrix3 value)
         {
             Use();
 
             GL.glUniformMatrix3fv(location, 1, false, ref value);
         }
 
-        public void SetUniform(string name, Matrix3 value) 
-            => SetUniform(_uniformsByName[name].Location, value);
+        public void SetUniform(string name, ref Matrix3 value) 
+            => SetUniform(_uniformsByName[name].Location, ref value);
 
         public void SetUniform(int location, Matrix4 value)
         {
@@ -162,7 +163,7 @@ namespace Tgl.Net
         {
             _uniformsByName = new Dictionary<string, ShaderVariableInfo>();
 
-            GL.glGetProgramiv(Handle, GL.ProgramPropertyARB.GL_ACTIVE_UNIFORMS, out var uniforms);
+            GL.glGetProgramiv(Handle, ProgramPropertyARB.GL_ACTIVE_UNIFORMS, out var uniforms);
 
             StringBuilder nameBuffer = new StringBuilder(1024);
 
@@ -172,7 +173,7 @@ namespace Tgl.Net
             for (uint i = 0; i < uniforms; i++)
             {
                 int size;
-                GL.AttributeType type;
+                AttributeType type;
                 GL.glGetActiveUniform(Handle, i, 1024, out namebufferLength, out size, out type, nameBuffer);
                 var name = nameBuffer.ToString();
                 var location = GL.glGetUniformLocation(Handle, name);
@@ -190,7 +191,7 @@ namespace Tgl.Net
         {
             _attributesByName = new Dictionary<string, ShaderVariableInfo>();
 
-            GL.glGetProgramiv(Handle, GL.ProgramPropertyARB.GL_ACTIVE_ATTRIBUTES, out var attributes);
+            GL.glGetProgramiv(Handle, ProgramPropertyARB.GL_ACTIVE_ATTRIBUTES, out var attributes);
 
             StringBuilder nameBuffer = new StringBuilder(1024);
             nameBuffer.EnsureCapacity(1024);
@@ -199,7 +200,7 @@ namespace Tgl.Net
             for (uint i = 0; i < attributes; i++)
             {
                 int size;
-                GL.AttributeType type;
+                AttributeType type;
                 GL.glGetActiveAttrib(Handle, i, 1024, out namebufferLength, out size, out type, nameBuffer);
                 var name = nameBuffer.ToString();
                 var location = GL.glGetAttribLocation(Handle, name);
@@ -218,7 +219,7 @@ namespace Tgl.Net
             public string Name { get; set; }
             public int Location { get; set; }
             public int Size { get; set; }
-            public GL.AttributeType Type { get; set; }
+            public AttributeType Type { get; set; }
         }
     }
 }

@@ -11,31 +11,31 @@ namespace Tgl.Net
     {
         private CachedTextureBindingAccessor _accessor;
 
-        private GL.TextureUnit _activeTexture;
+        private TextureUnit _activeTexture;
         private uint _arrayBufferBinding;
         private bool _blend;
         private Vector4 _blendColor;
-        private GL.BlendingFactor _blendDstAlpha;
-        private GL.BlendingFactor _blendDstRgb;
-        private GL.BlendEquationModeEXT _blendEquationAlpha;
-        private GL.BlendEquationModeEXT _blendEquationRgb;
-        private GL.BlendingFactor _blendSrcRgb;
-        private GL.BlendingFactor _blendSrcAlpha;
+        private BlendingFactor _blendDstAlpha;
+        private BlendingFactor _blendDstRgb;
+        private BlendEquationModeEXT _blendEquationAlpha;
+        private BlendEquationModeEXT _blendEquationRgb;
+        private BlendingFactor _blendSrcRgb;
+        private BlendingFactor _blendSrcAlpha;
         private Vector4 _colorClearValue;
         private Vector4b _colorWritemask;
         private bool _cullFace;
-        private GL.CullFaceMode _cullFaceMode;
+        private CullFaceMode _cullFaceMode;
         private uint _currentProgram;
         private float _depthClearValue;
-        private GL.DepthFunction _depthFunc;
+        private DepthFunction _depthFunc;
         private Vector2 _depthRange;
         private bool _depthTest;
         private bool _depthWritemask;
         private bool _dither;
         private uint _elementArrayBufferBinding;
         private uint _framebufferBinding;
-        private GL.FrontFaceDirection _frontFace;
-        private GL.HintMode _generateMipmapHint;
+        private FrontFaceDirection _frontFace;
+        private HintMode _generateMipmapHint;
         private float _lineWidth;
         private uint _packAlignment;
         private float _polygonOffsetFactor;
@@ -45,18 +45,18 @@ namespace Tgl.Net
         private bool _sampleAlphaToCoverage;
         private Vector4i _scissorBox;
         private bool _scissorTest;
-        private GL.StencilOp _stencilBackFail;
-        private GL.StencilFunction _stencilBackFunc;
-        private GL.StencilOp _stencilBackPassDepthFail;
-        private GL.StencilOp _stencilBackPassDepthPass;
+        private StencilOp _stencilBackFail;
+        private StencilFunction _stencilBackFunc;
+        private StencilOp _stencilBackPassDepthFail;
+        private StencilOp _stencilBackPassDepthPass;
         private int _stencilBackRef;
         private uint _stencilBackValueMask;
         private uint _stencilBackWriteMask;
         private int _stencilClearValue;
-        private GL.StencilOp _stencilFail;
-        private GL.StencilFunction _stencilFunc;
-        private GL.StencilOp _stencilPassDepthFail;
-        private GL.StencilOp _stencilPassDepthPass;
+        private StencilOp _stencilFail;
+        private StencilFunction _stencilFunc;
+        private StencilOp _stencilPassDepthFail;
+        private StencilOp _stencilPassDepthPass;
         private int _stencilRef;
         private bool _stencilTest;
         private uint _stencilValueMask;
@@ -74,7 +74,7 @@ namespace Tgl.Net
 
         public override IEnumerable<uint> TextureBindings => _accessor;
 
-        public override GL.TextureUnit ActiveTexture
+        public override TextureUnit ActiveTexture
         {
             get => _activeTexture;
             set
@@ -102,37 +102,37 @@ namespace Tgl.Net
             set => TrySetValue(ref _blendColor, ref value, () => base.BlendColor = value);
         }
 
-        public override GL.BlendingFactor BlendDstAlpha
+        public override BlendingFactor BlendDstAlpha
         {
             get => _blendDstAlpha;
             set => TrySetValue(ref _blendDstAlpha, ref value,() => base.BlendDstAlpha = value);
         }
 
-        public override GL.BlendingFactor BlendDstRgb
+        public override BlendingFactor BlendDstRgb
         {
             get => _blendDstRgb;
             set => TrySetValue(ref _blendDstRgb, ref value, () => base.BlendDstRgb = value);
         }
 
-        public override GL.BlendEquationModeEXT BlendEquationAlpha
+        public override BlendEquationModeEXT BlendEquationAlpha
         {
             get => _blendEquationAlpha;
             set => TrySetValue(ref _blendEquationAlpha, ref value, () => base.BlendEquationAlpha = value);
         }
 
-        public override GL.BlendEquationModeEXT BlendEquationRgb
+        public override BlendEquationModeEXT BlendEquationRgb
         {
             get => _blendEquationRgb;
             set => TrySetValue(ref _blendEquationRgb, ref value, () => base.BlendEquationRgb = value);
         }
 
-        public override GL.BlendingFactor BlendSrcAlpha
+        public override BlendingFactor BlendSrcAlpha
         {
             get => _blendSrcAlpha;
             set => TrySetValue(ref _blendSrcAlpha, ref value, () => base.BlendSrcAlpha = value);
         }
 
-        public override GL.BlendingFactor BlendSrcRgb
+        public override BlendingFactor BlendSrcRgb
         {
             get => _blendSrcRgb;
             set => TrySetValue(ref _blendSrcRgb, ref value, () => base.BlendSrcRgb = value);
@@ -156,7 +156,7 @@ namespace Tgl.Net
             set => TrySetValue(ref _cullFace, ref value, () => base.CullFace = value);
         }
 
-        public override GL.CullFaceMode CullFaceMode
+        public override CullFaceMode CullFaceMode
         {
             get => _cullFaceMode;
             set => TrySetValue(ref _cullFaceMode, ref value, () => base.CullFaceMode = value);
@@ -174,7 +174,7 @@ namespace Tgl.Net
             set => TrySetValue(ref _depthClearValue, ref value, () => base.DepthClearValue = value);
         }
 
-        public override GL.DepthFunction DepthFunc
+        public override DepthFunction DepthFunc
         {
             get => _depthFunc;
             set => TrySetValue(ref _depthFunc, ref value, () => base.DepthFunc = value);
@@ -216,13 +216,13 @@ namespace Tgl.Net
             set => TrySetValue(ref _framebufferBinding, ref value, () => base.FramebufferBinding = value);
         }
 
-        public override GL.FrontFaceDirection FrontFace
+        public override FrontFaceDirection FrontFace
         {
             get => _frontFace;
             set => TrySetValue(ref _frontFace, ref value, () => base.FrontFace = value);
         }
 
-        public override GL.HintMode GenerateMipmapHint
+        public override HintMode GenerateMipmapHint
         {
             get => _generateMipmapHint;
             set => TrySetValue(ref _generateMipmapHint, ref value, () => base.GenerateMipmapHint = value);
@@ -282,25 +282,25 @@ namespace Tgl.Net
             set => TrySetValue(ref _scissorTest, ref value, () => base.ScissorTest = value);
         }
 
-        public override GL.StencilOp StencilBackFail
+        public override StencilOp StencilBackFail
         {
             get => _stencilBackFail;
             set => TrySetValue(ref _stencilBackFail, ref value, () => base.StencilBackFail = value);
         }
 
-        public override GL.StencilFunction StencilBackFunc
+        public override StencilFunction StencilBackFunc
         {
             get => _stencilBackFunc;
             set => TrySetValue(ref _stencilBackFunc, ref value, () => base.StencilBackFunc = value);
         }
 
-        public override GL.StencilOp StencilBackPassDepthFail
+        public override StencilOp StencilBackPassDepthFail
         {
             get => _stencilBackPassDepthFail;
             set => TrySetValue(ref _stencilBackPassDepthFail, ref value, () => base.StencilBackPassDepthFail = value);
         }
 
-        public override GL.StencilOp StencilBackPassDepthPass
+        public override StencilOp StencilBackPassDepthPass
         {
             get => _stencilBackPassDepthPass;
             set => TrySetValue(ref _stencilBackPassDepthPass, ref value, () => base.StencilBackPassDepthPass = value);
@@ -330,25 +330,25 @@ namespace Tgl.Net
             set => TrySetValue(ref _stencilClearValue, ref value, () => base.StencilClearValue = value);
         }
 
-        public override GL.StencilOp StencilFail
+        public override StencilOp StencilFail
         {
             get => _stencilFail;
             set => TrySetValue(ref _stencilFail, ref value, () => base.StencilFail = value);
         }
 
-        public override GL.StencilFunction StencilFuncValue
+        public override StencilFunction StencilFuncValue
         {
             get => _stencilFunc;
             set => TrySetValue(ref _stencilFunc, ref value, () => base.StencilFuncValue = value);
         }
 
-        public override GL.StencilOp StencilPassDepthFail
+        public override StencilOp StencilPassDepthFail
         {
             get => _stencilPassDepthFail;
             set => TrySetValue(ref _stencilPassDepthFail, ref value, () => base.StencilPassDepthFail = value);
         }
 
-        public override GL.StencilOp StencilPassDepthPass
+        public override StencilOp StencilPassDepthPass
         {
             get => _stencilPassDepthPass;
             set => TrySetValue(ref _stencilPassDepthPass, ref value, () => base.StencilPassDepthPass = value);
@@ -406,10 +406,10 @@ namespace Tgl.Net
             set => TrySetValue(ref _viewport, ref value, () => base.Viewport = value);
         }
 
-        public override void BlendFuncSeparate(GL.BlendingFactor blendSrcRgb,
-            GL.BlendingFactor blendDstRgb,
-            GL.BlendingFactor blendSrcAlpha,
-            GL.BlendingFactor blendDstAlpha)
+        public override void BlendFuncSeparate(BlendingFactor blendSrcRgb,
+            BlendingFactor blendDstRgb,
+            BlendingFactor blendSrcAlpha,
+            BlendingFactor blendDstAlpha)
         {
             var srcRgbChanged = blendSrcRgb != _blendSrcRgb;
             var dstRgbChanged = blendDstRgb != _blendDstRgb;
@@ -440,14 +440,14 @@ namespace Tgl.Net
                 OnPropertyChanged(nameof(BlendDstAlpha));
         }
 
-        public override void BlendFunc(GL.BlendingFactor blendSrc,
-            GL.BlendingFactor blendDst)
+        public override void BlendFunc(BlendingFactor blendSrc,
+            BlendingFactor blendDst)
         {
             BlendFuncSeparate(blendSrc, blendDst, blendSrc, blendDst);
         }
 
-        public override void BlendEquationSeparate(GL.BlendEquationModeEXT blendEquationRgb,
-            GL.BlendEquationModeEXT blendEquationAlpha)
+        public override void BlendEquationSeparate(BlendEquationModeEXT blendEquationRgb,
+            BlendEquationModeEXT blendEquationAlpha)
         {
             var rgbChanged = blendEquationRgb != _blendEquationRgb;
             var alphaChanged = blendEquationAlpha != _blendEquationAlpha;
@@ -468,7 +468,7 @@ namespace Tgl.Net
                 OnPropertyChanged(nameof(BlendEquationAlpha));
         }
 
-        public override void BlendEquation(GL.BlendEquationModeEXT blendEquation)
+        public override void BlendEquation(BlendEquationModeEXT blendEquation)
         {
             BlendEquationSeparate(blendEquation, blendEquation);
         }
@@ -493,26 +493,26 @@ namespace Tgl.Net
                 OnPropertyChanged(nameof(PolygonOffsetUnits));
         }
 
-        public override void StencilOpSeparate(GL.StencilFaceDirection direction,
-            GL.StencilOp stencilFail,
-            GL.StencilOp depthFail,
-            GL.StencilOp pass)
+        public override void StencilOpSeparate(StencilFaceDirection direction,
+            StencilOp stencilFail,
+            StencilOp depthFail,
+            StencilOp pass)
         {
             bool stencilFailChange = false, depthFailChange = false, passChange = false; 
 
-            if (direction == GL.StencilFaceDirection.GL_FRONT)
+            if (direction == StencilFaceDirection.GL_FRONT)
             {
                 stencilFailChange = stencilFail != _stencilFail;
                 depthFailChange = depthFail != _stencilPassDepthFail;
                 passChange = pass != _stencilPassDepthPass;
             }
-            else if (direction == GL.StencilFaceDirection.GL_BACK)
+            else if (direction == StencilFaceDirection.GL_BACK)
             {
                 stencilFailChange = stencilFail != _stencilBackFail;
                 depthFailChange = depthFail != _stencilBackPassDepthFail;
                 passChange = pass != _stencilBackPassDepthPass;
             }
-            else if (direction == GL.StencilFaceDirection.GL_FRONT_AND_BACK)
+            else if (direction == StencilFaceDirection.GL_FRONT_AND_BACK)
             {
                 stencilFailChange = stencilFail != _stencilFail || stencilFail != _stencilBackFail;
                 depthFailChange = depthFail != _stencilPassDepthFail || depthFail != _stencilBackPassDepthFail;
@@ -525,7 +525,7 @@ namespace Tgl.Net
                 OnPropertyChanged(nameof(StencilOp));
             }
 
-            if (direction == GL.StencilFaceDirection.GL_FRONT)
+            if (direction == StencilFaceDirection.GL_FRONT)
             {
                 _stencilFail = stencilFail;
                 _stencilPassDepthFail = depthFail;
@@ -540,7 +540,7 @@ namespace Tgl.Net
                 if(passChange)
                     OnPropertyChanged(nameof(StencilPassDepthPass));
             }
-            else if (direction == GL.StencilFaceDirection.GL_BACK)
+            else if (direction == StencilFaceDirection.GL_BACK)
             {
                 _stencilBackFail = stencilFail;
                 _stencilBackPassDepthFail = depthFail;
@@ -555,7 +555,7 @@ namespace Tgl.Net
                 if (passChange)
                     OnPropertyChanged(nameof(StencilBackPassDepthPass));
             }
-            else if (direction == GL.StencilFaceDirection.GL_FRONT_AND_BACK)
+            else if (direction == StencilFaceDirection.GL_FRONT_AND_BACK)
             {
                 _stencilFail = stencilFail;
                 _stencilBackFail = stencilFail;
@@ -584,31 +584,31 @@ namespace Tgl.Net
             }
         }
 
-        public override void StencilOp(GL.StencilOp stencilFail,
-            GL.StencilOp depthFail,
-            GL.StencilOp pass)
+        public override void StencilOp(StencilOp stencilFail,
+            StencilOp depthFail,
+            StencilOp pass)
         {
-            StencilOpSeparate(GL.StencilFaceDirection.GL_FRONT_AND_BACK, stencilFail, depthFail, pass);
+            StencilOpSeparate(StencilFaceDirection.GL_FRONT_AND_BACK, stencilFail, depthFail, pass);
         }
 
-        public override void StencilFuncSeparate(GL.StencilFaceDirection direction,
-            GL.StencilFunction func, int @ref, uint mask)
+        public override void StencilFuncSeparate(StencilFaceDirection direction,
+            StencilFunction func, int @ref, uint mask)
         {
             bool funcChange = false, refChange = false, maskChange = false;
 
-            if (direction == GL.StencilFaceDirection.GL_FRONT)
+            if (direction == StencilFaceDirection.GL_FRONT)
             {
                 funcChange = func != _stencilFunc;
                 refChange = @ref != _stencilRef;
                 maskChange = mask != _stencilValueMask;
             }
-            else if (direction == GL.StencilFaceDirection.GL_BACK)
+            else if (direction == StencilFaceDirection.GL_BACK)
             {
                 funcChange = func != _stencilBackFunc;
                 refChange = @ref != _stencilBackRef;
                 maskChange = mask != _stencilBackValueMask;
             }
-            else if (direction == GL.StencilFaceDirection.GL_FRONT_AND_BACK)
+            else if (direction == StencilFaceDirection.GL_FRONT_AND_BACK)
             {
                 funcChange = func != _stencilFunc || func != _stencilBackFunc;
                 refChange = @ref != _stencilRef || @ref != _stencilBackRef;
@@ -621,7 +621,7 @@ namespace Tgl.Net
                 OnPropertyChanged(nameof(StencilFunc));
             }
 
-            if (direction == GL.StencilFaceDirection.GL_FRONT)
+            if (direction == StencilFaceDirection.GL_FRONT)
             {
                 _stencilFunc = func;
                 _stencilRef = @ref;
@@ -636,7 +636,7 @@ namespace Tgl.Net
                 if (maskChange)
                     OnPropertyChanged(nameof(StencilValueMask));
             }
-            else if (direction == GL.StencilFaceDirection.GL_BACK)
+            else if (direction == StencilFaceDirection.GL_BACK)
             {
                 _stencilBackFunc = func;
                 _stencilBackRef = @ref;
@@ -651,7 +651,7 @@ namespace Tgl.Net
                 if (maskChange)
                     OnPropertyChanged(nameof(StencilBackValueMask));
             }
-            else if (direction == GL.StencilFaceDirection.GL_FRONT_AND_BACK)
+            else if (direction == StencilFaceDirection.GL_FRONT_AND_BACK)
             {
                 _stencilFunc = func;
                 _stencilBackFunc = func;
@@ -680,10 +680,10 @@ namespace Tgl.Net
             }
         }
 
-        public override void StencilFunc(GL.StencilFunction func,
+        public override void StencilFunc(StencilFunction func,
             int @ref, uint mask)
         {
-            StencilFuncSeparate(GL.StencilFaceDirection.GL_FRONT_AND_BACK, func, @ref, mask);
+            StencilFuncSeparate(StencilFaceDirection.GL_FRONT_AND_BACK, func, @ref, mask);
         }
 
         public void SyncState()

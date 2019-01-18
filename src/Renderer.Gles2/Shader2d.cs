@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Game.Abstractions
+namespace Renderer.Gles2
 {
-    public enum PixelFormat
+    class Shader2d
     {
-        Rgba
     }
 }

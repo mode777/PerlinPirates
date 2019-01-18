@@ -1,0 +1,14 @@
+﻿namespace Tgl.Net.Bindings
+{
+    public enum TextureTarget : uint
+    {
+        GL_TEXTURE_2D = 3553,
+        GL_TEXTURE_CUBE_MAP = 34067,
+        GL_TEXTURE_CUBE_MAP_POSITIVE_X = 34069,
+        GL_TEXTURE_CUBE_MAP_NEGATIVE_X = 34070,
+        GL_TEXTURE_CUBE_MAP_POSITIVE_Y = 34071,
+        GL_TEXTURE_CUBE_MAP_NEGATIVE_Y = 34072,
+        GL_TEXTURE_CUBE_MAP_POSITIVE_Z = 34073,
+        GL_TEXTURE_CUBE_MAP_NEGATIVE_Z = 34074
+    }
+}
