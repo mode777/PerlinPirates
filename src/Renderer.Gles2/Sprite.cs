@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Text;
+using Tgl.Net;
 
 namespace Renderer.Gles2
 {
@@ -46,6 +47,12 @@ namespace Renderer.Gles2
 
             D_Uv.X = x;
             D_Uv.Y = y + h;
+        }
+
+        public void SetTexture(Texture texture, float x, float y)
+        {
+            SetFrame(0, 0, texture.Width, texture.Height);
+            SetRectangle(x, y, texture.Width, texture.Height);
         }
     }
 }

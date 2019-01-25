@@ -7,7 +7,7 @@ namespace Tgl.Net
     {
         private readonly IGlState _state;
 
-        internal IndexBuffer(IGlState state, ushort[] data)
+        public IndexBuffer(IGlState state, ushort[] data)
         {
             _state = state;
 

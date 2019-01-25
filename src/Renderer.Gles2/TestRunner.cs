@@ -31,7 +31,7 @@ namespace Renderer.Gles2
             _resources.RegisterLoader(new ShaderLoader(_context, resolver));
             _resources.RegisterLoader(new ImageLoader(resolver));
 
-            _test = new PngTextureTest();            
+            _test = new SpriteBufferTest();            
 
             Init();
         }

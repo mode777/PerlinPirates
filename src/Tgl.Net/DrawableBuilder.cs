@@ -82,9 +82,9 @@ namespace Tgl.Net
             return this;
         }
 
-        public DrawableBuilder AddUniform(string variable, Vector2 value)
+        public DrawableBuilder AddUniform(string variable, float x, float y)
         {
-            _uniformSetters[variable] = shader => shader.SetUniform(shader.GetUniformLocation(variable), value);
+            _uniformSetters[variable] = shader => shader.SetUniform(shader.GetUniformLocation(variable), x, y);
 
             return this;
         }

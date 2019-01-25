@@ -10,8 +10,7 @@ namespace Renderer.Gles2
     {
         private readonly Texture[] _textures;
         private readonly Sprite[] _sprites;
-        private readonly Stack<int> _freeList;
-
+        
         public SpriteBatch(IGlState state, int size)
         {
             _textures = new Texture[size];
@@ -21,9 +20,12 @@ namespace Renderer.Gles2
                 .HasAttribute("aTexcoord", 2)
                 .HasData(_sprites)
                 .Build();
+            Indices = CreateIndexBuffer(state);
         }
 
         internal VertexBuffer Buffer { get; }
+        internal IndexBuffer Indices { get; }
+
         public int Size { get; private set; }
 
         public void Clear()
@@ -38,7 +40,15 @@ namespace Renderer.Gles2
 
             Size++;
         }
-        
+
+        public void Push(Texture texture, float x, float y)
+        {
+            _sprites[Size].SetTexture(texture, x, y);
+            _textures[Size] = texture;
+
+            Size++;
+        }
+
         public void Update()
         {
             Buffer.SubData(_sprites, 0, (uint)Size);
@@ -59,6 +69,28 @@ namespace Renderer.Gles2
                 lower = i;
                 lowerTexture = _textures[i];
             }
+        }
+
+        private IndexBuffer CreateIndexBuffer(IGlState state)
+        {
+            var indexData = new ushort[6 * _sprites.Length];
+
+            int vertex = 0;
+
+            for (var i = 0; i < indexData.Length; i += 6)
+            {
+                indexData[i] =     (ushort)(vertex + 0);
+                indexData[i + 1] = (ushort)(vertex + 1);
+                indexData[i + 2] = (ushort)(vertex + 2);
+
+                indexData[i + 3] = (ushort)(vertex + 0);
+                indexData[i + 4] = (ushort)(vertex + 3);
+                indexData[i + 5] = (ushort)(vertex + 1);
+
+                vertex += 4;
+            }
+
+            return new IndexBuffer(state, indexData);
         }
     }
 }

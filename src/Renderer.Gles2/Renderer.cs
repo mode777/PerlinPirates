@@ -15,9 +15,9 @@ namespace Renderer.Gles2
         private readonly GlContext _context;
         private readonly ResourceManager _resources;
         private readonly Shader _shader;
-        private readonly DrawableBuilder _drawable;
 
         private Matrix3 _projection = new Matrix3();
+        private Matrix3 _transform = new Matrix3();
 
         public Renderer(GlContext context, ResourceManager resources)
         {
@@ -25,8 +25,8 @@ namespace Renderer.Gles2
             _resources = resources;
             _shader = _resources.LoadResource<Shader>("Resources.Shaders.game2d");
             _context.State.PropertyChanged += OnStateOnPropertyChanged;
-
-            _drawable.UseShader(_shader);
+            UpdateProjectionMatrix();
+            _transform.Identity();
         }
 
         private void OnStateOnPropertyChanged(object sender, PropertyChangedEventArgs args)
@@ -46,22 +46,28 @@ namespace Renderer.Gles2
             _projection.Identity();
             _projection.Translate(-1, 1);
             _projection.Scale(2.0f / viewport.Z, -2.0f / viewport.W);
-
-            _shader.SetUniform("uProject", ref _projection);
-        }
-
-        private void SetTexture(Texture texture)
-        {
-            _drawable.AddTexture("uTexture", texture);
-            _drawable.AddUniformSetter("uTextureSize", s
-                => s.SetUniform("uTextureSize", texture.Width, texture.Height));
         }
 
         public void RenderSprites(SpriteBatch batch)
         {
+            _context.State.CurrentProgram = _shader.Handle;
+            _shader.SetUniform("uProject", ref _projection);
+
+            var buffer = batch.Buffer;
+
+            foreach (var attribute in buffer.Attributes)
+            {
+                buffer.EnableAttribute(attribute.Name,
+                    _shader.GetAttributeLocation(attribute.Name));
+            }
+
+            _context.State.ElementArrayBufferBinding = batch.Indices.Handle;
+
             foreach (var (start, end, text) in batch.EnumerateSlices())
             {
-                SetTexture(text);
+                _shader.SetUniform("uTexture", TextureUnit.GL_TEXTURE0);
+                _shader.SetUniform("uTextureSize", text.Width, text.Height);
+                _context.DrawElements(PrimitiveType.GL_TRIANGLES, start, end-start);
             }
         }
 
