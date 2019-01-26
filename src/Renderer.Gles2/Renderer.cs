@@ -51,7 +51,10 @@ namespace Renderer.Gles2
         public void RenderSprites(SpriteBatch batch)
         {
             _context.State.CurrentProgram = _shader.Handle;
+
             _shader.SetUniform("uProject", ref _projection);
+            
+            _shader.SetUniform("uTransform", ref _transform);
 
             var buffer = batch.Buffer;
 
@@ -67,7 +70,9 @@ namespace Renderer.Gles2
             {
                 _shader.SetUniform("uTexture", TextureUnit.GL_TEXTURE0);
                 _shader.SetUniform("uTextureSize", text.Width, text.Height);
-                _context.DrawElements(PrimitiveType.GL_TRIANGLES, start, end-start);
+                var first = start * 6;
+                var count = (end - start + 1) * 6;
+                _context.DrawElements(PrimitiveType.GL_TRIANGLES, first, count);
             }
         }
 

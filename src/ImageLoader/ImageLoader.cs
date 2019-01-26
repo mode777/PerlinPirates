@@ -36,11 +36,16 @@ namespace ImageSharpLoader
             }
         }
 
-        public override Task<IImage> Load(string key)
+        public override Task<IImage> LoadAsync(string key)
         {
-            using(var stream = ResolveResourceId(key))
+            return Task.FromResult(Load(key));
+        }
+
+        public override IImage Load(string key)
+        {
+            using (var stream = ResolveResourceId(key))
             {
-                return Task.FromResult(Load(stream, ImagePixelFormat.Rgba));
+                return Load(stream, ImagePixelFormat.Rgba);
             }
         }
 

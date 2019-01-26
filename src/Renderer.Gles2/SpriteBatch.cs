@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using Tgl.Net;
@@ -56,6 +57,9 @@ namespace Renderer.Gles2
 
         public IEnumerable<(int, int, Texture)> EnumerateSlices()
         {
+            if (Size < 1)
+                yield break;
+
             var lower = 0;
             var lowerTexture = _textures[lower];
 
@@ -69,6 +73,7 @@ namespace Renderer.Gles2
                 lower = i;
                 lowerTexture = _textures[i];
             }
+            yield return (lower, Size - 1, lowerTexture);
         }
 
         private IndexBuffer CreateIndexBuffer(IGlState state)

@@ -12,10 +12,10 @@ namespace Renderer.Gles2
     {
         public Vector2 A_Pos;
         public Vector2 A_Uv;
-        public Vector2 B_Pos;
-        public Vector2 B_Uv;
         public Vector2 C_Pos;
         public Vector2 C_Uv;
+        public Vector2 B_Pos;
+        public Vector2 B_Uv;
         public Vector2 D_Pos;
         public Vector2 D_Uv;
 

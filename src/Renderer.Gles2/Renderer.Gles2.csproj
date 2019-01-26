@@ -9,6 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Shaders\game2d.fragment.glsl" />
+    <None Remove="Resources\Shaders\game2d.vertex.glsl" />
     <None Remove="Resources\Shaders\minimal.fragment.glsl" />
     <None Remove="Resources\Shaders\minimal.vertex.glsl" />
     <None Remove="Resources\Shaders\texture_checker.fragment.glsl" />
@@ -17,6 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Resources\Shaders\game2d.fragment.glsl" />
+    <EmbeddedResource Include="Resources\Shaders\game2d.vertex.glsl" />
     <EmbeddedResource Include="Resources\Shaders\minimal.fragment.glsl" />
     <EmbeddedResource Include="Resources\Shaders\minimal.vertex.glsl" />
     <EmbeddedResource Include="Resources\Shaders\texture_checker.fragment.glsl" />

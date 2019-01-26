@@ -27,7 +27,7 @@ namespace Game.Abstractions
             {
                 if (_loaders.TryGetValue(typeof(T), out var loader))
                 {                    
-                    return await loader.Load<T>(k);
+                    return await loader.LoadAsync<T>(k);
                 }
                 else
                 {
@@ -39,11 +39,11 @@ namespace Game.Abstractions
         public T LoadResource<T>(string key)
             where T : class
         {
-            return (T)_resources.GetOrAdd(key, async k =>
+            return (T)_resources.GetOrAdd(key, k =>
             {
                 if (_loaders.TryGetValue(typeof(T), out var loader))
                 {
-                    return await loader.Load<T>(k);
+                    return Task.FromResult((object)loader.Load<T>(k));
                 }
                 else
                 {

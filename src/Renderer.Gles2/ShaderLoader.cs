@@ -17,7 +17,7 @@ namespace Renderer.Gles2
             this._context = context;
         }
 
-        public override async Task<Shader> Load(string key)
+        public override async Task<Shader> LoadAsync(string key)
         {
             string vertex, fragment;
 
@@ -31,6 +31,28 @@ namespace Renderer.Gles2
             using (var reader = new StreamReader(stream))
             {
                 fragment = await reader.ReadToEndAsync();
+            }
+
+            return _context.BuildShader()
+                .HasVertexString(vertex)
+                .HasFragmentString(fragment)
+                .Build();
+        }
+
+        public override Shader Load(string key)
+        {
+            string vertex, fragment;
+
+            using (var stream = ResolveResourceId(key + ".vertex.glsl"))
+            using (var reader = new StreamReader(stream))
+            {
+                vertex = reader.ReadToEnd();
+            }
+
+            using (var stream = ResolveResourceId(key + ".fragment.glsl"))
+            using (var reader = new StreamReader(stream))
+            {
+                fragment = reader.ReadToEnd();
             }
 
             return _context.BuildShader()
