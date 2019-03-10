@@ -31,7 +31,7 @@ namespace Renderer.Gles2
             _resources.RegisterLoader(new ShaderLoader(_context, resolver));
             _resources.RegisterLoader(new ImageLoader(resolver));
 
-            _test = new SpriteBufferTest();            
+            _test = new SimpleTriangle();            
 
             Init();
         }

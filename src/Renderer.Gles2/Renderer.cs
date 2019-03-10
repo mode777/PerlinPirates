@@ -50,6 +50,7 @@ namespace Renderer.Gles2
 
         public void RenderSprites(SpriteBatch batch)
         {
+
             _context.State.CurrentProgram = _shader.Handle;
 
             _shader.SetUniform("uProject", ref _projection);
