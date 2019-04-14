@@ -37,5 +37,13 @@ namespace Tgl.Net.Math
         {
             return !left.Equals(right);
         }
+
+        public void Transform(ref Matrix3 mat)
+        {
+            var x = X;
+            var y = Y;
+            X = mat.M00 * x + mat.M10 * y + mat.M20;
+            Y = mat.M01 * x + mat.M11 * y + mat.M21;
+        }
     }
 }

@@ -1,27 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Text;
 using Tgl.Net;
 using Tgl.Net.Abstractions;
+using Tgl.Net.Math;
 
 namespace Renderer.Gles2
 {
     [StructLayout(LayoutKind.Sequential)]
-    public struct Sprite
+    public struct Quad
     {
-        public static Sprite FromDimensions(float x, float y, float w, float h)
+        public static Quad FromDimensions(float x, float y, float w, float h)
         {
-            var spr = new Sprite();
+            var spr = new Quad();
             spr.SetRectangle(x,y,w,h);
             spr.SetFrame(0, 0, w, h);
             return spr;
         }
 
-        public static Sprite FromDimensions(float x, float y, float w, float h, float srcX, float srcY)
+        public static Quad FromDimensions(float x, float y, float w, float h, float srcX, float srcY)
         {
-            var spr = new Sprite();
+            var spr = new Quad();
             spr.SetRectangle(x, y, w, h);
             spr.SetFrame(srcX, srcY, w, h);
             return spr;
@@ -70,6 +70,14 @@ namespace Renderer.Gles2
         {
             SetFrame(0, 0, texture.Width, texture.Height);
             SetRectangle(x, y, texture.Width, texture.Height);
+        }
+
+        public void Transform(ref Matrix3 mat)
+        {
+            A_Pos.Transform(ref mat);
+            B_Pos.Transform(ref mat);
+            C_Pos.Transform(ref mat);
+            D_Pos.Transform(ref mat);
         }
     }
 }

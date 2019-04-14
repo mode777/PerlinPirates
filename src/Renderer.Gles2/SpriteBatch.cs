@@ -10,16 +10,16 @@ namespace Renderer.Gles2
     public class SpriteBatch
     {
         private readonly Texture[] _textures;
-        private readonly Sprite[] _sprites;
+        private readonly Quad[] _quads;
         
         public SpriteBatch(IGlState state, int size)
         {
             _textures = new Texture[size];
-            _sprites = new Sprite[size];
-            Buffer = new BufferBuilder<Sprite>(state)
+            _quads = new Quad[size];
+            Buffer = new BufferBuilder<Quad>(state)
                 .HasAttribute("aPosition", 2)
                 .HasAttribute("aTexcoord", 2)
-                .HasData(_sprites)
+                .HasData(_quads)
                 .Build();
             Indices = CreateIndexBuffer(state);
         }
@@ -34,9 +34,9 @@ namespace Renderer.Gles2
             Size = 0;
         }
 
-        public void Push(ref Sprite sprite, Texture texture)
+        public void Push(ref Quad quad, Texture texture)
         {
-            _sprites[Size] = sprite;
+            _quads[Size] = quad;
             _textures[Size] = texture;
 
             Size++;
@@ -44,7 +44,7 @@ namespace Renderer.Gles2
 
         public void Push(Texture texture, float x, float y)
         {
-            _sprites[Size].SetTexture(texture, x, y);
+            _quads[Size].SetTexture(texture, x, y);
             _textures[Size] = texture;
 
             Size++;
@@ -52,7 +52,7 @@ namespace Renderer.Gles2
 
         public void Update()
         {
-            Buffer.SubData(_sprites, 0, (uint)Size);
+            Buffer.SubData(_quads, 0, (uint)Size);
         }
 
         public IEnumerable<(int, int, Texture)> EnumerateSlices()
@@ -78,7 +78,7 @@ namespace Renderer.Gles2
 
         private IndexBuffer CreateIndexBuffer(IGlState state)
         {
-            var indexData = new ushort[6 * _sprites.Length];
+            var indexData = new ushort[6 * _quads.Length];
 
             int vertex = 0;
 
