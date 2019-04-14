@@ -63,15 +63,16 @@ namespace Tgl.Net
                 unit++;
             }
 
-            State.ElementArrayBufferBinding = drawable.IndexBuffer.Handle;
 
-            var length = drawable.IndexBuffer == null
-                ? drawable.Buffers.First().VertexCount
-                : drawable.IndexBuffer.Length;
-
-            DrawElements(PrimitiveType.GL_TRIANGLES,
-                0,
-                length);
+            if(drawable.IndexBuffer != null){
+                State.ElementArrayBufferBinding = drawable.IndexBuffer.Handle;
+                DrawElements(PrimitiveType.GL_TRIANGLES,
+                    0,
+                    drawable.IndexBuffer.Length);
+            }
+            else {
+                DrawArrays(PrimitiveType.GL_TRIANGLES, 0, drawable.Buffers.First().VertexCount);
+            }            
         }
 
         public ShaderBuilder BuildShader()
