@@ -110,6 +110,13 @@ namespace Tgl.Net
             return this;
         }
 
+        public DrawableBuilder AddUniform(string variable, Matrix3 value)
+        {
+            _uniformSetters[variable] = shader => shader.SetUniform(shader.GetUniformLocation(variable), ref value);
+
+            return this;
+        }
+
         public DrawableBuilder AddUniformSetter(string variable, Action<Shader> action)
         {
             _uniformSetters[variable] = action;

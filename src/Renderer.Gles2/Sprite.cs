@@ -4,18 +4,35 @@ using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Text;
 using Tgl.Net;
+using Tgl.Net.Abstractions;
 
 namespace Renderer.Gles2
 {
     [StructLayout(LayoutKind.Sequential)]
     public struct Sprite
     {
+        public static Sprite FromDimensions(float x, float y, float w, float h)
+        {
+            var spr = new Sprite();
+            spr.SetRectangle(x,y,w,h);
+            spr.SetFrame(0, 0, w, h);
+            return spr;
+        }
+
+        public static Sprite FromDimensions(float x, float y, float w, float h, float srcX, float srcY)
+        {
+            var spr = new Sprite();
+            spr.SetRectangle(x, y, w, h);
+            spr.SetFrame(srcX, srcY, w, h);
+            return spr;
+        }
+
         public Vector2 A_Pos;
         public Vector2 A_Uv;
-        public Vector2 C_Pos;
-        public Vector2 C_Uv;
         public Vector2 B_Pos;
         public Vector2 B_Uv;
+        public Vector2 C_Pos;
+        public Vector2 C_Uv;
         public Vector2 D_Pos;
         public Vector2 D_Uv;
 
