@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Game.Abstractions;
 using Tgl.Net;
@@ -13,6 +14,8 @@ namespace Renderer.Gles2.Tests
     public class Quad2dTest : IRenderTest
     {
         private IDrawable _drawable;
+        private Transform2d _transform;
+        private Quad[] quads;
         
         public void Init(GlContext context, ResourceManager resources)
         {
@@ -29,22 +32,24 @@ namespace Renderer.Gles2.Tests
             uv_matrix.Identity();
             uv_matrix.Scale(1.0f / image.Width, 1.0f / image.Height);
 
-            var quads = new Quad[]
+            quads = new Quad[]
             {
                 Quad.FromDimensions(0,0, 128, 128),
                 Quad.FromDimensions(0, 0, 128, 128, 128, 128)
             };
-            
-            var transform = new Transform2d();
-            transform.OriginX = 64;
-            transform.OriginY = 64;
-            transform.Rotation = 1;
-            transform.X = 200;
-            transform.Y = 200;
-            transform.ScaleX = 0.7f;
-            transform.UpdateMatrix();
 
-            quads[0].Transform(ref transform.Matrix);
+            _transform = new Transform2d
+            {
+                OriginX = 64,
+                OriginY = 64,
+                Rotation = 1,
+                X = 200,
+                Y = 200,
+                ScaleX = 0.7f
+            };
+            _transform.UpdateMatrix();
+
+            quads[0].Transform(ref _transform.Matrix);
 
            _drawable = context.BuildDrawable()
                 .UseShader(shader)
@@ -80,6 +85,14 @@ namespace Renderer.Gles2.Tests
 
         public void Render(GlContext context)
         {
+            _transform.Rotation += 0.01f;
+            _transform.UpdateMatrix();
+            quads[0].Transform(ref _transform.Matrix);
+
+            var buffer = _drawable.Buffers.First();
+
+            buffer.SubData(quads, 0, (uint) buffer.VertexCount);
+
             context.State.ColorClearValue = new Vector4(0,1,0,1);
 
             context.Clear(ClearBufferMask.GL_COLOR_BUFFER_BIT);

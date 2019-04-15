@@ -8,7 +8,7 @@ namespace Tgl.Net
         Shader Shader { get; }
         IEnumerable<VertexBuffer> Buffers { get; }
         IndexBuffer IndexBuffer { get; }
-        IReadOnlyDictionary<string, Texture> Textures { get; }
-        IReadOnlyDictionary<string, Action<Shader>> UniformSetters { get; }
+        IDictionary<string, Texture> Textures { get; }
+        IDictionary<string, Action<Shader>> UniformSetters { get; }
     }
 }

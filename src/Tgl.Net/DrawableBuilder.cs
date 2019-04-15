@@ -23,8 +23,8 @@ namespace Tgl.Net
         public Shader Shader { get; private set; }
         public IEnumerable<VertexBuffer> Buffers { get => _buffers; }
         public IndexBuffer IndexBuffer { get; private set; }
-        public IReadOnlyDictionary<string, Texture> Textures { get => _textures; }
-        public IReadOnlyDictionary<string, Action<Shader>> UniformSetters { get => _uniformSetters; }
+        public IDictionary<string, Texture> Textures { get => _textures; }
+        public IDictionary<string, Action<Shader>> UniformSetters { get => _uniformSetters; }
 
         public DrawableBuilder UseShader(Shader shader)
         {
