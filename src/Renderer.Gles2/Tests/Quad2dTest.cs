@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using Game.Abstractions;
@@ -15,7 +16,7 @@ namespace Renderer.Gles2.Tests
     {
         private IDrawable _drawable;
         private Transform2d _transform;
-        private Quad quad1;
+        private Sprite sprite;
         private Quad[] quads;
         
         public void Init(GlContext context, ResourceManager resources)
@@ -33,27 +34,24 @@ namespace Renderer.Gles2.Tests
             uv_matrix.Identity();
             uv_matrix.Scale(1.0f / image.Width, 1.0f / image.Height);
 
-            quad1 = Quad.FromDimensions(0, 0, 128, 128);
+            var texture = context.TextureFromImage(image);
 
-            quads = new Quad[]
-            {
-                quad1,
-                Quad.FromDimensions(0, 0, 128, 128, 128, 128)
-            };
+            sprite = new Sprite(texture, 
+                RectangleF.FromLTRB(0,0,128,128),
+                new Transform2d
+                {
+                    OriginX = 64,
+                    OriginY = 64,
+                    Rotation = 1,
+                    X = 200,
+                    Y = 200,
+                    ScaleX = 0.7f
+                });
 
-            _transform = new Transform2d
-            {
-                OriginX = 64,
-                OriginY = 64,
-                Rotation = 1,
-                X = 200,
-                Y = 200,
-                ScaleX = 0.7f
-            };
-            _transform.UpdateMatrix();
-
-            quads[0].Transform(ref _transform.Matrix);
-
+            quads = new Quad[2];
+            sprite.ApplyToQuad(out quads[0]);
+            quads[1] = Quad.FromDimensions(0, 0, 128, 128, 128, 128);
+            
            _drawable = context.BuildDrawable()
                 .UseShader(shader)
                 .AddUniform("uProject", matrix)
@@ -62,7 +60,7 @@ namespace Renderer.Gles2.Tests
                     .HasAttribute("aPosition", 2)
                     .HasAttribute("aTexcoord", 2)
                     .HasData(quads))
-                .AddTexture("uTexture", image)
+                .AddTexture("uTexture", texture)
                 .UseIndices(CreateQuadIndices(quads.Length))
                 .Build();
         }
@@ -88,11 +86,9 @@ namespace Renderer.Gles2.Tests
 
         public void Render(GlContext context)
         {
-            _transform.Rotation += 0.01f;
-            _transform.UpdateMatrix();
-            quads[0] = quad1;
-            quads[0].Transform(ref _transform.Matrix);
-            
+            sprite.Transform.Rotation += 0.01f;
+            sprite.ApplyToQuad(out quads[0]);
+
             var buffer = _drawable.Buffers.First();
 
             buffer.SubData(quads, 0, (uint) buffer.VertexCount);
