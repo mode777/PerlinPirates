@@ -18,25 +18,18 @@ namespace Renderer.Gles2.Tests
         private Transform2d _transform;
         private Sprite sprite;
         private Quad[] quads;
-        
+        private Shader2d _shader2d;
+        private Texture _texture;
+
         public void Init(GlContext context, ResourceManager resources)
         {
-            var shader = resources.LoadResource<Shader>("Resources.Shaders.quad2d");
+            //var shader = resources.LoadResource<Shader>("Resources.Shaders.quad2d");
+            _shader2d = new Shader2d(context, resources);
             var image = resources.LoadResource<IImage>("Resources.Textures.grid.png");
-            var viewport = context.State.Viewport;
+            
+            _texture = context.TextureFromImage(image);
 
-            var matrix = new Matrix3();
-            matrix.Identity();
-            matrix.Translate(-1,1);
-            matrix.Scale(2.0f / viewport.Z, -2.0f /  viewport.W);
-
-            var uv_matrix = new Matrix3();
-            uv_matrix.Identity();
-            uv_matrix.Scale(1.0f / image.Width, 1.0f / image.Height);
-
-            var texture = context.TextureFromImage(image);
-
-            sprite = new Sprite(texture, 
+            sprite = new Sprite(_texture, 
                 RectangleF.FromLTRB(0,0,128,128),
                 new Transform2d
                 {
@@ -53,14 +46,12 @@ namespace Renderer.Gles2.Tests
             quads[1] = Quad.FromDimensions(0, 0, 128, 128, 128, 128);
             
            _drawable = context.BuildDrawable()
-                .UseShader(shader)
-                .AddUniform("uProject", matrix)
-                .AddUniform("uProject_uv", uv_matrix)
+                .UseShader(_shader2d.Shader)
                 .AddBuffer<Quad>(b => b
                     .HasAttribute("aPosition", 2)
                     .HasAttribute("aTexcoord", 2)
                     .HasData(quads))
-                .AddTexture("uTexture", texture)
+                .AddTexture("uTexture", _texture)
                 .UseIndices(CreateQuadIndices(quads.Length))
                 .Build();
         }
@@ -86,6 +77,8 @@ namespace Renderer.Gles2.Tests
 
         public void Render(GlContext context)
         {
+            _shader2d.UpdateUvMatrix(_texture);
+
             sprite.Transform.Rotation += 0.01f;
             sprite.ApplyToQuad(out quads[0]);
 

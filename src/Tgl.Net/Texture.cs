@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -10,6 +11,15 @@ namespace Tgl.Net
 {
     public class Texture : IDisposable
     {
+        private static readonly ConcurrentDictionary<uint, Texture> _register = new ConcurrentDictionary<uint, Texture>();
+
+        public static Texture GetInstanceForHandle(uint handle)
+        {
+            _register.TryGetValue(handle, out var text);
+
+            return text;
+        }
+
         private readonly IGlState _state;
         private TextureWrapMode _wrapX;
         private TextureWrapMode _wrapY;
@@ -26,6 +36,8 @@ namespace Tgl.Net
                 glGenTextures(1, &handle);
                 Handle = handle;
             }
+
+            _register.TryAdd(Handle, this);
         }
 
         public uint Handle { get; }

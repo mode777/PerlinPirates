@@ -18,13 +18,31 @@ namespace Tgl.Net
         {
             get
             {
-                GL.glActiveTexture(index);
-                return GL.GetInteger<uint>(GetPName.GL_TEXTURE_BINDING_2D);
+                var prev = GL.GetInteger<TextureUnit>(GetPName.GL_ACTIVE_TEXTURE);
+
+                try
+                {
+                    GL.glActiveTexture(index);
+                    return GL.GetInteger<uint>(GetPName.GL_TEXTURE_BINDING_2D);
+                }
+                finally
+                {
+                    GL.glActiveTexture(prev);
+                }
             }
             set
             {
-                GL.glActiveTexture(index);
-                GL.glBindTexture(TextureTarget.GL_TEXTURE_2D, value);
+                var prev = GL.GetInteger<TextureUnit>(GetPName.GL_ACTIVE_TEXTURE);
+
+                try
+                {
+                    GL.glActiveTexture(index);
+                    GL.glBindTexture(TextureTarget.GL_TEXTURE_2D, value);
+                }
+                finally
+                {
+                    GL.glActiveTexture(prev);
+                }
             }
         }
 
