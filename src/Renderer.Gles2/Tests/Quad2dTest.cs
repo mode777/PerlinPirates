@@ -14,20 +14,20 @@ namespace Renderer.Gles2.Tests
 {
     public class Quad2dTest : IRenderTest
     {
-        private IDrawable _drawable;
         private Transform2d _transform;
         private Sprite sprite;
-        private Quad[] quads;
-        private Shader2d _shader2d;
+        private QuadBuffer2D _buffer;
         private Texture _texture;
 
         public void Init(GlContext context, ResourceManager resources)
         {
             //var shader = resources.LoadResource<Shader>("Resources.Shaders.quad2d");
-            _shader2d = new Shader2d(context, resources);
+            var shader = new Shader2d(context, resources);
             var image = resources.LoadResource<IImage>("Resources.Textures.grid.png");
             
             _texture = context.TextureFromImage(image);
+
+            _buffer = new QuadBuffer2D(context, shader, _texture, 2);
 
             sprite = new Sprite(_texture, 
                 RectangleF.FromLTRB(0,0,128,128),
@@ -41,19 +41,8 @@ namespace Renderer.Gles2.Tests
                     ScaleX = 0.7f
                 });
 
-            quads = new Quad[2];
-            sprite.ApplyToQuad(out quads[0]);
-            quads[1] = Quad.FromDimensions(0, 0, 128, 128, 128, 128);
-            
-           _drawable = context.BuildDrawable()
-                .UseShader(_shader2d.Shader)
-                .AddBuffer<Quad>(b => b
-                    .HasAttribute("aPosition", 2)
-                    .HasAttribute("aTexcoord", 2)
-                    .HasData(quads))
-                .AddTexture("uTexture", _texture)
-                .UseIndices(CreateQuadIndices(quads.Length))
-                .Build();
+            sprite.ApplyToQuad(out _buffer.Quads[0]);
+            _buffer.Quads[1] = Quad2d.FromDimensions(0, 0, 128, 128, 128, 128);            
         }
 
         private ushort[] CreateQuadIndices(int length)
@@ -77,20 +66,16 @@ namespace Renderer.Gles2.Tests
 
         public void Render(GlContext context)
         {
-            _shader2d.UpdateUvMatrix(_texture);
-
             sprite.Transform.Rotation += 0.01f;
-            sprite.ApplyToQuad(out quads[0]);
+            sprite.ApplyToQuad(out _buffer.Quads[0]);
 
-            var buffer = _drawable.Buffers.First();
-
-            buffer.SubData(quads, 0, (uint) buffer.VertexCount);
+            _buffer.Update();
 
             context.State.ColorClearValue = new Vector4(0,1,0,1);
 
             context.Clear(ClearBufferMask.GL_COLOR_BUFFER_BIT);
 
-            context.DrawDrawable(_drawable);
+            _buffer.Render();
         }
     }
 }

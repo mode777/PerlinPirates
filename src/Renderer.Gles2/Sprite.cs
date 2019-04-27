@@ -15,7 +15,7 @@ namespace Renderer.Gles2
         public RectangleF Source { get; }
         public Transform2d Transform { get; }
 
-        private readonly Quad _baseQuad;
+        private readonly Quad2d _baseQuad2D;
         private readonly int _quadId;
 
         internal Sprite(Texture texture, RectangleF? source = null, Transform2d transform = null)
@@ -24,17 +24,17 @@ namespace Renderer.Gles2
             Source = source ?? RectangleF.FromLTRB(0,0,texture.Width,texture.Height);
             Transform = transform ?? new Transform2d();
 
-            _baseQuad = Quad.FromDimensions(0, 0, Source.Width, Source.Height, Source.X, Source.Y);
+            _baseQuad2D = Quad2d.FromDimensions(0, 0, Source.Width, Source.Height, Source.X, Source.Y);
 
             _quadId = Interlocked.Increment(ref _instanceCounter);
         }
 
-        public void ApplyToQuad(out Quad quad)
+        public void ApplyToQuad(out Quad2d quad2D)
         {
             Transform.UpdateMatrix();
             
-            quad = _baseQuad;
-            quad.Transform(ref Transform.Matrix);
+            quad2D = _baseQuad2D;
+            quad2D.Transform(ref Transform.Matrix);
         }
 
         public override int GetHashCode()
