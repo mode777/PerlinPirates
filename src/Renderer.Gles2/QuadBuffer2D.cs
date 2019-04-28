@@ -8,7 +8,7 @@ namespace Renderer.Gles2
         private readonly Shader2d _shader;
         private readonly Texture _texture;
         private readonly int _capacity;
-        public readonly Quad2d[] Quads;
+        private readonly Quad2d[] _quads;
         private readonly ushort[] _indices;
         private readonly IDrawable _drawable;
         private readonly VertexBuffer _buffer;
@@ -19,7 +19,7 @@ namespace Renderer.Gles2
             _shader = shader;
             _texture = texture;
             _capacity = capacity;
-            Quads = new Quad2d[capacity];
+            _quads = new Quad2d[capacity];
 
             _indices = new ushort[capacity * 6];
             CreateQuadIndices();
@@ -27,7 +27,7 @@ namespace Renderer.Gles2
             _buffer = _context.BuildBuffer<Quad2d>()
                 .HasAttribute("aPosition", 2)
                 .HasAttribute("aTexcoord", 2)
-                .HasData(Quads).Build();
+                .HasData(_quads).Build();
 
             _drawable = context.BuildDrawable()
                 .UseShader(shader.Shader)
@@ -48,7 +48,24 @@ namespace Renderer.Gles2
 
         public void Update()
         {
-            _buffer.SubData(Quads, 0, (uint)_buffer.VertexCount);
+            _buffer.SubData(_quads, 0, (uint)_buffer.VertexCount);
+        }
+
+        public void SetQuad(int index, ref Quad2d quad)
+        {
+            _quads[index] = quad;
+        }
+
+        public void SetQuad(int index, int x, int y, int w, int h, int srcx, int srcy)
+        {
+            _quads[index] = Quad2d.FromDimensions(x, y, w, h, srcx, srcy);
+        }
+
+        public void SetQuad(int index, ref Quad2d quad, Transform2d transform)
+        {
+            _quads[index] = quad;
+            transform.UpdateMatrix();
+            _quads[index].Transform(ref transform.Matrix);
         }
 
         private void CreateQuadIndices()

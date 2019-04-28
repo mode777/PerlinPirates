@@ -41,33 +41,13 @@ namespace Renderer.Gles2.Tests
                     ScaleX = 0.7f
                 });
 
-            sprite.ApplyToQuad(out _buffer.Quads[0]);
-            _buffer.Quads[1] = Quad2d.FromDimensions(0, 0, 128, 128, 128, 128);            
-        }
-
-        private ushort[] CreateQuadIndices(int length)
-        {
-            var indices = new List<ushort>(length);
-
-            for (int i = 0; i < length; i++)
-            {
-                var offset = i * 4;
-
-                indices.Add((ushort)(offset + 3));
-                indices.Add((ushort)(offset + 0));
-                indices.Add((ushort)(offset + 1));
-                indices.Add((ushort)(offset + 3));
-                indices.Add((ushort)(offset + 1));
-                indices.Add((ushort)(offset + 2));
-            }
-
-            return indices.ToArray();
+            _buffer.SetQuad(1, 0,0,128,128,128,128);
         }
 
         public void Render(GlContext context)
         {
             sprite.Transform.Rotation += 0.01f;
-            sprite.ApplyToQuad(out _buffer.Quads[0]);
+            _buffer.SetQuad(0, ref sprite.BaseQuad2D, sprite.Transform);
 
             _buffer.Update();
 
