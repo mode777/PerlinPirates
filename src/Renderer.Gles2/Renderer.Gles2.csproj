@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -18,6 +18,7 @@
     <None Remove="Resources\Shaders\texture_checker.fragment.glsl" />
     <None Remove="Resources\Shaders\texture_checker.vertex.glsl" />
     <None Remove="Resources\Textures\grid.png" />
+    <None Remove="Resources\Textures\particle.png" />
     <None Remove="Resources\Textures\tiles.png" />
   </ItemGroup>
 
@@ -31,6 +32,7 @@
     <EmbeddedResource Include="Resources\Shaders\texture_checker.fragment.glsl" />
     <EmbeddedResource Include="Resources\Shaders\texture_checker.vertex.glsl" />
     <EmbeddedResource Include="Resources\Textures\grid.png" />
+    <EmbeddedResource Include="Resources\Textures\particle.png" />
     <EmbeddedResource Include="Resources\Textures\tiles.png" />
   </ItemGroup>
 

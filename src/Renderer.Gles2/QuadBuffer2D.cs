@@ -1,4 +1,7 @@
-﻿using Tgl.Net;
+﻿using System.Drawing;
+using System.Numerics;
+using Tgl.Net;
+using Vector2 = Tgl.Net.Math.Vector2;
 
 namespace Renderer.Gles2
 {
@@ -6,18 +9,20 @@ namespace Renderer.Gles2
     {
         private readonly GlContext _context;
         private readonly Shader2d _shader;
-        private readonly Texture _texture;
         private readonly int _capacity;
         private readonly Quad2d[] _quads;
         private readonly ushort[] _indices;
         private readonly IDrawable _drawable;
         private readonly VertexBuffer _buffer;
 
+        public Texture Texture { get; }
+
+
         public QuadBuffer2D(GlContext context, Shader2d shader, Texture texture, int capacity)
         {
             _context = context;
             _shader = shader;
-            _texture = texture;
+            Texture = texture;
             _capacity = capacity;
             _quads = new Quad2d[capacity];
 
@@ -32,7 +37,7 @@ namespace Renderer.Gles2
             _drawable = context.BuildDrawable()
                 .UseShader(shader.Shader)
                 .AddBuffer(_buffer)
-                .AddTexture("uTexture", _texture)
+                .AddTexture("uTexture", Texture)
                 .UseIndices(_indices)
                 .Build();
         }
@@ -41,7 +46,7 @@ namespace Renderer.Gles2
 
         public void Render()
         {
-            _shader.UpdateUvMatrix(_texture);
+            _shader.UpdateUvMatrix(Texture);
             
             _context.DrawDrawable(_drawable);
         }
@@ -61,11 +66,41 @@ namespace Renderer.Gles2
             _quads[index] = Quad2d.FromDimensions(x, y, w, h, srcx, srcy);
         }
 
+        public void FlipQuad(int index, bool diagonal, bool horizontal, bool vertical)
+        {
+            _quads[index].Flip(diagonal, horizontal, vertical);
+        }
+
+        public void TransformQuad(int index, Transform2d transform)
+        {
+            transform.UpdateMatrix();
+            _quads[index].Transform(ref transform.Matrix);
+        }
+
+        public void OffsetQuad(int index, float x, float y)
+        {
+            _quads[index].Offset(x, y);
+        }
+
+        public Quad2d GetQuad2D(int index)
+        {
+            return _quads[index];
+        }
+
+        public RectangleF GetBoundingBox(int index)
+        {
+            return _quads[index].GetBoundingBox();
+        }
+
+        public Vector2 GetCenter(int index)
+        {
+            return _quads[index].GetCenter();
+        }
+
         public void SetQuad(int index, ref Quad2d quad, Transform2d transform)
         {
             _quads[index] = quad;
-            transform.UpdateMatrix();
-            _quads[index].Transform(ref transform.Matrix);
+            TransformQuad(index, transform);
         }
 
         private void CreateQuadIndices()

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Text;
 using Tgl.Net;
@@ -31,6 +32,36 @@ namespace Renderer.Gles2
         public Vertex2d B;
         public Vertex2d C;
         public Vertex2d D;
+
+        public void Flip(bool diagonal, bool horizontal, bool vertical)
+        {
+            Vector2 temp;
+
+            if (diagonal)
+            {
+                SwitchPositions(ref B, ref D);
+            }
+
+            if (horizontal)
+            {
+                SwitchPositions(ref A, ref B);
+                SwitchPositions(ref C, ref D);
+            }
+
+            if (vertical)
+            {
+                SwitchPositions(ref A, ref D);
+                SwitchPositions(ref B, ref D);
+            }
+        }
+
+        public void Offset(float x, float y)
+        {
+            A.Position.Offset(x,y);
+            B.Position.Offset(x,y);
+            C.Position.Offset(x,y);
+            D.Position.Offset(x,y);
+        }
 
         public void SetRectangle(float x, float y, float w, float h)
         {
@@ -74,6 +105,31 @@ namespace Renderer.Gles2
             B.Position.Transform(ref mat);
             C.Position.Transform(ref mat);
             D.Position.Transform(ref mat);
+        }
+
+        public RectangleF GetBoundingBox()
+        {
+            return RectangleF.FromLTRB(
+                Math.Min(Math.Min(A.Position.X, B.Position.X), Math.Min(C.Position.X, D.Position.X)),
+                Math.Min(Math.Min(A.Position.Y, B.Position.Y), Math.Min(C.Position.Y, D.Position.Y)),
+                Math.Max(Math.Max(A.Position.X, B.Position.X), Math.Max(C.Position.X, D.Position.X)),
+                Math.Max(Math.Max(A.Position.Y, B.Position.Y), Math.Max(C.Position.Y, D.Position.Y)));
+        }
+
+        public Vector2 GetCenter()
+        {
+            return new Vector2
+            {
+                X = (A.Position.X + B.Position.X + C.Position.X + D.Position.X) / 4.0f,
+                Y = (A.Position.Y + B.Position.Y + C.Position.Y + D.Position.Y) / 4.0f
+            };
+        }
+
+        private void SwitchPositions(ref Vertex2d a, ref Vertex2d b)
+        {
+            var temp = a.Position;
+            a.Position = b.Position;
+            b.Position = temp;
         }
     }
 }

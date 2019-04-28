@@ -45,5 +45,11 @@ namespace Tgl.Net.Math
             X = mat.M00 * x + mat.M10 * y + mat.M20;
             Y = mat.M01 * x + mat.M11 * y + mat.M21;
         }
+
+        public void Offset(float x, float y)
+        {
+            X += x;
+            Y += y;
+        }
     }
 }
