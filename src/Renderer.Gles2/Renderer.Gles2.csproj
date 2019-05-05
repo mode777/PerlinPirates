@@ -9,6 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Fonts\segoe.fnt" />
+    <None Remove="Resources\Fonts\segoe_0.png" />
     <None Remove="Resources\Shaders\game2d.fragment.glsl" />
     <None Remove="Resources\Shaders\game2d.vertex.glsl" />
     <None Remove="Resources\Shaders\minimal.fragment.glsl" />
@@ -23,6 +25,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Resources\Fonts\segoe.fnt" />
+    <EmbeddedResource Include="Resources\Fonts\segoe_0.png" />
     <EmbeddedResource Include="Resources\Shaders\game2d.fragment.glsl" />
     <EmbeddedResource Include="Resources\Shaders\game2d.vertex.glsl" />
     <EmbeddedResource Include="Resources\Shaders\minimal.fragment.glsl" />

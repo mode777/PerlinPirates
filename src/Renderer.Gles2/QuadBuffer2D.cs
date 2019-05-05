@@ -66,6 +66,16 @@ namespace Renderer.Gles2
             _quads[index] = Quad2d.FromDimensions(x, y, w, h, srcx, srcy);
         }
 
+        public void SetSrcRectangle(int index, ref Rectangle rect)
+        {
+            _quads[index].SetSrcRectangle(ref rect);
+        }
+
+        public void SetDstRectangle(int index, ref Rectangle rect)
+        {
+            _quads[index].SetDstRectangle(ref rect);
+        }
+
         public void FlipQuad(int index, bool diagonal, bool horizontal, bool vertical)
         {
             _quads[index].Flip(diagonal, horizontal, vertical);

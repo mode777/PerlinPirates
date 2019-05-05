@@ -28,10 +28,13 @@ namespace Renderer.Gles2
             _context = new GlContext(_platform.GetGlProcAddress);
 
             var resolver = new EmbeddedResourceResolver(typeof(TestRunner).Assembly);
-            _resources.RegisterLoader(new ShaderLoader(_context, resolver));
-            _resources.RegisterLoader(new ImageLoader(resolver));
+            var imageLoader = new ImageLoader(resolver);
 
-            _test = new ParticleSystemTest();            
+            _resources.RegisterLoader(new ShaderLoader(_context, resolver));
+            _resources.RegisterLoader(imageLoader);
+            _resources.RegisterLoader(new SpriteFontLoader(_context, imageLoader, resolver));
+
+            _test = new SpriteFontTest();            
 
             Init();
         }

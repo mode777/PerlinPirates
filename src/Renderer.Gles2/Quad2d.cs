@@ -6,6 +6,7 @@ using System.Text;
 using Tgl.Net;
 using Tgl.Net.Abstractions;
 using Tgl.Net.Math;
+using Rectangle = System.Drawing.Rectangle;
 
 namespace Renderer.Gles2
 {
@@ -15,16 +16,16 @@ namespace Renderer.Gles2
         public static Quad2d FromDimensions(float x, float y, float w, float h)
         {
             var spr = new Quad2d();
-            spr.SetRectangle(x,y,w,h);
-            spr.SetFrame(0, 0, w, h);
+            spr.SetDstRectangle(x,y,w,h);
+            spr.SetSrcRectangle(0, 0, w, h);
             return spr;
         }
 
         public static Quad2d FromDimensions(float x, float y, float w, float h, float srcX, float srcY)
         {
             var spr = new Quad2d();
-            spr.SetRectangle(x, y, w, h);
-            spr.SetFrame(srcX, srcY, w, h);
+            spr.SetDstRectangle(x, y, w, h);
+            spr.SetSrcRectangle(srcX, srcY, w, h);
             return spr;
         }
 
@@ -63,7 +64,7 @@ namespace Renderer.Gles2
             D.Position.Offset(x,y);
         }
 
-        public void SetRectangle(float x, float y, float w, float h)
+        public void SetDstRectangle(float x, float y, float w, float h)
         {
             A.Position.X = x;
             A.Position.Y = y;
@@ -78,7 +79,22 @@ namespace Renderer.Gles2
             D.Position.Y = y + h;
         }
 
-        public void SetFrame(float x, float y, float w, float h)
+        public void SetDstRectangle(ref Rectangle rect)
+        {
+            A.Position.X = rect.X;
+            A.Position.Y = rect.Y;
+
+            B.Position.X = rect.Right;
+            B.Position.Y = rect.Y;
+
+            C.Position.X = rect.Right;
+            C.Position.Y = rect.Bottom;
+
+            D.Position.X = rect.X;
+            D.Position.Y = rect.Bottom;
+        }
+
+        public void SetSrcRectangle(float x, float y, float w, float h)
         {
             A.Uv.X = x;
             A.Uv.Y = y;
@@ -93,10 +109,25 @@ namespace Renderer.Gles2
             D.Uv.Y = y + h;
         }
 
+        public void SetSrcRectangle(ref Rectangle rect)
+        {
+            A.Uv.X = rect.X;
+            A.Uv.Y = rect.Y;
+
+            B.Uv.X = rect.Right;
+            B.Uv.Y = rect.Y;
+
+            C.Uv.X = rect.Right;
+            C.Uv.Y = rect.Bottom;
+
+            D.Uv.X = rect.X;
+            D.Uv.Y = rect.Bottom;
+        }
+
         public void SetTexture(Texture texture, float x, float y)
         {
-            SetFrame(0, 0, texture.Width, texture.Height);
-            SetRectangle(x, y, texture.Width, texture.Height);
+            SetSrcRectangle(0, 0, texture.Width, texture.Height);
+            SetDstRectangle(x, y, texture.Width, texture.Height);
         }
 
         public void Transform(ref Matrix3 mat)
