@@ -8,5 +8,6 @@ namespace Renderer.Gles2
     {
         public Vector2 Position;
         public Vector2 Uv;
+        public Vector4 Color;
     }
 }

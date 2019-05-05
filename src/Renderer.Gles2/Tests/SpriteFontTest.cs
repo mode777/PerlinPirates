@@ -46,12 +46,14 @@ namespace Renderer.Gles2.Tests
                     glyph.Source.Height,
                     glyph.Source.X,
                     glyph.Source.Y);
+                _buffer.SetColor(i, 0, 0, 0, 1);
 
                 last = glyph;
 
                 i++;
             }
 
+            _context.State.ColorClearValue = new Vector4(1,1,1,1);
             _context.State.Blend = true;
             _context.State.BlendFunc(BlendingFactor.GL_SRC_ALPHA, BlendingFactor.GL_ONE_MINUS_SRC_ALPHA);
         }

@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
-using System.Numerics;
 using Tgl.Net;
+using Tgl.Net.Math;
+using Rectangle = System.Drawing.Rectangle;
 using Vector2 = Tgl.Net.Math.Vector2;
 
 namespace Renderer.Gles2
@@ -32,6 +33,7 @@ namespace Renderer.Gles2
             _buffer = _context.BuildBuffer<Quad2d>()
                 .HasAttribute("aPosition", 2)
                 .HasAttribute("aTexcoord", 2)
+                .HasAttribute("aColor", 4)
                 .HasData(_quads).Build();
 
             _drawable = context.BuildDrawable()
@@ -111,6 +113,16 @@ namespace Renderer.Gles2
         {
             _quads[index] = quad;
             TransformQuad(index, transform);
+        }
+
+        public void SetColor(int index, float r, float g, float b, float a)
+        {
+            _quads[index].SetColor(r,g,b,a);
+        }
+
+        public void SetColor(int index, ref Vector4 color)
+        {
+            _quads[index].SetColor(ref color);
         }
 
         private void CreateQuadIndices()

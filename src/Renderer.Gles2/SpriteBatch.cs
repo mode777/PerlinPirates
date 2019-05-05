@@ -19,6 +19,7 @@ namespace Renderer.Gles2
             Buffer = new BufferBuilder<Quad2d>(state)
                 .HasAttribute("aPosition", 2)
                 .HasAttribute("aTexcoord", 2)
+                .HasAttribute("aColor", 4)
                 .HasData(_quad2Ds)
                 .Build();
             Indices = CreateIndexBuffer(state);

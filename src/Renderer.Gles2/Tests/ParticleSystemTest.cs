@@ -11,7 +11,7 @@ namespace Renderer.Gles2.Tests
 {
     public class ParticleSystemTest : IRenderTest
     {
-        private const int PARTICLES = 500;
+        private const int PARTICLES = 2000;
 
         private readonly Vector2[] offsets = new Vector2[PARTICLES];
         private QuadBuffer2D _buffer;
@@ -39,6 +39,8 @@ namespace Renderer.Gles2.Tests
         private void ResetParticle(int i)
         {
             _buffer.SetQuad(i, 320 - (_buffer.Texture.Width / 2), 400 - (_buffer.Texture.Height / 2), _buffer.Texture.Width, _buffer.Texture.Height, 0, 0);
+            _buffer.SetColor(i, _random.Next(255) / 255f, _random.Next(255) / 255f, _random.Next(255) / 255f, 1);
+            
             offsets[i] = new Vector2
             {
                 X = (_random.Next(PARTICLES) - (PARTICLES / 2)) / (PARTICLES * 0.5f),

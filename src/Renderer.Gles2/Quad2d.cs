@@ -56,6 +56,26 @@ namespace Renderer.Gles2
             }
         }
 
+        public void SetColor(float r, float g, float b, float a)
+        {
+            var color = new Vector4(1 - r, 1 - g, 1 - b, 1 - a);
+
+            A.Color = color;
+            B.Color = color;
+            C.Color = color;
+            D.Color = color;
+        }
+
+        public void SetColor(ref Vector4 color)
+        {
+            var colori = new Vector4(1 - color.X, 1- color.Y, 1 - color.Z, 1 - color.W);
+
+            A.Color = colori;
+            B.Color = colori;
+            C.Color = colori;
+            D.Color = colori;
+        }
+
         public void Offset(float x, float y)
         {
             A.Position.Offset(x,y);
