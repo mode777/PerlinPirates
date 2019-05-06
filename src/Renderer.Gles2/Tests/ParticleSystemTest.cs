@@ -11,7 +11,7 @@ namespace Renderer.Gles2.Tests
 {
     public class ParticleSystemTest : IRenderTest
     {
-        private const int PARTICLES = 2000;
+        private const int PARTICLES = 10000;
 
         private readonly Vector2[] offsets = new Vector2[PARTICLES];
         private QuadBuffer2D _buffer;

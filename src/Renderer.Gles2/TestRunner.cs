@@ -34,8 +34,8 @@ namespace Renderer.Gles2
             _resources.RegisterLoader(imageLoader);
             _resources.RegisterLoader(new SpriteFontLoader(_context, imageLoader, resolver));
 
-            _test = new SpriteFontTest();
-            //_test = new ParticleSystemTest();            
+            //_test = new SpriteFontTest();
+            _test = new ParticleSystemTest();            
 
             Init();
         }
