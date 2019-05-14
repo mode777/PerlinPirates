@@ -1,9 +1,10 @@
 ﻿using System;
+using Game.Abstractions;
 using SDL2;
 
 namespace Platform.Sdl2
 {
-    internal class Sdl2Window : IDisposable
+    internal class Sdl2Window : IWindow
     {
         private readonly IntPtr _handle;
 

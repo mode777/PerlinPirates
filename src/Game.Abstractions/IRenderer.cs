@@ -2,6 +2,7 @@
 {
     public interface IRenderer
     {
+        void Initialize();
         void Render();
     }
 }

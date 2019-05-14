@@ -1,40 +1,49 @@
 ﻿using System;
 using Game.Abstractions;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using SDL2;
 
 namespace Platform.Sdl2
 {
     public class Sdl2Platform : IPlatform
     {
-        private readonly Sdl2Configuration _config;
+        private readonly ILogger<IPlatform> _logger;
+        private readonly Sdl2Options _config;
         private Sdl2Window _window;
         private Sdl2GlContext _context;
 
-        public Sdl2Platform(Sdl2Configuration config)
+        public Sdl2Platform(IOptions<Sdl2Options> configAccessor, ILogger<IPlatform> logger)
         {
-            _config = config;
+            _logger = logger;
+            _config = configAccessor.Value;
+            var flags = SDL.SDL_INIT_AUDIO | SDL.SDL_INIT_GAMECONTROLLER | SDL.SDL_INIT_JOYSTICK | SDL.SDL_INIT_VIDEO;
 
-            if (SDL.SDL_Init(SDL.SDL_INIT_AUDIO | SDL.SDL_INIT_GAMECONTROLLER | SDL.SDL_INIT_JOYSTICK | SDL.SDL_INIT_VIDEO) < 0)
+            _logger.LogDebug($"Init SDL with flags {flags.ToString()}");
+
+            if (SDL.SDL_Init(flags) < 0)
             {
                 throw new Sdl2Exception("Initialization error");
             }
 
             SetGlParameters();
         }
-
-        public void CreateWindow()
+        
+        public IWindow Init()
         {
+            _logger.LogDebug($"Creating a window. Width {_config.Width}, Height: {_config.Height}, Title: {_config.Title}");
             _window = new Sdl2Window(_config.Title, _config.Width, _config.Height);
-        }
-
-        public void CreateGlContext()
-        {
+            _logger.LogDebug($"Creating a GLContext...");
             _context = new Sdl2GlContext(_window);
+
+            return _window;
         }
 
         public IntPtr GetGlProcAddress(string name)
         {
-            return _context.GetProcAddress(name);
+            var addr = _context.GetProcAddress(name);
+            _logger.LogDebug($"GLProc {name} is located at {addr}.");
+            return addr;
         }
 
         public void SwapBuffers()

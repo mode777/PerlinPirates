@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Game.Abstractions;
 using ImageSharpLoader;
+using Microsoft.Extensions.Logging;
 using Renderer.Gles2.Tests;
 using Tgl.Net;
 using Tgl.Net.Abstractions;
@@ -11,23 +12,27 @@ using Tgl.Net.Math;
 
 namespace Renderer.Gles2
 {
-    public class TestRunner : IRenderer
+    public class Gles2Renderer : IRenderer
     {
         private readonly IPlatform _platform;
         private readonly ResourceManager _resources;
-        private readonly IRenderTest _test;
+        private readonly ILogger<IRenderer> _logger;
+        private IRenderTest _test;
 
         private GlContext _context;
 
-        public TestRunner(IPlatform platform, ResourceManager manager)
+        public Gles2Renderer(IPlatform platform, ResourceManager manager, ILogger<IRenderer> logger)
         {
             _platform = platform;
             _resources = manager;
-            _platform.CreateGlContext();
+            _logger = logger;
+        }
 
+        public void Initialize()
+        {
             _context = new GlContext(_platform.GetGlProcAddress);
 
-            var resolver = new EmbeddedResourceResolver(typeof(TestRunner).Assembly);
+            var resolver = new EmbeddedResourceResolver(typeof(Gles2Renderer).Assembly);
             var imageLoader = new ImageLoader(resolver);
 
             _resources.RegisterLoader(new ShaderLoader(_context, resolver));
@@ -35,14 +40,9 @@ namespace Renderer.Gles2
             _resources.RegisterLoader(new SpriteFontLoader(_context, imageLoader, resolver));
 
             //_test = new SpriteFontTest();
-            _test = new ParticleSystemTest();            
+            _test = new ParticleSystemTest();
 
-            Init();
-        }
-
-        public void Init()
-        {
-            _context.State.PropertyChanged += (s, args) => Console.WriteLine(args.PropertyName);
+            _context.State.PropertyChanged += (s, args) => _logger.LogDebug($"GLState changed: {args.PropertyName}");
 
             _test.Init(_context, _resources);
         }
@@ -50,8 +50,6 @@ namespace Renderer.Gles2
         public void Render()
         {
             _test.Render(_context);
-
-            _platform.SwapBuffers();
         }
     }
 }

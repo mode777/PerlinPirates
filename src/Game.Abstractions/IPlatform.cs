@@ -4,8 +4,7 @@ namespace Game.Abstractions
 {
     public interface IPlatform : IDisposable
     {
-        void CreateWindow();
-        void CreateGlContext();
+        IWindow Init();
         IntPtr GetGlProcAddress(string name);
         void SwapBuffers();
         bool PollEvent(out PlatformEvent @event);
