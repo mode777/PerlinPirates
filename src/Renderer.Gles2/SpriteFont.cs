@@ -35,6 +35,7 @@ namespace Renderer.Gles2
         public SpriteFont(Texture texture, int lineHeight, IEnumerable<SpriteGlyph> glyps)
         {
             Texture = texture;
+            LineHeight = lineHeight;
             _glyps = glyps.ToDictionary(x => x.Char);
         }
 

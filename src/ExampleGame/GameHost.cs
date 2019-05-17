@@ -58,7 +58,7 @@ namespace ExampleGame
                         _renderer.Render();
                         _platform.SwapBuffers();
 
-                        _platform.Sleep((uint)Math.Max(0, 17 - sw.ElapsedMilliseconds));
+                        //_platform.Sleep((uint)Math.Max(0, 17 - sw.ElapsedMilliseconds));
                     }
                     _logger.LogInformation($"Closing window...");
                 }

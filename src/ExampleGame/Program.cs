@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Runtime.Loader;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,9 +19,6 @@ using Tgl.Net.Abstractions;
 
 namespace ExampleGame
 {
-    
-
-
     class Program
     {
         private static string[] _args;
@@ -65,7 +63,9 @@ namespace ExampleGame
         private static void ConfigureServices(HostBuilderContext hostContext, IServiceCollection services)
         {
             services.Configure<Sdl2Options>(x => hostContext.Configuration.Bind("Platform", x));
-            services.AddSingleton<IPlatform, RaspberryPi>();
+            
+            // services.AddSingleton<IPlatform, RaspberryPi>();
+            services.AddSingleton<IPlatform, Sdl2Platform>();
             services.AddSingleton<IRenderer, Gles2Renderer>();
             services.AddSingleton<ResourceManager>();
             services.AddHostedService<GameHost>();
