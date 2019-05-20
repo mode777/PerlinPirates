@@ -15,6 +15,7 @@ using Microsoft.Extensions.Logging;
 using Platform.RaspberryPi;
 using Platform.Sdl2;
 using Renderer.Gles2;
+using Tgl.Net;
 using Tgl.Net.Abstractions;
 
 namespace ExampleGame
@@ -63,11 +64,13 @@ namespace ExampleGame
         private static void ConfigureServices(HostBuilderContext hostContext, IServiceCollection services)
         {
             services.AddSdl2(x => hostContext.Configuration.Bind("Platform", x));
+            services.AddScoped<ResourceManager>();
 
-            services.Configure<Sdl2Options>();
-            services.AddSingleton<IPlatform, RaspberryPi>();
-            services.AddSingleton<IRenderer, Gles2Renderer>();
-            services.AddSingleton<ResourceManager>();
+            services.AddScoped(x => 
+                new GlContext(x.GetRequiredService<IGlLoader>().GetGlProcAddress));
+            services.AddScoped<IGame, Gles2Game>();
+
+            services.AddScoped<IGameLoop, GameLoop>();
             services.AddHostedService<GameHost>();
         }
 

@@ -1,6 +1,6 @@
 ﻿namespace Game.Abstractions
 {
-    public interface IRenderer
+    public interface IGame
     {
         void Initialize();
         void Render();

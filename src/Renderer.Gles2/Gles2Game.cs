@@ -12,35 +12,35 @@ using Tgl.Net.Math;
 
 namespace Renderer.Gles2
 {
-    public class Gles2Renderer : IRenderer
+    public class Gles2Game : IGame
     {
-        private readonly IPlatform _platform;
+        private readonly IGlLoader _loader;
         private readonly ResourceManager _resources;
-        private readonly ILogger<IRenderer> _logger;
+        private readonly ILogger<IGame> _logger;
         private IRenderTest _test;
 
         private GlContext _context;
 
-        public Gles2Renderer(IPlatform platform, ResourceManager manager, ILogger<IRenderer> logger)
+        public Gles2Game(GlContext context, 
+            ResourceManager manager, 
+            ILogger<IGame> logger)
         {
-            _platform = platform;
+            _context = context;
             _resources = manager;
             _logger = logger;
         }
 
         public void Initialize()
         {
-            _context = new GlContext(_platform.GetGlProcAddress);
-
-            var resolver = new EmbeddedResourceResolver(typeof(Gles2Renderer).Assembly);
+            var resolver = new EmbeddedResourceResolver(typeof(Gles2Game).Assembly);
             var imageLoader = new ImageLoader(resolver);
 
             _resources.RegisterLoader(new ShaderLoader(_context, resolver));
             _resources.RegisterLoader(imageLoader);
             _resources.RegisterLoader(new SpriteFontLoader(_context, imageLoader, resolver));
 
-            _test = new SpriteFontTest();
-            //_test = new ParticleSystemTest();
+            //_test = new SpriteFontTest();
+            _test = new ParticleSystemTest();
 
             _context.State.PropertyChanged += (s, args) => _logger.LogDebug($"GLState changed: {args.PropertyName}");
 

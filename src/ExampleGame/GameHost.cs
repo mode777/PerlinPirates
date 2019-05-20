@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Game.Abstractions;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Platform.Sdl2;
@@ -14,53 +14,27 @@ namespace ExampleGame
 {
     class GameHost : IHostedService
     {
-        private readonly IHost _host;
-        private readonly IPlatform _platform;
-        private readonly IRenderer _renderer;
         private readonly ILogger<GameHost> _logger;
+        private readonly IServiceScopeFactory _scopeFactory;
         private CancellationTokenSource _tcs;
         private Task _main;
 
-        public GameHost(IHost host, IPlatform platform, IRenderer renderer, ILogger<GameHost> logger)
+        public GameHost(ILogger<GameHost> logger, IServiceScopeFactory scopeFactory)
         {
-            _host = host;
-            _platform = platform;
-            _renderer = renderer;
             _logger = logger;
+            _scopeFactory = scopeFactory;
             _tcs = new CancellationTokenSource();
-
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
+            _logger.LogInformation($"Starting GameHost...");
             _main = Task.Run(() =>
             {
-                _logger.LogInformation($"Starting GameHost using platform '{_platform.GetType().Name}'.");
-                _logger.LogDebug($"Creating window...");
-                using (var window = _platform.Init())
+                using (var scope = _scopeFactory.CreateScope())
                 {
-                    var resourceManager = new ResourceManager();
-
-                    _logger.LogDebug($"Creating renderer...");
-                    _renderer.Initialize();
-
-                    var sw = new Stopwatch();
-
-                    while (!_tcs.IsCancellationRequested)
-                    {
-                        sw.Restart();
-                        while (_platform.PollEvent(out var ev))
-                        {
-                            if (ev is QuitEvent)
-                                _host.StopAsync();
-                        }
-
-                        _renderer.Render();
-                        _platform.SwapBuffers();
-
-                        //_platform.Sleep((uint)Math.Max(0, 17 - sw.ElapsedMilliseconds));
-                    }
-                    _logger.LogInformation($"Closing window...");
+                    var loop = scope.ServiceProvider.GetRequiredService<IGameLoop>();
+                    loop.Run(_tcs.Token);
                 }
             }, cancellationToken);
         }

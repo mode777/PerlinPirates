@@ -6,8 +6,6 @@ using System.Reflection;
 using System.Text;
 using Tgl.Net.Abstractions;
 using Tgl.Net.Bindings;
-using Tgl.Net.Helpers;
-using ImagePixelFormat = Tgl.Net.Abstractions.ImagePixelFormat;
 
 namespace Tgl.Net
 {
