@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Runtime.Loader;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,9 +19,6 @@ using Tgl.Net.Abstractions;
 
 namespace ExampleGame
 {
-    
-
-
     class Program
     {
         private static string[] _args;

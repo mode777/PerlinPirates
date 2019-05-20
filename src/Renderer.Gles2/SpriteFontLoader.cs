@@ -34,7 +34,8 @@ namespace Renderer.Gles2
 
         private SpriteFont LoadFromXml(XDocument doc, Texture texture)
         {
-            var lineHeight = int.Parse(doc.Descendants("common").First().Attribute("lineHeight").Value);
+            var val = doc.Descendants("common").First().Attribute("lineHeight").Value;
+            var lineHeight = int.Parse(val);
 
             var kernings = doc.Descendants("kerning").GroupBy(x => x.Attribute("first").Value)
                 .ToDictionary(
@@ -64,7 +65,7 @@ namespace Renderer.Gles2
                         int.Parse(el.Attribute("width").Value),
                         int.Parse(el.Attribute("height").Value)),
                     XAdvance = int.Parse(el.Attribute("xadvance").Value),
-                    Kernings = glyphKernings
+                    Kernings = glyphKernings,
                 };
             });
 
