@@ -64,7 +64,9 @@ namespace ExampleGame
 
         private static void ConfigureServices(HostBuilderContext hostContext, IServiceCollection services)
         {
-            services.Configure<Sdl2Options>(x => hostContext.Configuration.Bind("Platform", x));
+            services.AddSdl2(x => hostContext.Configuration.Bind("Platform", x));
+
+            services.Configure<Sdl2Options>();
             services.AddSingleton<IPlatform, RaspberryPi>();
             services.AddSingleton<IRenderer, Gles2Renderer>();
             services.AddSingleton<ResourceManager>();

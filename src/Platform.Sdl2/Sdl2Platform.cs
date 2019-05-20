@@ -6,7 +6,7 @@ using SDL2;
 
 namespace Platform.Sdl2
 {
-    public class Sdl2Platform : IPlatform
+    public class Sdl2Platform : IPlatform, IGlLoader
     {
         private readonly ILogger<IPlatform> _logger;
         private readonly Sdl2Options _config;
@@ -27,18 +27,14 @@ namespace Platform.Sdl2
             }
 
             SetGlParameters();
-        }
-        
-        public IWindow Init()
-        {
+
             _logger.LogDebug($"Creating a window. Width {_config.Width}, Height: {_config.Height}, Title: {_config.Title}");
             _window = new Sdl2Window(_config.Title, _config.Width, _config.Height);
+
             _logger.LogDebug($"Creating a GLContext...");
             _context = new Sdl2GlContext(_window);
-
-            return _window;
         }
-
+        
         public IntPtr GetGlProcAddress(string name)
         {
             var addr = _context.GetProcAddress(name);
