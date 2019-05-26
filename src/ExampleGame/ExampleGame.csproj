@@ -22,11 +22,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ECS\ECS.csproj" />
     <ProjectReference Include="..\Game.Abstractions\Game.Abstractions.csproj" />
     <ProjectReference Include="..\ImageLoader\ImageSharpLoader.csproj" />
     <ProjectReference Include="..\Platform.Sdl2\Platform.Sdl2.csproj" />
     <ProjectReference Include="..\Platform.RaspberryPi\Platform.RaspberryPi.csproj" />
     <ProjectReference Include="..\Renderer.Gles2\Renderer.Gles2.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Components\" />
+    <Folder Include="Systems\" />
   </ItemGroup>
 
 </Project>
