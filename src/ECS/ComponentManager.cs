@@ -51,5 +51,17 @@ namespace ECS
                 throw new InvalidDataException("Type not found");
             }
         }
+
+        public void RemoveComponent<TComponent>(TComponent component) where TComponent : Component
+        {
+            if (_components.TryGetValue(typeof(TComponent), out var dict))
+            {
+                dict.Remove(component.EntityId);
+            }
+            else
+            {
+                throw new InvalidDataException("Type not found");
+            }
+        }
     }
 }
