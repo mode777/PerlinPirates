@@ -12,44 +12,41 @@ using Tgl.Net.Math;
 
 namespace Renderer.Gles2
 {
-    public class Gles2Game : IGame
+    public abstract class Gles2Game : GameBase
     {
-        private readonly IGlLoader _loader;
-        private readonly ResourceManager _resources;
-        private readonly ILogger<IGame> _logger;
-        private IRenderTest _test;
-
-        private GlContext _context;
-
         public Gles2Game(GlContext context, 
             ResourceManager manager, 
             ILogger<IGame> logger)
         {
-            _context = context;
-            _resources = manager;
-            _logger = logger;
+            Context = context;
+            Resources = manager;
+            Logger = logger;
         }
 
-        public void Initialize()
+        protected ResourceManager Resources { get; }
+        protected ILogger<IGame> Logger { get; }
+        protected GlContext Context { get; }
+
+        public override void Load()
         {
             var resolver = new EmbeddedResourceResolver(typeof(Gles2Game).Assembly);
             var imageLoader = new ImageLoader(resolver);
 
-            _resources.RegisterLoader(new ShaderLoader(_context, resolver));
-            _resources.RegisterLoader(imageLoader);
-            _resources.RegisterLoader(new SpriteFontLoader(_context, imageLoader, resolver));
+            Resources.RegisterLoader(new ShaderLoader(Context, resolver));
+            Resources.RegisterLoader(imageLoader);
+            Resources.RegisterLoader(new SpriteFontLoader(Context, imageLoader, resolver));
 
-            //_test = new SpriteFontTest();
-            _test = new ParticleSystemTest();
-
-            _context.State.PropertyChanged += (s, args) => _logger.LogDebug($"GLState changed: {args.PropertyName}");
-
-            _test.Init(_context, _resources);
+            Context.State.PropertyChanged += (s, args) => Logger.LogDebug($"GLState changed: {args.PropertyName}");
         }
 
-        public void Render()
+        public override void Draw()
         {
-            _test.Render(_context);
+
+        }
+
+        public override void Update(double dt)
+        {
+
         }
     }
 }

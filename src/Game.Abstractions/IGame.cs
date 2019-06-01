@@ -2,7 +2,9 @@
 {
     public interface IGame
     {
-        void Initialize();
-        void Render();
+        void Load();
+        void Quit();
+        void Draw();
+        void Update(double delta);
     }
 }

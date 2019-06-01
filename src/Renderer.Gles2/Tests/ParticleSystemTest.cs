@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Game.Abstractions;
+using Microsoft.Extensions.Logging;
 using Tgl.Net;
 using Tgl.Net.Abstractions;
 using Tgl.Net.Bindings;
@@ -9,31 +10,35 @@ using Tgl.Net.Math;
 
 namespace Renderer.Gles2.Tests
 {
-    public class ParticleSystemTest : IRenderTest
+    public class ParticleSystemTest : Gles2Game
     {
         private const int PARTICLES = 10000;
 
         private readonly Vector2[] offsets = new Vector2[PARTICLES];
         private QuadBuffer2D _buffer;
-        private GlContext _context;
         private Random _random = new Random();
 
-        public void Init(GlContext context, ResourceManager manager)
+        public ParticleSystemTest(GlContext context, ResourceManager manager, ILogger<IGame> logger) 
+            : base(context, manager, logger)
         {
-            _context = context;
+        }
 
-            var image = manager.LoadResource<IImage>("Resources.Textures.particle.png");
-            var texture = context.TextureFromImage(image);
+        public override void Load()
+        {
+            base.Load();
 
-            _buffer = new QuadBuffer2D(context, new Shader2d(context, manager), texture, PARTICLES);
+            var image = Resources.LoadResource<IImage>("Resources.Textures.particle.png");
+            var texture = Context.TextureFromImage(image);
+
+            _buffer = new QuadBuffer2D(Context, new Shader2d(Context, Resources), texture, PARTICLES);
 
             for (int i = 0; i < PARTICLES; i++)
             {
                 ResetParticle(i);
             }
 
-            context.State.Blend = true;
-            context.State.BlendFunc(BlendingFactor.GL_ONE, BlendingFactor.GL_ONE);
+            Context.State.Blend = true;
+            Context.State.BlendFunc(BlendingFactor.GL_ONE, BlendingFactor.GL_ONE);
         }
 
         private void ResetParticle(int i)
@@ -48,9 +53,9 @@ namespace Renderer.Gles2.Tests
             };
         }
 
-        public void Render(GlContext context)
+        public override void Update(double dt)
         {
-            for (int i = 0; i < PARTICLES; i++)
+                for (int i = 0; i < PARTICLES; i++)
             {
                 _buffer.OffsetQuad(i, offsets[i].X, offsets[i].Y);
 
@@ -66,8 +71,11 @@ namespace Renderer.Gles2.Tests
             }
 
             _buffer.Update();
+        }
 
-            _context.Clear(ClearBufferMask.GL_COLOR_BUFFER_BIT);
+        public override void Draw()
+        {       
+            Context.Clear(ClearBufferMask.GL_COLOR_BUFFER_BIT);
             _buffer.Render();
         }
     }

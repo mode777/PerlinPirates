@@ -15,6 +15,7 @@ using Microsoft.Extensions.Logging;
 using Platform.RaspberryPi;
 using Platform.Sdl2;
 using Renderer.Gles2;
+using Renderer.Gles2.Tests;
 using Tgl.Net;
 using Tgl.Net.Abstractions;
 
@@ -68,7 +69,7 @@ namespace ExampleGame
 
             services.AddScoped(x => 
                 new GlContext(x.GetRequiredService<IGlLoader>().GetGlProcAddress));
-            services.AddScoped<IGame, Gles2Game>();
+            services.AddScoped<IGame, ParticleSystemTest>();
 
             services.AddScoped<IGameLoop, GameLoop>();
             services.AddHostedService<GameHost>();

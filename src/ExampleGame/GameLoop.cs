@@ -23,21 +23,31 @@ namespace ExampleGame
 
         public void Run(CancellationToken token)
         {
-            _game.Initialize();
+            _game.Load();
 
             var sw = new Stopwatch();
+            double dt = 0;
 
             while (!token.IsCancellationRequested)
             {
                 sw.Restart();
                 while (_platform.PollEvent(out var ev))
                 {
-                    if (ev is QuitEvent)
+                    if (ev is QuitEvent){
+                        _game.Quit();
                         _host.StopAsync();
+                    }
                 }
 
-                _game.Render();
+                dt = sw.Elapsed.TotalSeconds;
+                sw.Restart();
+
+                _game.Update(dt);                
+                _game.Draw();
+
                 _platform.SwapBuffers();
+
+                _platform.Sleep(1);
             }
         }
     }
