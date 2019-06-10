@@ -1,6 +1,6 @@
 ﻿namespace Game.Abstractions
 {
-    public abstract class GameBase : IGame
+    public abstract class GameComponent : IGameComponent
     {
         public virtual void Draw()
         {

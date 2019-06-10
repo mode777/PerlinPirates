@@ -142,9 +142,9 @@ namespace Tgl.Net
             return this;
         }
 
-        public DrawableBuilder AddTexture(string name, IImage image)
+        public DrawableBuilder AddTexture(string name, byte[] data, int width, int height, ImagePixelFormat format = ImagePixelFormat.Rgba)
         {
-            _textures[name] = _context.TextureFromImage(image);
+            _textures[name] = _context.TextureFromPixels(data, width, height, format);
 
             return this;
         }

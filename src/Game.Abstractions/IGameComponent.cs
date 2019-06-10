@@ -1,6 +1,6 @@
 ﻿namespace Game.Abstractions
 {
-    public interface IGame
+    public interface IGameComponent
     {
         void Load();
         void Quit();

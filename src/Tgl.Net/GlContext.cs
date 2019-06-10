@@ -100,11 +100,11 @@ namespace Tgl.Net
             return new IndexBuffer(State, indices);
         }
 
-        public Texture TextureFromImage(IImage image)
+        public Texture TextureFromPixels(byte[] data, int width, int height, ImagePixelFormat format)
         {
             return new TextureBuilder<byte>(State)
-                .HasSize(image.Width, image.Height)
-                .HasData(image.Data)
+                .HasSize(width, height)
+                .HasData(data)
                 .Build();
         }
     }

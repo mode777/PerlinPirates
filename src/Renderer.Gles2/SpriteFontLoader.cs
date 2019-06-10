@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -10,26 +11,17 @@ namespace Renderer.Gles2
 {
     public class SpriteFontLoader : ResourceLoader<SpriteFont>
     {
-        private readonly GlContext _context;
-        private readonly ResourceLoader<IImage> _imageLoader;
+        private readonly ResourceManager _manager;
 
-        public SpriteFontLoader(GlContext context, ResourceLoader<IImage> imageLoader, IResourceResolver resolver) 
-            : base(resolver)
+        public SpriteFontLoader(ResourceManager manager) 
         {
-            _context = context;
-            _imageLoader = imageLoader;
+            _manager = manager;
         }
 
         private Texture LoadTexture(XDocument doc)
         {
             var textureKey = doc.Descendants("page").First().Attribute("file").Value;
-            return _context.TextureFromImage(_imageLoader.Load(textureKey));
-        }
-
-        private async Task<Texture> LoadTextureAsync(XDocument doc)
-        {
-            var textureKey = doc.Descendants("page").First().Attribute("file").Value;
-            return _context.TextureFromImage(await _imageLoader.LoadAsync(textureKey));
+            return _manager.LoadResource<Texture>(textureKey);
         }
 
         private SpriteFont LoadFromXml(XDocument doc, Texture texture)
@@ -71,25 +63,12 @@ namespace Renderer.Gles2
 
             return new SpriteFont(texture, lineHeight, glyphs);
         }
-
-        public override async Task<SpriteFont> LoadAsync(string key)
+        
+        public override SpriteFont Load(string rid, Stream stream)
         {
-            using (var stream = ResolveResourceId(key))
-            {
-                var doc = XDocument.Load(stream);
-                var texture = await LoadTextureAsync(doc);
-                return LoadFromXml(doc, texture);
-            }
-        }
-
-        public override SpriteFont Load(string key)
-        {
-            using(var stream = ResolveResourceId(key))
-            {
-                var doc = XDocument.Load(stream);
-                var texture = LoadTexture(doc);
-                return LoadFromXml(doc, texture);
-            }
+            var doc = XDocument.Load(stream);
+            var texture = LoadTexture(doc);
+            return LoadFromXml(doc, texture);
         }
     }
 }

@@ -17,7 +17,14 @@ namespace Game.Abstractions
 
         public Stream Resolve(string rid)
         {
-            return ResourceHelpers.GetResourceStream(_assembly, rid);
+            try
+            {
+                return ResourceHelpers.GetResourceStream(_assembly, rid);
+            }
+            catch(KeyNotFoundException ex)
+            {
+                return null;
+            }
         }
     }
 }

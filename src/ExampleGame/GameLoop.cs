@@ -10,10 +10,10 @@ namespace ExampleGame
     {
         private readonly IHost _host;
         private readonly IPlatform _platform;
-        private readonly IGame _game;
+        private readonly IGameComponent _game;
         private readonly ILogger<IGameLoop> _logger;
 
-        public GameLoop(IHost host, IPlatform platform, IGame game, ILogger<IGameLoop> logger)
+        public GameLoop(IHost host, IPlatform platform, IGameComponent game, ILogger<IGameLoop> logger)
         {
             _host = host;
             _platform = platform;

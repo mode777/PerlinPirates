@@ -26,7 +26,15 @@ namespace Game.Abstractions
                 rid = Path.Combine(_basePath.FullName, rid);
             }
 
-            return File.OpenRead(rid);
+            if (File.Exists(rid))
+            {
+                return File.OpenRead(rid);
+            }
+            else
+            {
+                return null;
+            }
+
         }
     }
 }

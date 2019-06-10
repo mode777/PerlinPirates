@@ -7,8 +7,4 @@ namespace Game.Abstractions
     public class PlatformEvent
     {
     }
-
-    public class QuitEvent : PlatformEvent
-    {
-    }
 }

@@ -17,7 +17,7 @@ namespace Renderer.Gles2.Tests
         public void Init(GlContext context, ResourceManager resources)
         {
             var shader = resources.LoadResource<Shader>("Resources.Shaders.texture_checker");
-            var image = resources.LoadResource<IImage>("Resources.Textures.grid.png");
+            var texture = resources.LoadResource<Texture>("Resources.Textures.grid.png");
 
             _drawable = context.BuildDrawable()
                 .UseShader(shader)
@@ -29,7 +29,7 @@ namespace Renderer.Gles2.Tests
                         1, -1, 1, 1,
                         1, 1, 1, 0,
                         -1, 1, 0, 0))
-                .AddTexture("uTexture", image)
+                .AddTexture("uTexture", texture)
                 .UseIndices(3, 0, 1, 3, 1, 2)
                 .Build();
         }

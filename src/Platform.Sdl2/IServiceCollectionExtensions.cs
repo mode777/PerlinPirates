@@ -10,9 +10,9 @@ namespace Platform.Sdl2
         public static IServiceCollection AddSdl2(this IServiceCollection services, Action<Sdl2Options> configureOptions)
         {
             services.Configure(configureOptions);
-            services.TryAddScoped<Sdl2Platform>();
-            services.TryAddScoped<IPlatform>(x => x.GetRequiredService<Sdl2Platform>());
-            services.TryAddScoped<IGlLoader>(x => x.GetRequiredService<Sdl2Platform>());
+            services.TryAddSingleton<Sdl2Platform>();
+            services.TryAddSingleton<IPlatform>(x => x.GetRequiredService<Sdl2Platform>());
+            services.TryAddSingleton<IGlLoader>(x => x.GetRequiredService<Sdl2Platform>());
 
             return services;
         }

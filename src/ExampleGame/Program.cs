@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -64,17 +63,27 @@ namespace ExampleGame
 
         private static void ConfigureServices(HostBuilderContext hostContext, IServiceCollection services)
         {
+            services.AddResourceManager(x =>
+            {
+                x.AddEmbeddedAssembly(typeof(Renderer.Gles2.Renderer).Assembly);
+            });
+            services.AddResourceLoader<Texture, TextureLoader>();
+            services.AddResourceLoader<Shader, ShaderLoader>();
+            services.AddResourceLoader<SpriteFont, SpriteFontLoader>();
+            
             services.AddSdl2(x => hostContext.Configuration.Bind("Platform", x));
-            services.AddScoped<ResourceManager>();
-
-            services.AddScoped(x => 
+            
+            services.AddSingleton(x => 
                 new GlContext(x.GetRequiredService<IGlLoader>().GetGlProcAddress));
-            services.AddScoped<IGame, ParticleSystemTest>();
+
+            services.AddSingleton<IGameComponent, SceneManager>();
+            services.RegisterGameComponent<ParticleSystemTest>();
 
             services.AddScoped<IGameLoop, GameLoop>();
             services.AddHostedService<GameHost>();
         }
 
+        
     }
 }
 

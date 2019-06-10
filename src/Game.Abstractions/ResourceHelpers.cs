@@ -25,7 +25,6 @@ namespace Game.Abstractions
         public static Stream GetResourceStream(Assembly assembly, string resource)
         {
             var assemblyName = assembly.GetName().Name;
-            //var all = assembly.GetManifestResourceNames();
             var stream = assembly.GetManifestResourceStream($"{assemblyName}.{resource}");
 
             if(stream == null)

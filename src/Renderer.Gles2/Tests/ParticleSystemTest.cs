@@ -10,35 +10,37 @@ using Tgl.Net.Math;
 
 namespace Renderer.Gles2.Tests
 {
-    public class ParticleSystemTest : Gles2Game
+    public class ParticleSystemTest : GameComponent
     {
+        private readonly GlContext _context;
+        private readonly ResourceManager _manager;
+        private readonly ILogger<IGameComponent> _logger;
         private const int PARTICLES = 10000;
 
         private readonly Vector2[] offsets = new Vector2[PARTICLES];
         private QuadBuffer2D _buffer;
         private Random _random = new Random();
 
-        public ParticleSystemTest(GlContext context, ResourceManager manager, ILogger<IGame> logger) 
-            : base(context, manager, logger)
+        public ParticleSystemTest(GlContext context, ResourceManager manager, ILogger<IGameComponent> logger)
         {
+            _context = context;
+            _manager = manager;
+            _logger = logger;
         }
 
         public override void Load()
         {
-            base.Load();
+            var texture = _manager.LoadResource<Texture>("Resources.Textures.particle.png");
 
-            var image = Resources.LoadResource<IImage>("Resources.Textures.particle.png");
-            var texture = Context.TextureFromImage(image);
-
-            _buffer = new QuadBuffer2D(Context, new Shader2d(Context, Resources), texture, PARTICLES);
+            _buffer = new QuadBuffer2D(_context, new Shader2d(_context, _manager), texture, PARTICLES);
 
             for (int i = 0; i < PARTICLES; i++)
             {
                 ResetParticle(i);
             }
 
-            Context.State.Blend = true;
-            Context.State.BlendFunc(BlendingFactor.GL_ONE, BlendingFactor.GL_ONE);
+            _context.State.Blend = true;
+            _context.State.BlendFunc(BlendingFactor.GL_ONE, BlendingFactor.GL_ONE);
         }
 
         private void ResetParticle(int i)
@@ -75,7 +77,7 @@ namespace Renderer.Gles2.Tests
 
         public override void Draw()
         {       
-            Context.Clear(ClearBufferMask.GL_COLOR_BUFFER_BIT);
+            _context.Clear(ClearBufferMask.GL_COLOR_BUFFER_BIT);
             _buffer.Render();
         }
     }

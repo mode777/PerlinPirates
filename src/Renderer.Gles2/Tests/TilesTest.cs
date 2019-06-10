@@ -21,8 +21,7 @@ namespace Renderer.Gles2.Tests
         {
             _context = context;
 
-            var image = manager.LoadResource<IImage>("Resources.Textures.tiles.png");
-            var texture = context.TextureFromImage(image);
+            var texture = manager.LoadResource<Texture>("Resources.Textures.tiles.png");
 
             var shader = new Shader2d(context, manager);
 

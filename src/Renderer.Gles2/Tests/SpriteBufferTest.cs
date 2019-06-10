@@ -17,8 +17,7 @@ namespace Renderer.Gles2.Tests
         {
             this.manager = manager;
             buffer = new SpriteBatch(context.State, 10);
-            var image = manager.LoadResource<IImage>("Resources.Textures.grid.png");
-            var texture = context.TextureFromImage(image);
+            var texture = manager.LoadResource<Texture>("Resources.Textures.grid.png");
 
             buffer.Push(texture, 20, 20);
         }
