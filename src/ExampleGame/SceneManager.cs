@@ -39,7 +39,7 @@ namespace ExampleGame
             }
         }
 
-        public void Update(double delta)
+        public void Update(float delta)
         {
             foreach (var component in _components)
             {

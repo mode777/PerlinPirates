@@ -16,6 +16,8 @@ namespace Platform.Sdl2
             {
                 throw new Sdl2Exception("Unable to initialize GL Context");
             }
+
+            SDL.SDL_GL_SetSwapInterval(1);
         }
 
         ~Sdl2GlContext()

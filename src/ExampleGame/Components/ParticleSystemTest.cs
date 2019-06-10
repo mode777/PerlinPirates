@@ -47,7 +47,7 @@ namespace Renderer.Gles2.Tests
         {
             _buffer.SetQuad(i, 320 - (_buffer.Texture.Width / 2), 400 - (_buffer.Texture.Height / 2), _buffer.Texture.Width, _buffer.Texture.Height, 0, 0);
             _buffer.SetColor(i, _random.Next(255) / 255f, _random.Next(255) / 255f, _random.Next(255) / 255f, 1);
-            
+
             offsets[i] = new Vector2
             {
                 X = (_random.Next(PARTICLES) - (PARTICLES / 2)) / (PARTICLES * 0.5f),
@@ -55,11 +55,12 @@ namespace Renderer.Gles2.Tests
             };
         }
 
-        public override void Update(double dt)
+        public override void Update(float dt)
         {
-                for (int i = 0; i < PARTICLES; i++)
+            for (int i = 0; i < PARTICLES; i++)
             {
                 _buffer.OffsetQuad(i, offsets[i].X, offsets[i].Y);
+
 
                 // Gravity
                 //offsets[i].Y += 0.01f;
@@ -76,7 +77,7 @@ namespace Renderer.Gles2.Tests
         }
 
         public override void Draw()
-        {       
+        {
             _context.Clear(ClearBufferMask.GL_COLOR_BUFFER_BIT);
             _buffer.Render();
         }

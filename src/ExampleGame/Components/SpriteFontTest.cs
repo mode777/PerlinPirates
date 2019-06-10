@@ -9,21 +9,27 @@ using Tgl.Net.Math;
 
 namespace Renderer.Gles2.Tests
 {
-    public class SpriteFontTest : IRenderTest
+    public class SpriteFontTest : GameComponent
     {
         private const string TEXT = "Lorem ipsum dolor sit amet, consetfdfffffffffffffffffffffffffffhhhhhhhhhhhhhhhetur sadipscing elitr, sed diam nonumy eirmod.";
 
-        private QuadBuffer2D _buffer;
-        private GlContext _context;
+        private readonly GlContext _context;
+        private readonly ResourceManager _manager;
 
-        public void Init(GlContext context, ResourceManager manager)
+        private QuadBuffer2D _buffer;
+
+        public SpriteFontTest(GlContext context, ResourceManager manager)
         {
             _context = context;
+            _manager = manager;
+        }
 
-            var font = manager.LoadResource<SpriteFont>("Resources.Fonts.segoe.fnt");
+        public override void Load()
+        {
+            var font = _manager.LoadResource<SpriteFont>("Resources.Fonts.segoe.fnt");
             var texture = font.Texture;
 
-            _buffer = new QuadBuffer2D(context, new Shader2d(context, manager), texture, TEXT.Length);
+            _buffer = new QuadBuffer2D(_context, new Shader2d(_context, _manager), texture, TEXT.Length);
 
             const int width = 200;
 
@@ -42,14 +48,14 @@ namespace Renderer.Gles2.Tests
                 {
                     x = 0;
                     y += font.LineHeight;
-                    i = wordstart == -1 
-                        ? i-1 
+                    i = wordstart == -1
+                        ? i - 1
                         : wordstart;
                     wordstart = -1;
                 }
 
                 var c = chars[i];
-                
+
                 if (c == ' ')
                     wordstart = i + 1;
 
@@ -72,16 +78,19 @@ namespace Renderer.Gles2.Tests
                 last = glyph;
                 i++;
             }
-            
-            _context.State.ColorClearValue = new Vector4(1,1,1,1);
+
+            _context.State.ColorClearValue = new Vector4(1, 1, 1, 1);
             _context.State.Blend = true;
             _context.State.BlendFunc(BlendingFactor.GL_SRC_ALPHA, BlendingFactor.GL_ONE_MINUS_SRC_ALPHA);
         }
 
-        public void Render(GlContext context)
+        public override void Update(float delta)
         {
             _buffer.Update();
+        }
 
+        public override void Draw()
+        {
             _context.Clear(ClearBufferMask.GL_COLOR_BUFFER_BIT);
             _buffer.Render();
         }

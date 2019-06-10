@@ -42,7 +42,7 @@ namespace ExampleGame
                 dt = sw.Elapsed.TotalSeconds;
                 sw.Restart();
 
-                _game.Update(dt);                
+                _game.Update((float)dt);                
                 _game.Draw();
 
                 _platform.SwapBuffers();

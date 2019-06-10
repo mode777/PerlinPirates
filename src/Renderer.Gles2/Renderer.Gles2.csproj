@@ -9,38 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Resources\Fonts\segoe.fnt" />
-    <None Remove="Resources\Fonts\segoe_0.png" />
-    <None Remove="Resources\Shaders\game2d.fragment.glsl" />
-    <None Remove="Resources\Shaders\game2d.vertex.glsl" />
-    <None Remove="Resources\Shaders\minimal.fragment.glsl" />
-    <None Remove="Resources\Shaders\minimal.vertex.glsl" />
-    <None Remove="Resources\Shaders\quad2d.fragment.glsl" />
-    <None Remove="Resources\Shaders\quad2d.vertex.glsl" />
-    <None Remove="Resources\Shaders\texture_checker.fragment.glsl" />
-    <None Remove="Resources\Shaders\texture_checker.vertex.glsl" />
-    <None Remove="Resources\Textures\grid.png" />
-    <None Remove="Resources\Textures\particle.png" />
-    <None Remove="Resources\Textures\tiles.png" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\Fonts\segoe.fnt" />
-    <EmbeddedResource Include="Resources\Fonts\segoe_0.png" />
-    <EmbeddedResource Include="Resources\Shaders\game2d.fragment.glsl" />
-    <EmbeddedResource Include="Resources\Shaders\game2d.vertex.glsl" />
-    <EmbeddedResource Include="Resources\Shaders\minimal.fragment.glsl" />
-    <EmbeddedResource Include="Resources\Shaders\minimal.vertex.glsl" />
-    <EmbeddedResource Include="Resources\Shaders\quad2d.fragment.glsl" />
-    <EmbeddedResource Include="Resources\Shaders\quad2d.vertex.glsl" />
-    <EmbeddedResource Include="Resources\Shaders\texture_checker.fragment.glsl" />
-    <EmbeddedResource Include="Resources\Shaders\texture_checker.vertex.glsl" />
-    <EmbeddedResource Include="Resources\Textures\grid.png" />
-    <EmbeddedResource Include="Resources\Textures\particle.png" />
-    <EmbeddedResource Include="Resources\Textures\tiles.png" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Game.Abstractions\Game.Abstractions.csproj" />
     <ProjectReference Include="..\ImageLoader\ImageSharpLoader.csproj" />
     <ProjectReference Include="..\Tgl.Net\Tgl.Net.csproj" />

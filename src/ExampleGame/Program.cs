@@ -65,7 +65,7 @@ namespace ExampleGame
         {
             services.AddResourceManager(x =>
             {
-                x.AddEmbeddedAssembly(typeof(Renderer.Gles2.Renderer).Assembly);
+                x.AddEmbeddedAssembly(typeof(Program).Assembly);
             });
             services.AddResourceLoader<Texture, TextureLoader>();
             services.AddResourceLoader<Shader, ShaderLoader>();
@@ -77,7 +77,7 @@ namespace ExampleGame
                 new GlContext(x.GetRequiredService<IGlLoader>().GetGlProcAddress));
 
             services.AddSingleton<IGameComponent, SceneManager>();
-            services.RegisterGameComponent<ParticleSystemTest>();
+            services.RegisterGameComponent<TilesTest>();
 
             services.AddScoped<IGameLoop, GameLoop>();
             services.AddHostedService<GameHost>();
