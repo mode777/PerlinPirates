@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.Loader;
 using System.Threading;
 using System.Threading.Tasks;
+using ExampleGame.Tutorial;
 using Game.Abstractions;
 using ImageSharpLoader;
 using Microsoft.Extensions.Configuration;
@@ -76,7 +77,7 @@ namespace ExampleGame
                 new GlContext(x.GetRequiredService<IGlLoader>().GetGlProcAddress));
 
             services.AddSingleton<IGameComponent, SceneManager>();
-            services.RegisterGameComponent<ParticleSystemTest>();
+            services.RegisterGameComponent<Matrices>();
 
             services.AddScoped<IGameLoop, GameLoop>();
             services.AddHostedService<GameHost>();

@@ -149,6 +149,9 @@ namespace Tgl.Net
         public void SetUniform(string name, ref Matrix3x3 value) 
             => SetUniform(_uniformsByName[name].Location, ref value);
 
+        public void SetUniform(string name, ref Matrix4x4 value)
+            => SetUniform(_uniformsByName[name].Location, value);
+
         public void SetUniform(int location, Matrix4x4 value)
         {
             Use();
