@@ -77,7 +77,7 @@ namespace ExampleGame
                 new GlContext(x.GetRequiredService<IGlLoader>().GetGlProcAddress));
 
             services.AddSingleton<IGameComponent, SceneManager>();
-            services.RegisterGameComponent<TilesTest>();
+            services.RegisterGameComponent<ParticleSystemTest>();
 
             services.AddScoped<IGameLoop, GameLoop>();
             services.AddHostedService<GameHost>();

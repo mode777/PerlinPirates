@@ -606,6 +606,10 @@ namespace Tgl.Net.Bindings
         #region Loader
         public static void LoadApi(Func<string, IntPtr> getProcAddress)
         {
+            //T GetProcAddress<T>(string name) =>
+            //    Marshal.GetDelegateForFunctionPointer<T>(getProcAddress(name));
+
+            //glActiveTexture = GetProcAddress<glActiveTextureDelegate>("glActiveTexture");
             glActiveTexture = Marshal.GetDelegateForFunctionPointer<glActiveTextureDelegate>(getProcAddress("glActiveTexture"));
             glAttachShader = Marshal.GetDelegateForFunctionPointer<glAttachShaderDelegate>(getProcAddress("glAttachShader"));
             glBindAttribLocation = Marshal.GetDelegateForFunctionPointer<glBindAttribLocationDelegate>(getProcAddress("glBindAttribLocation"));
