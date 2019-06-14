@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using Game.Abstractions;
 using Tgl.Net;
-using Tgl.Net.Abstractions;
 
 namespace Renderer.Gles2
 {

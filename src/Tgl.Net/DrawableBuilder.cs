@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Reflection;
 using System.Text;
-using Tgl.Net.Abstractions;
 using Tgl.Net.Bindings;
 using Tgl.Net.Math;
 
@@ -110,7 +110,7 @@ namespace Tgl.Net
             return this;
         }
 
-        public DrawableBuilder AddUniform(string variable, Matrix3 value)
+        public DrawableBuilder AddUniform(string variable, Matrix3x3 value)
         {
             _uniformSetters[variable] = shader => shader.SetUniform(shader.GetUniformLocation(variable), ref value);
 

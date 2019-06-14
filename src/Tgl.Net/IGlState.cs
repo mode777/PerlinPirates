@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Drawing;
+using System.Numerics;
 using Tgl.Net.Bindings;
 using Tgl.Net.Math;
 
@@ -18,7 +20,7 @@ namespace Tgl.Net
         BlendingFactor BlendSrcAlpha { get; set; }
         BlendingFactor BlendSrcRgb { get; set; }
         Vector4 ColorClearValue { get; set; }
-        Vector4b ColorWritemask { get; set; }
+        ColorWriteMask ColorWritemask { get; set; }
         bool CullFace { get; set; }
         CullFaceMode CullFaceMode { get; set; }
         uint CurrentProgram { get; set; }
@@ -39,7 +41,7 @@ namespace Tgl.Net
         float PolygonOffsetUnits { get; set; }
         uint RenderbufferBinding { get; set; }
         bool SampleAlphaToCoverage { get; set; }
-        Vector4i ScissorBox { get; set; }
+        Rectangle ScissorBox { get; set; }
         bool ScissorTest { get; set; }
         StencilOp StencilBackFail { get; set; }
         StencilFunction StencilBackFunc { get; set; }
@@ -60,6 +62,6 @@ namespace Tgl.Net
         uint TextureBinding2D { get; set; }
         uint TextureBindingCubeMap { get; set; }
         uint UnpackAlignment { get; set; }
-        Vector4i Viewport { get; set; }
+        Rectangle Viewport { get; set; }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using Tgl.Net.Abstractions;
 using Tgl.Net.Bindings;
 using PixelFormat = Tgl.Net.Bindings.PixelFormat;
 

@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System.Drawing;
+using System.Linq;
+using System.Numerics;
 using Tgl.Net.Bindings;
 using Tgl.Net.Math;
 using static Tgl.Net.Bindings.GL;
@@ -22,7 +24,7 @@ namespace Tgl.Net
             MaxVaryingVectors = GetInteger<uint>(GetPName.GL_MAX_VARYING_VECTORS);
             MaxVertexAttribs = GetInteger<uint>(GetPName.GL_MAX_VERTEX_ATTRIBS);
             MaxVertexUniformVectors = GetInteger<uint>(GetPName.GL_MAX_VERTEX_UNIFORM_VECTORS);
-            MaxViewportDims = GetInteger<Vector2i>(GetPName.GL_MAX_VIEWPORT_DIMS);
+            MaxViewportDims = GetInteger<Point>(GetPName.GL_MAX_VIEWPORT_DIMS);
             MaxVertexTextureImageUnits = GetInteger<uint>(GetPName.GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS);
             MaxFragmentUniformVectors = GetInteger<uint>(GetPName.GL_MAX_FRAGMENT_UNIFORM_VECTORS);
             NumCompressedTextureFormats = GetInteger<uint>(GetPName.GL_NUM_COMPRESSED_TEXTURE_FORMATS);
@@ -51,7 +53,7 @@ namespace Tgl.Net
         public uint MaxVertexAttribs { get; }
         public uint MaxVertexTextureImageUnits { get; }
         public uint MaxVertexUniformVectors { get; }
-        public Vector2i MaxViewportDims { get; }
+        public Point MaxViewportDims { get; }
         public uint NumCompressedTextureFormats { get; }
         public uint NumShaderBinaryFormats { get; }
         public uint[] ShaderBinaryFormats { get; }

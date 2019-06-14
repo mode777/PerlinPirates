@@ -11,8 +11,8 @@ namespace Renderer.Gles2
 {
     public class Shader2d
     {
-        private Matrix3 _projectionMatrix = new Matrix3();
-        private Matrix3 _uvMatrix = new Matrix3();
+        private Matrix3x3 _projectionMatrix = new Matrix3x3();
+        private Matrix3x3 _uvMatrix = new Matrix3x3();
         private readonly GlStateCache _state;
 
         public Shader Shader { get; }
@@ -39,7 +39,7 @@ namespace Renderer.Gles2
         {
             _projectionMatrix.Identity();
             _projectionMatrix.Translate(-1, 1);
-            _projectionMatrix.Scale(2.0f / _state.Viewport.Z, -2.0f / _state.Viewport.W);
+            _projectionMatrix.Scale(2.0f / _state.Viewport.Width, -2.0f / _state.Viewport.Height);
 
             Shader.SetUniform("uProject", ref _projectionMatrix);
         }

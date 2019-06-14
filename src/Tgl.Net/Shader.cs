@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Text;
 using Tgl.Net.Bindings;
 using Tgl.Net.Math;
@@ -129,32 +130,32 @@ namespace Tgl.Net
         public void SetUniform(string name, Vector4 value) 
             => SetUniform(_uniformsByName[name].Location, value);
 
-        public void SetUniform(int location, ref Matrix2 value)
+        public void SetUniform(int location, ref Matrix2x2 value)
         {
             Use();
 
             GL.glUniformMatrix2fv(location, 1, false, ref value);
         }
-        public void SetUniform(string name, Matrix2 value) 
+        public void SetUniform(string name, Matrix2x2 value) 
             => SetUniform(_uniformsByName[name].Location, ref value);
 
-        public void SetUniform(int location, ref Matrix3 value)
+        public void SetUniform(int location, ref Matrix3x3 value)
         {
             Use();
 
             GL.glUniformMatrix3fv(location, 1, false, ref value);
         }
 
-        public void SetUniform(string name, ref Matrix3 value) 
+        public void SetUniform(string name, ref Matrix3x3 value) 
             => SetUniform(_uniformsByName[name].Location, ref value);
 
-        public void SetUniform(int location, Matrix4 value)
+        public void SetUniform(int location, Matrix4x4 value)
         {
             Use();
             GL.glUniformMatrix4fv(location, 1, false, ref value);
         }
 
-        public void SetUniform(string name, Matrix4 value) 
+        public void SetUniform(string name, Matrix4x4 value) 
             => SetUniform(_uniformsByName[name].Location, value);
 
         public void Dispose()

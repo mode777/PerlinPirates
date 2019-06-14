@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Text;
-using Tgl.Net.Math;
 
 namespace Renderer.Gles2
 {
@@ -11,12 +11,11 @@ namespace Renderer.Gles2
         private float _sin = 0;
         private float _cos = 1;
 
-        public Matrix3 Matrix;
+        public Matrix3x2 Matrix;
         
         public Transform2d()
         {
-            Matrix = new Matrix3();
-            Matrix.Identity();
+            Matrix = Matrix3x2.Identity;
         }
         
         public float X { get; set; }
@@ -43,14 +42,14 @@ namespace Renderer.Gles2
 
         public void UpdateMatrix()
         {
-            Matrix.M00 = ScaleX * _cos;
-            Matrix.M01 = ScaleX * _sin;
+            Matrix.M11 = ScaleX * _cos;
+            Matrix.M12 = ScaleX * _sin;
 
-            Matrix.M10 = ScaleY * -_sin;
-            Matrix.M11 = ScaleY * _cos;
+            Matrix.M21 = ScaleY * -_sin;
+            Matrix.M22 = ScaleY * _cos;
 
-            Matrix.M20 = -OriginX * ScaleX * _cos + -OriginY * ScaleY * -_sin + X;
-            Matrix.M21 = -OriginX * ScaleX * _sin + -OriginY * ScaleY * _cos + Y;
+            Matrix.M31 = -OriginX * ScaleX * _cos + -OriginY * ScaleY * -_sin + X;
+            Matrix.M32 = -OriginX * ScaleX * _sin + -OriginY * ScaleY * _cos + Y;
         }
     }
 }

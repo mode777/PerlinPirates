@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using Game.Abstractions;
 using Tgl.Net;
-using Tgl.Net.Abstractions;
 using Tgl.Net.Bindings;
 
 namespace Renderer.Gles2.Tests

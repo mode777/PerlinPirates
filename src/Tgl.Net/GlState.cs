@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using System.Numerics;
 using Tgl.Net.Bindings;
 using Tgl.Net.Math;
 using static Tgl.Net.Bindings.GL;
@@ -8,13 +10,12 @@ namespace Tgl.Net
 {
     public class GlState : IGlState
     {
-        public GlState()
+        public GlState(GlInfo info)
         {
-            Info = new GlInfo();
-            TextureBindingAccessor = new TextureBindingAccessor(Info.MaxCombinedTextureImageUnits);
+            TextureBindingAccessor = new TextureBindingAccessor(info.MaxCombinedTextureImageUnits);
         }
 
-        public GlInfo Info { get; }
+        
 
         public virtual IEnumerable<uint> TextureBindings => TextureBindingAccessor;
         public TextureBindingAccessor TextureBindingAccessor { get; }
@@ -85,10 +86,10 @@ namespace Tgl.Net
             set => glClearColor(value.X, value.Y, value.Z, value.W);
         }
 
-        public virtual Vector4b ColorWritemask
+        public virtual ColorWriteMask ColorWritemask
         {
-            get => GetBoolean<Vector4b>(GetPName.GL_COLOR_WRITEMASK);
-            set => glColorMask(value.X, value.Y, value.Z, value.W);
+            get => GetBoolean<ColorWriteMask>(GetPName.GL_COLOR_WRITEMASK);
+            set => glColorMask(value.R, value.G, value.B, value.A);
         }
 
         public virtual bool CullFace
@@ -211,10 +212,10 @@ namespace Tgl.Net
             set => SetEnabled(EnableCap.GL_SAMPLE_ALPHA_TO_COVERAGE, value);
         }
 
-        public virtual Vector4i ScissorBox
+        public virtual Rectangle ScissorBox
         {
-            get => GetInteger<Vector4i>(GetPName.GL_SCISSOR_BOX);
-            set => glScissor(value.X, value.Y, value.Z, value.W);
+            get => GetInteger<Rectangle>(GetPName.GL_SCISSOR_BOX);
+            set => glScissor(value.X, value.Y, value.Width, value.Height);
         }
 
         public virtual bool ScissorTest
@@ -337,10 +338,10 @@ namespace Tgl.Net
             set => glPixelStorei(PixelStoreParameter.GL_UNPACK_ALIGNMENT, (int)value);
         }
 
-        public virtual Vector4i Viewport
+        public virtual Rectangle Viewport
         {
-            get => GetInteger<Vector4i>(GetPName.GL_VIEWPORT);
-            set => glViewport(value.X, value.Y, value.Z, value.W);
+            get => GetInteger<Rectangle>(GetPName.GL_VIEWPORT);
+            set => glViewport(value.X, value.Y, value.Width, value.Height);
         }
 
         public virtual void BlendFuncSeparate(BlendingFactor blendSrcRgb,

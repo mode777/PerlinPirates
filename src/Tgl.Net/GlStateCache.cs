@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using Tgl.Net.Bindings;
 using Tgl.Net.Math;
@@ -22,7 +24,7 @@ namespace Tgl.Net
         private BlendingFactor _blendSrcRgb;
         private BlendingFactor _blendSrcAlpha;
         private Vector4 _colorClearValue;
-        private Vector4b _colorWritemask;
+        private ColorWriteMask _colorWritemask;
         private bool _cullFace;
         private CullFaceMode _cullFaceMode;
         private uint _currentProgram;
@@ -43,7 +45,7 @@ namespace Tgl.Net
         private float _polygonOffsetUnits;
         private uint _renderbufferBinding;
         private bool _sampleAlphaToCoverage;
-        private Vector4i _scissorBox;
+        private Rectangle _scissorBox;
         private bool _scissorTest;
         private StencilOp _stencilBackFail;
         private StencilFunction _stencilBackFunc;
@@ -64,9 +66,10 @@ namespace Tgl.Net
         private uint _textureBinding2D;
         private uint _textureBindingCubeMap;
         private uint _unpackAlignment;
-        private Vector4i _viewport;
+        private Rectangle _viewport;
 
-        public GlStateCache()
+        public GlStateCache(GlInfo info)
+            : base(info)
         {
             _accessor = new CachedTextureBindingAccessor(TextureBindingAccessor);
             SyncState();
@@ -144,7 +147,7 @@ namespace Tgl.Net
             set => TrySetValue(ref _colorClearValue, ref value, () => base.ColorClearValue = value);
         }
 
-        public override Vector4b ColorWritemask
+        public override ColorWriteMask ColorWritemask
         {
             get => _colorWritemask;
             set => TrySetValue(ref _colorWritemask, ref value, () => base.ColorWritemask = value);
@@ -270,7 +273,7 @@ namespace Tgl.Net
             set => TrySetValue(ref _sampleAlphaToCoverage, ref value, () => base.SampleAlphaToCoverage = value);
         }
 
-        public override Vector4i ScissorBox
+        public override Rectangle ScissorBox
         {
             get => _scissorBox;
             set => TrySetValue(ref _scissorBox, ref value, () => base.ScissorBox = value);
@@ -400,7 +403,7 @@ namespace Tgl.Net
             set => TrySetValue(ref _unpackAlignment, ref value, () => base.UnpackAlignment = value);
         }
 
-        public override Vector4i Viewport
+        public override Rectangle Viewport
         {
             get => _viewport;
             set => TrySetValue(ref _viewport, ref value, () => base.Viewport = value);

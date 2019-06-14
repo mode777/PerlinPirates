@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using Tgl.Net.Abstractions;
 using Tgl.Net.Bindings;
 
 namespace Tgl.Net
@@ -14,9 +13,11 @@ namespace Tgl.Net
         public GlContext(Func<string, IntPtr> apiLoader)
         {
             GL.LoadApi(apiLoader);
-
-            State = new GlStateCache();
+            Info = new GlInfo();
+            State = new GlStateCache(Info);
         }
+
+        public GlInfo Info { get; }
 
         public GlStateCache State { get; }
 

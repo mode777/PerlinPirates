@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
@@ -441,9 +442,9 @@ namespace Tgl.Net.Bindings
         [SuppressUnmanagedCodeSecurity] public unsafe delegate void glUniform4fvDelegate(int location, int count, float* value);
         [SuppressUnmanagedCodeSecurity] public delegate void glUniform4iDelegate(int location, int v0, int v1, int v2, int v3);
         [SuppressUnmanagedCodeSecurity] public unsafe delegate void glUniform4ivDelegate(int location, int count, int* value);
-        [SuppressUnmanagedCodeSecurity] public unsafe delegate void glUniformMatrix2fvDelegate(int location, int count, bool transpose, ref Matrix2 value);
-        [SuppressUnmanagedCodeSecurity] public unsafe delegate void glUniformMatrix3fvDelegate(int location, int count, bool transpose, ref Matrix3 value);
-        [SuppressUnmanagedCodeSecurity] public unsafe delegate void glUniformMatrix4fvDelegate(int location, int count, bool transpose, ref Matrix4 value);
+        [SuppressUnmanagedCodeSecurity] public unsafe delegate void glUniformMatrix2fvDelegate(int location, int count, bool transpose, ref Matrix2x2 value);
+        [SuppressUnmanagedCodeSecurity] public unsafe delegate void glUniformMatrix3fvDelegate(int location, int count, bool transpose, ref Matrix3x3 value);
+        [SuppressUnmanagedCodeSecurity] public unsafe delegate void glUniformMatrix4fvDelegate(int location, int count, bool transpose, ref Matrix4x4 value);
         [SuppressUnmanagedCodeSecurity] public delegate void glUseProgramDelegate(uint program);
         [SuppressUnmanagedCodeSecurity] public delegate void glValidateProgramDelegate(uint program);
         [SuppressUnmanagedCodeSecurity] public delegate void glVertexAttrib1fDelegate(uint index, float x);

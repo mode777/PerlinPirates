@@ -10,7 +10,6 @@ using SixLabors.ImageSharp.Formats.Jpeg;
 using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.PixelFormats;
 using Tgl.Net;
-using Tgl.Net.Abstractions;
 
 namespace ImageSharpLoader
 {

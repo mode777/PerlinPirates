@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Text;
 using Tgl.Net;
-using Tgl.Net.Abstractions;
 using Tgl.Net.Math;
 using Rectangle = System.Drawing.Rectangle;
 
@@ -78,10 +78,17 @@ namespace Renderer.Gles2
 
         public void Offset(float x, float y)
         {
-            A.Position.Offset(x,y);
-            B.Position.Offset(x,y);
-            C.Position.Offset(x,y);
-            D.Position.Offset(x,y);
+            A.Position.X += x;
+            A.Position.Y += y;
+
+            B.Position.X += x;
+            B.Position.Y += y;
+
+            C.Position.X += x;
+            C.Position.Y += y;
+
+            D.Position.X += x;
+            D.Position.Y += y;
         }
 
         public void SetDstRectangle(float x, float y, float w, float h)
@@ -150,12 +157,12 @@ namespace Renderer.Gles2
             SetDstRectangle(x, y, texture.Width, texture.Height);
         }
 
-        public void Transform(ref Matrix3 mat)
+        public void Transform(ref Matrix3x2 mat)
         {
-            A.Position.Transform(ref mat);
-            B.Position.Transform(ref mat);
-            C.Position.Transform(ref mat);
-            D.Position.Transform(ref mat);
+            Vector2.Transform(A.Position, mat);
+            Vector2.Transform(B.Position, mat);
+            Vector2.Transform(C.Position, mat);
+            Vector2.Transform(D.Position, mat);
         }
 
         public RectangleF GetBoundingBox()

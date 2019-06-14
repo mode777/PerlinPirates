@@ -1,4 +1,4 @@
-﻿namespace Tgl.Net.Abstractions
+﻿namespace Tgl.Net
 {
     public enum ImagePixelFormat
     {

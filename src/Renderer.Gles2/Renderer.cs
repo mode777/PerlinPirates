@@ -16,8 +16,8 @@ namespace Renderer.Gles2
         private readonly ResourceManager _resources;
         private readonly Shader _shader;
 
-        private Matrix3 _projection = new Matrix3();
-        private Matrix3 _transform = new Matrix3();
+        private Matrix3x3 _projection = new Matrix3x3();
+        private Matrix3x3 _transform = new Matrix3x3();
 
         public Renderer(GlContext context, ResourceManager resources)
         {
@@ -45,7 +45,7 @@ namespace Renderer.Gles2
 
             _projection.Identity();
             _projection.Translate(-1, 1);
-            _projection.Scale(2.0f / viewport.Z, -2.0f / viewport.W);
+            _projection.Scale(2.0f / viewport.Width, -2.0f / viewport.Height);
         }
 
         public void RenderSprites(SpriteBatch batch)

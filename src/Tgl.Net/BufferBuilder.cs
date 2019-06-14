@@ -12,14 +12,14 @@ namespace Tgl.Net
 
         public IEnumerable<VertexAttribute> Attributes => _attributes;
 
-        public BufferUsageARB Usage { get; private set; } = BufferUsageARB.GL_STATIC_DRAW;
+        public BufferUsageARB Usage { get; protected set; } = BufferUsageARB.GL_STATIC_DRAW;
         
         public BufferBuilder(IGlState state)
         {
             _state = state;
             _attributes = new List<VertexAttribute>();
         }
-
+        
         protected List<VertexAttribute> CalculateAttributeOffsets()
         {
             int offset = 0;
@@ -82,6 +82,13 @@ namespace Tgl.Net
             var attr = new VertexAttribute();
             config(attr);
             return HasAttribute(attr);
+        }
+
+        public BufferBuilder<T> HasUsage(BufferUsageARB usage)
+        {
+            Usage = usage;
+
+            return this;
         }
 
         public VertexBuffer Build()

@@ -1,8 +1,9 @@
 ﻿using System.Drawing;
+using System.Numerics;
 using Tgl.Net;
+using Tgl.Net.Bindings;
 using Tgl.Net.Math;
 using Rectangle = System.Drawing.Rectangle;
-using Vector2 = Tgl.Net.Math.Vector2;
 
 namespace Renderer.Gles2
 {
@@ -31,6 +32,7 @@ namespace Renderer.Gles2
             CreateQuadIndices();
 
             _buffer = _context.BuildBuffer<Quad2d>()
+                .HasUsage(BufferUsageARB.GL_STREAM_DRAW)
                 .HasAttribute("aPosition", 2)
                 .HasAttribute("aTexcoord", 2)
                 .HasAttribute("aColor", 4)

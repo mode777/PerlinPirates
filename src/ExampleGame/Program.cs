@@ -16,7 +16,6 @@ using Platform.Sdl2;
 using Renderer.Gles2;
 using Renderer.Gles2.Tests;
 using Tgl.Net;
-using Tgl.Net.Abstractions;
 
 namespace ExampleGame
 {
