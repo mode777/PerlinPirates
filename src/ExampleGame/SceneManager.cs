@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Game.Abstractions;
+using Game.Abstractions.Constants;
 using Microsoft.Extensions.Options;
 
 namespace ExampleGame
@@ -36,6 +37,22 @@ namespace ExampleGame
             foreach (var component in _components)
             {
                 component.Draw();
+            }
+        }
+
+        public void KeyDown(KeyCode key, ScanCode code, bool isRepeat)
+        {
+            foreach (var component in _components)
+            {
+                component.KeyDown(key, code, isRepeat);
+            }
+        }
+
+        public void KeyUp(KeyCode key, ScanCode code)
+        {
+            foreach (var component in _components)
+            {
+                component.KeyUp(key, code);
             }
         }
 

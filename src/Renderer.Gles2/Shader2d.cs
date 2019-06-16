@@ -41,7 +41,7 @@ namespace Renderer.Gles2
             _projectionMatrix.Translate(-1, 1);
             _projectionMatrix.Scale(2.0f / _state.Viewport.Width, -2.0f / _state.Viewport.Height);
 
-            Shader.SetUniform("uProject", ref _projectionMatrix);
+            Shader.SetUniform("uProject", _projectionMatrix);
         }
 
         public void UpdateUvMatrix(Texture texture)
@@ -52,7 +52,7 @@ namespace Renderer.Gles2
             _uvMatrix.Identity();
             _uvMatrix.Scale(1.0f / texture.Width, 1.0f / texture.Height);
 
-            Shader.SetUniform("uProject_uv", ref _uvMatrix);
+            Shader.SetUniform("uProject_uv", _uvMatrix);
         }
 
 

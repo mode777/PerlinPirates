@@ -130,24 +130,24 @@ namespace Tgl.Net
         public void SetUniform(string name, Vector4 value) 
             => SetUniform(_uniformsByName[name].Location, value);
 
-        public void SetUniform(int location, ref Matrix2x2 value)
+        public void SetUniform(int location, Matrix2x2 value)
         {
             Use();
 
             GL.glUniformMatrix2fv(location, 1, false, ref value);
         }
         public void SetUniform(string name, Matrix2x2 value) 
-            => SetUniform(_uniformsByName[name].Location, ref value);
+            => SetUniform(_uniformsByName[name].Location, value);
 
-        public void SetUniform(int location, ref Matrix3x3 value)
+        public void SetUniform(int location, Matrix3x3 value)
         {
             Use();
 
             GL.glUniformMatrix3fv(location, 1, false, ref value);
         }
 
-        public void SetUniform(string name, ref Matrix3x3 value) 
-            => SetUniform(_uniformsByName[name].Location, ref value);
+        public void SetUniform(string name, Matrix3x3 value) 
+            => SetUniform(_uniformsByName[name].Location, value);
 
         public void SetUniform(string name, ref Matrix4x4 value)
             => SetUniform(_uniformsByName[name].Location, value);

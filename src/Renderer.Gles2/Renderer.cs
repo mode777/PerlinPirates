@@ -53,9 +53,9 @@ namespace Renderer.Gles2
 
             _context.State.CurrentProgram = _shader.Handle;
 
-            _shader.SetUniform("uProject", ref _projection);
+            _shader.SetUniform("uProject", _projection);
             
-            _shader.SetUniform("uTransform", ref _transform);
+            _shader.SetUniform("uTransform", _transform);
 
             var buffer = batch.Buffer;
 

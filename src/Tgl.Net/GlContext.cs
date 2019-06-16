@@ -47,9 +47,39 @@ namespace Tgl.Net
                 }
             }
 
-            foreach (var pair in drawable.UniformSetters)
+            foreach (var pair in drawable.FloatUniforms)
             {
-                pair.Value(drawable.Shader);
+                drawable.Shader.SetUniform(pair.Key, pair.Value);
+            }
+
+            foreach (var pair in drawable.Vector2Uniforms)
+            {
+                drawable.Shader.SetUniform(pair.Key, pair.Value.X, pair.Value.Y);
+            }
+
+            foreach (var pair in drawable.Vector3Uniforms)
+            {
+                drawable.Shader.SetUniform(pair.Key, pair.Value);
+            }
+
+            foreach (var pair in drawable.Vector4Uniforms)
+            {
+                drawable.Shader.SetUniform(pair.Key, pair.Value);
+            }
+
+            foreach (var pair in drawable.Matrix2Uniforms)
+            {
+                drawable.Shader.SetUniform(pair.Key, pair.Value);
+            }
+
+            foreach (var pair in drawable.Matrix3Uniforms)
+            {
+                drawable.Shader.SetUniform(pair.Key, pair.Value);
+            }
+
+            foreach (var pair in drawable.Matrix4Uniforms)
+            {
+                drawable.Shader.SetUniform(pair.Key, pair.Value);
             }
 
             var unit = TextureUnit.GL_TEXTURE0;
