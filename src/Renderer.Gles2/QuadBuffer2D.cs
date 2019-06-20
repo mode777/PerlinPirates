@@ -75,7 +75,17 @@ namespace Renderer.Gles2
             _quads[index].SetSrcRectangle(ref rect);
         }
 
+        public void SetSrcRectangle(int index, Rectangle rect)
+        {
+            _quads[index].SetSrcRectangle(ref rect);
+        }
+
         public void SetDstRectangle(int index, ref Rectangle rect)
+        {
+            _quads[index].SetDstRectangle(ref rect);
+        }
+
+        public void SetDstRectangle(int index, Rectangle rect)
         {
             _quads[index].SetDstRectangle(ref rect);
         }
@@ -99,6 +109,11 @@ namespace Renderer.Gles2
         public Quad2d GetQuad2D(int index)
         {
             return _quads[index];
+        }
+
+        public void ClearQuad(int index)
+        {
+            _quads[index] = new Quad2d();
         }
 
         public RectangleF GetBoundingBox(int index)

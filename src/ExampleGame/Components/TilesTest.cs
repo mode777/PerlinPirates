@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
 using Game.Abstractions;
 using Tgl.Net;
@@ -7,53 +8,55 @@ using Tgl.Net.Bindings;
 
 namespace Renderer.Gles2.Tests
 {
-    class TilesTest : GameComponent
+    class TilesTest : IGameComponent
     {
         private const int TILE_SIZE = 16;
         private const int FIELD_SIZE = 64;
 
         private readonly GlContext _context;
         private readonly ResourceManager _manager;
+        private readonly EventsProvider _provider;
 
-        private QuadBuffer2D _buffer;
+        private Tilemap _map;
 
-        public TilesTest(GlContext context, ResourceManager manager)
+        public TilesTest(GlContext context, ResourceManager manager, EventsProvider provider)
         {
             _context = context;
             _manager = manager;
+            _provider = provider;
+
+            _provider.Load += Load;
+            _provider.Draw += Draw;
+            _provider.Update += Update;
         }
 
-        public override void Load()
+        private void Load()
         {
             var texture = _manager.LoadResource<Texture>("Resources.Textures.tiles.png");
 
             var shader = new Shader2d(_context, _manager);
 
-            _buffer = new QuadBuffer2D(_context, shader, texture, FIELD_SIZE * FIELD_SIZE);
+            var tileset = new Tileset(texture, new Size(TILE_SIZE,TILE_SIZE));
+
+            _map = new Tilemap(_context, shader, tileset, 4, 4, new int[]
+            {
+                2, 3, 4, 5,
+                6, 7, 6, 5,
+                4, 3, 2, 1,
+                2, 3, 4, 5
+            });
         }
 
-        public override void Draw()
+        private void Draw()
         {
             _context.Clear(ClearBufferMask.GL_COLOR_BUFFER_BIT);
 
-            _buffer.Render();
+            _map.Render();
         }
 
-        public override void Update(float delta)
+        private void Update(float delta)
         {
-            var rand = new Random();
-            for (int i = 0; i < _buffer.Size; i++)
-            {
-                var tileId = rand.Next(6) + 1;
-
-                var srcX = tileId * TILE_SIZE;
-                var srcY = 0;
-                var x = (i % FIELD_SIZE) * TILE_SIZE;
-                var y = (i / FIELD_SIZE) * TILE_SIZE;
-
-                _buffer.SetQuad(i, x, y, TILE_SIZE, TILE_SIZE, srcX, srcY);
-            }
-            _buffer.Update();
+            _map.Update();
         }
     }
 }

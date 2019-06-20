@@ -23,6 +23,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{37F5
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{D995C3EB-BE25-4179-BE1C-CFD3EB95DC0C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Loader.Tmx", "Loader.Tmx\Loader.Tmx.csproj", "{F7E45039-7DA9-4CC9-BE9F-9FC43068BC5E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,10 @@ Global
 		{ED7A81D8-2863-4587-BCE3-0CE9575B5A99}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED7A81D8-2863-4587-BCE3-0CE9575B5A99}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED7A81D8-2863-4587-BCE3-0CE9575B5A99}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7E45039-7DA9-4CC9-BE9F-9FC43068BC5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7E45039-7DA9-4CC9-BE9F-9FC43068BC5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7E45039-7DA9-4CC9-BE9F-9FC43068BC5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7E45039-7DA9-4CC9-BE9F-9FC43068BC5E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -72,6 +78,7 @@ Global
 		{C3297A2D-7DF9-4FBC-AD64-36A9B9BC8539} = {37F56CDC-94AD-408B-96DA-A61F275AD611}
 		{9AC76339-5E26-4AFB-B273-14C2AE00DE23} = {37F56CDC-94AD-408B-96DA-A61F275AD611}
 		{ED7A81D8-2863-4587-BCE3-0CE9575B5A99} = {37F56CDC-94AD-408B-96DA-A61F275AD611}
+		{F7E45039-7DA9-4CC9-BE9F-9FC43068BC5E} = {37F56CDC-94AD-408B-96DA-A61F275AD611}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DA60A5A6-2F1C-46D5-8D6D-97C573E7F303}

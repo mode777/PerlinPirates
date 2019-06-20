@@ -5,7 +5,6 @@ using System.Runtime.InteropServices;
 using System.Runtime.Loader;
 using System.Threading;
 using System.Threading.Tasks;
-using ExampleGame.Tutorial;
 using Game.Abstractions;
 using ImageSharpLoader;
 using Microsoft.Extensions.Configuration;
@@ -76,9 +75,13 @@ namespace ExampleGame
             services.AddSingleton(x => 
                 new GlContext(x.GetRequiredService<IGlLoader>().GetGlProcAddress));
 
-            services.AddSingleton<IGameComponent, SceneManager>();
-            services.RegisterGameComponent<Input>();
+            services.AddSingleton<IGameComponent, TilesTest>();
+            //services.RegisterGameComponent<Input>();
 
+            services.AddSingleton<EventsProvider>();
+            services.AddSingleton<IEventSource>(x => x.GetRequiredService<EventsProvider>());
+            services.AddSingleton<IEventDispatcher>(x => x.GetRequiredService<EventsProvider>());
+            
             services.AddScoped<IGameLoop, GameLoop>();
             services.AddHostedService<GameHost>();
         }

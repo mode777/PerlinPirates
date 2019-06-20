@@ -134,6 +134,7 @@ namespace Tgl.Net
         public Texture TextureFromPixels(byte[] data, int width, int height, ImagePixelFormat format)
         {
             return new TextureBuilder<byte>(State)
+                .HasMipmaps()
                 .HasSize(width, height)
                 .HasData(data)
                 .Build();

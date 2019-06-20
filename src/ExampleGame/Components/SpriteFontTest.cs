@@ -8,22 +8,28 @@ using Tgl.Net.Bindings;
 
 namespace Renderer.Gles2.Tests
 {
-    public class SpriteFontTest : GameComponent
+    public class SpriteFontTest : IGameComponent
     {
         private const string TEXT = "Lorem ipsum dolor sit amet, consetfdfffffffffffffffffffffffffffhhhhhhhhhhhhhhhetur sadipscing elitr, sed diam nonumy eirmod.";
 
         private readonly GlContext _context;
         private readonly ResourceManager _manager;
+        private readonly IEventSource _events;
 
         private QuadBuffer2D _buffer;
 
-        public SpriteFontTest(GlContext context, ResourceManager manager)
+        public SpriteFontTest(GlContext context, ResourceManager manager, IEventSource events)
         {
             _context = context;
             _manager = manager;
+            _events = events;
+
+            _events.Load += Load;
+            _events.Update += Update;
+            _events.Draw += Draw;
         }
 
-        public override void Load()
+        public void Load()
         {
             var font = _manager.LoadResource<SpriteFont>("Resources.Fonts.segoe.fnt");
             var texture = font.Texture;
@@ -83,12 +89,12 @@ namespace Renderer.Gles2.Tests
             _context.State.BlendFunc(BlendingFactor.GL_SRC_ALPHA, BlendingFactor.GL_ONE_MINUS_SRC_ALPHA);
         }
 
-        public override void Update(float delta)
+        public void Update(float delta)
         {
             _buffer.Update();
         }
 
-        public override void Draw()
+        public void Draw()
         {
             _context.Clear(ClearBufferMask.GL_COLOR_BUFFER_BIT);
             _buffer.Render();

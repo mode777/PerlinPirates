@@ -9,25 +9,31 @@ using Tgl.Net.Bindings;
 
 namespace Renderer.Gles2.Tests
 {
-    public class ParticleSystemTest : GameComponent
+    public class ParticleSystemTest : IGameComponent
     {
         private readonly GlContext _context;
         private readonly ResourceManager _manager;
         private readonly ILogger<IGameComponent> _logger;
+        private readonly IEventSource _eventSource;
         private const int PARTICLES = 10000;
 
         private readonly Vector2[] offsets = new Vector2[PARTICLES];
         private QuadBuffer2D _buffer;
         private Random _random = new Random();
 
-        public ParticleSystemTest(GlContext context, ResourceManager manager, ILogger<IGameComponent> logger)
+        public ParticleSystemTest(GlContext context, ResourceManager manager, ILogger<IGameComponent> logger, IEventSource eventSource)
         {
             _context = context;
             _manager = manager;
             _logger = logger;
+            _eventSource = eventSource;
+
+            _eventSource.Load += Load;
+            _eventSource.Update += Update;
+            _eventSource.Draw += Draw;
         }
 
-        public override void Load()
+        private void Load()
         {
             var texture = _manager.LoadResource<Texture>("Resources.Textures.particle.png");
 
@@ -54,7 +60,7 @@ namespace Renderer.Gles2.Tests
             };
         }
 
-        public override void Update(float dt)
+        private void Update(float dt)
         {
             for (int i = 0; i < PARTICLES; i++)
             {
@@ -75,7 +81,7 @@ namespace Renderer.Gles2.Tests
             _buffer.Update();
         }
 
-        public override void Draw()
+        private void Draw()
         {
             _context.Clear(ClearBufferMask.GL_COLOR_BUFFER_BIT);
             _buffer.Render();

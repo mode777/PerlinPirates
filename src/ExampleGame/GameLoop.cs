@@ -13,18 +13,20 @@ namespace ExampleGame
         private readonly IPlatform _platform;
         private readonly IGameComponent _game;
         private readonly ILogger<IGameLoop> _logger;
+        private readonly IEventDispatcher _dispatcher;
 
-        public GameLoop(IHost host, IPlatform platform, IGameComponent game, ILogger<IGameLoop> logger)
+        public GameLoop(IHost host, IPlatform platform, IGameComponent game, ILogger<IGameLoop> logger, IEventDispatcher dispatcher)
         {
             _host = host;
             _platform = platform;
             _game = game;
             _logger = logger;
+            _dispatcher = dispatcher;
         }
 
         public void Run(CancellationToken token)
         {
-            _game.Load();
+            _dispatcher.DispatchLoad();
 
             var sw = new Stopwatch();
             double dt = 0;
@@ -37,13 +39,13 @@ namespace ExampleGame
                 while (_platform.PollEvent(out var ev))
                 {
                     if (ev is QuitEvent){
-                        _game.Quit();
+                        _dispatcher.DispatchQuit();
                         _host.StopAsync();
                     }
                     else if(ev is KeyUpEvent ku)
-                        _game.KeyUp(ku.Key, ku.ScanCode);
+                        _dispatcher.DispatchKeyUp(ku);
                     else if(ev is KeyDownEvent kd)
-                        _game.KeyDown(kd.Key, kd.ScanCode, kd.IsRepeat);
+                        _dispatcher.DispatchKeyDown(kd);
                 }
 
                 dt = sw.Elapsed.TotalSeconds;
@@ -52,8 +54,8 @@ namespace ExampleGame
 
                 sw.Restart();
 
-                _game.Update((float)dt);                
-                _game.Draw();
+                _dispatcher.DispatchUpdate((float)dt);
+                _dispatcher.DispatchDraw();
                 fc++;
 
                 if (tc > 1)
