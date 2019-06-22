@@ -39,7 +39,10 @@ namespace Renderer.Gles2
         private void SetTile(Point point, int index, int id)
         {
             if (id == 0)
+            {
                 _buffer2D.ClearQuad(index);
+                return;
+            }
 
             _buffer2D.SetSrcRectangle(index, Set.GetTile(id));
             _buffer2D.SetDstRectangle(index, GetRectangle(point));

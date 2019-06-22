@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Numerics;
-using System.Text;
+﻿using System.Numerics;
 using Game.Abstractions;
+using Renderer.Gles2;
 using Tgl.Net;
 using Tgl.Net.Bindings;
 
-namespace Renderer.Gles2.Tests
+namespace ExampleGame.Tests
 {
     public class SpriteFontTest : IGameComponent
     {

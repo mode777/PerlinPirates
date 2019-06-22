@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Numerics;
-using System.Text;
 using Game.Abstractions;
 using Microsoft.Extensions.Logging;
+using Renderer.Gles2;
 using Tgl.Net;
 using Tgl.Net.Bindings;
 
-namespace Renderer.Gles2.Tests
+namespace ExampleGame.Tests
 {
     public class ParticleSystemTest : IGameComponent
     {

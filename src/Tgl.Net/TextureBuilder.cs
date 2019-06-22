@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using Tgl.Net.Bindings;
 using PixelFormat = Tgl.Net.Bindings.PixelFormat;
 
@@ -88,10 +89,8 @@ namespace Tgl.Net
         public Texture Build()
         {
             var texture = new Texture(_state);
-            if (Data != null)
-            {
-                texture.TexImage2d(Width, Height, Data, PixelFormat, InternalFormat, PixelType, 0);
-            }
+            
+            texture.TexImage2d(Width, Height, Data, PixelFormat, InternalFormat, PixelType, 0);
 
             texture.FilterMagnify = FilterMagnify;
             texture.FilterMinify = FilterMinify;

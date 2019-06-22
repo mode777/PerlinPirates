@@ -60,15 +60,15 @@ namespace ExampleGame
 
                 if (tc > 1)
                 {
-                    //_logger.LogInformation(fc + "fps");
+                    _logger.LogInformation(fc + "fps");
                     tc -= 1;
                     fc = 0;
                 }
 
 
                 _platform.SwapBuffers();
+                _platform.Sleep(0);
 
-                _platform.Sleep(1);
             }
         }
     }

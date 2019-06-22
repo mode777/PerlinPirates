@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Runtime.InteropServices;
 using Game.Abstractions;
 using Microsoft.Extensions.Logging;
@@ -98,6 +99,8 @@ namespace Platform.RaspberryPi
                 height = height
             };
 
+            WindowSize = new Size(width, height);
+
             var src_rect = new BcmHost.VC_RECT_T
             {
                 x = 0,
@@ -167,6 +170,8 @@ namespace Platform.RaspberryPi
         {
             //throw new NotImplementedException();
         }
+
+        public Size WindowSize { get; private set; }
 
         public void SwapBuffers()
         {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 
 namespace Game.Abstractions
 {
@@ -7,5 +8,6 @@ namespace Game.Abstractions
         void SwapBuffers();
         bool PollEvent(out PlatformEvent @event);
         void Sleep(uint ms);
+        Size WindowSize { get; }
     }
 }

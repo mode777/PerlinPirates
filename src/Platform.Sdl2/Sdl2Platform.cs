@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using Game.Abstractions;
 using Game.Abstractions.Constants;
 using Game.Abstractions.Events;
@@ -33,6 +34,8 @@ namespace Platform.Sdl2
             _logger.LogDebug($"Creating a window. Width {_config.Width}, Height: {_config.Height}, Title: {_config.Title}");
             _window = new Sdl2Window(_config.Title, _config.Width, _config.Height);
 
+            WindowSize = new Size(_config.Width, _config.Height);
+
             _logger.LogDebug($"Creating a GLContext...");
             _context = new Sdl2GlContext(_window);
         }
@@ -53,6 +56,8 @@ namespace Platform.Sdl2
         {
             SDL.SDL_Delay(ms);
         }
+
+        public Size WindowSize { get; }
 
         public bool PollEvent(out PlatformEvent @event)
         {

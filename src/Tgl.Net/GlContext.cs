@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -15,11 +16,13 @@ namespace Tgl.Net
             GL.LoadApi(apiLoader);
             Info = new GlInfo();
             State = new GlStateCache(Info);
+            DefaultViewport = State.Viewport;
         }
 
         public GlInfo Info { get; }
 
         public GlStateCache State { get; }
+        public Rectangle DefaultViewport { get; set; }
 
         public virtual void Clear(ClearBufferMask mask)
         {
@@ -126,6 +129,29 @@ namespace Tgl.Net
             return new DrawableBuilder(this);
         }
 
+        public IDrawable CreateFullscreenTexture(Texture texture)
+        {
+            return this.BuildDrawable()
+                .UseShader(s => s
+                    .HasFragmentString(FRAGMENT_SHADER)
+                    .HasVertexString(VERTEX_SHADER))
+                .AddBuffer<float>(b => b
+                    .HasData(1, 1,
+                        -1, 1,
+                        -1, -1,
+                        -1, -1,
+                        1, -1,
+                        1, 1)
+                    .HasAttribute("vertexPositionNDC", 2))
+                .AddTexture("colorMap", texture)
+                .Build();
+        }
+
+        public FramebufferBuilder BuildFramebuffer()
+        {
+            return new FramebufferBuilder(State);
+        }
+
         public IndexBuffer CreateIndexBuffer(params ushort[] indices)
         {
             return new IndexBuffer(State, indices);
@@ -139,5 +165,30 @@ namespace Tgl.Net
                 .HasData(data)
                 .Build();
         }
+
+        private const string VERTEX_SHADER = @"precision lowp float;
+
+// xy = vertex position in normalized device coordinates ([-1,+1] range).
+attribute vec2 vertexPositionNDC;
+
+varying vec2 vTexCoords;
+
+const vec2 scale = vec2(0.5, 0.5);
+
+void main()
+{
+    vTexCoords  = vertexPositionNDC * scale + scale; // scale vertex attribute to [0,1] range
+    gl_Position = vec4(vertexPositionNDC, 0.0, 1.0);
+}";
+
+        private const string FRAGMENT_SHADER = @"precision mediump float;
+
+uniform sampler2D colorMap;
+varying vec2 vTexCoords;
+
+void main()
+{
+    gl_FragColor = texture2D(colorMap, vTexCoords);
+}";
     }
 }
