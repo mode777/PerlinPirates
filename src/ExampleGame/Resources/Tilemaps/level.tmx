@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="16" height="8" tilewidth="16" tileheight="16" infinite="0" nextlayerid="2" nextobjectid="1">
+ <tileset firstgid="1" source="zelda.tsx"/>
+ <layer id="1" name="Kachelebene 1" width="16" height="8">
+  <data encoding="base64" compression="zlib">
+   eJxjYmBgYKISZkTDglDMiCbPhERj0ytEQD+yOcJIfGYsatDtRGcL49GDbD8+s7C5jRj7qRl+5GIAh0cBcA==
+  </data>
+ </layer>
+</map>

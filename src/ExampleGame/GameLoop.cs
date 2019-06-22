@@ -60,7 +60,7 @@ namespace ExampleGame
 
                 if (tc > 1)
                 {
-                    _logger.LogInformation(fc + "fps");
+                    //_logger.LogInformation(fc + "fps");
                     tc -= 1;
                     fc = 0;
                 }

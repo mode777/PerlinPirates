@@ -8,6 +8,7 @@ namespace Game.Abstractions.Events
 
     public class KeyDownEvent : KeyboardEvent
     {
+        public bool IsRepeat { get; set; }
     }
 
     public class KeyUpEvent : KeyboardEvent
@@ -18,7 +19,6 @@ namespace Game.Abstractions.Events
     {
         public KeyCode Key { get; set; }
         public ScanCode ScanCode { get; set; }
-        public bool IsRepeat { get; set; }
         public KeyModifier Modifier { get; set; }
     }
 }
