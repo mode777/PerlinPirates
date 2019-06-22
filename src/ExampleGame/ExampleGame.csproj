@@ -6,10 +6,17 @@
     <ApplicationIcon />
     <StartupObject />
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
   </PropertyGroup>
   
   <ItemGroup>
     <Content Include="**\*.json" Exclude="bin\**\*;obj\**\*" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <None Remove="Resources\Tilemaps\level.tmx" />
+    <None Remove="Resources\Tilemaps\zelda.png" />
+    <None Remove="Resources\Tilemaps\zelda.tsx" />
   </ItemGroup>
   
   <ItemGroup>
@@ -26,12 +33,18 @@
     <EmbeddedResource Include="Resources\Textures\grid.png" />
     <EmbeddedResource Include="Resources\Textures\particle.png" />
     <EmbeddedResource Include="Resources\Textures\tiles.png" />
+    <EmbeddedResource Include="Resources\Tilemaps\level.tmx" />
+    <EmbeddedResource Include="Resources\Tilemaps\zelda.png" />
+    <EmbeddedResource Include="Resources\Tilemaps\zelda.tsx" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="2.2.4" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Composite" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.2.0" />
@@ -41,6 +54,7 @@
     <ProjectReference Include="..\ECS\ECS.csproj" />
     <ProjectReference Include="..\Game.Abstractions\Game.Abstractions.csproj" />
     <ProjectReference Include="..\ImageLoader\ImageSharpLoader.csproj" />
+    <ProjectReference Include="..\Loader.Tmx\Loader.Tmx.csproj" />
     <ProjectReference Include="..\Platform.Sdl2\Platform.Sdl2.csproj" />
     <ProjectReference Include="..\Platform.RaspberryPi\Platform.RaspberryPi.csproj" />
     <ProjectReference Include="..\Renderer.Gles2\Renderer.Gles2.csproj" />

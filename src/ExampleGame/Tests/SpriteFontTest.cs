@@ -13,14 +13,16 @@ namespace ExampleGame.Tests
         private readonly GlContext _context;
         private readonly ResourceManager _manager;
         private readonly IEventSource _events;
+        private readonly Shader2d _shader;
 
         private QuadBuffer2D _buffer;
 
-        public SpriteFontTest(GlContext context, ResourceManager manager, IEventSource events)
+        public SpriteFontTest(GlContext context, ResourceManager manager, IEventSource events, Shader2d shader)
         {
             _context = context;
             _manager = manager;
             _events = events;
+            _shader = shader;
 
             _events.Load += Load;
             _events.Update += Update;
@@ -29,10 +31,10 @@ namespace ExampleGame.Tests
 
         public void Load()
         {
-            var font = _manager.LoadResource<SpriteFont>("Resources.Fonts.segoe.fnt");
+            var font = _manager.LoadResource<SpriteFont>("Resources/Fonts/segoe.fnt");
             var texture = font.Texture;
 
-            _buffer = new QuadBuffer2D(_context, new Shader2d(_context, _manager), texture, TEXT.Length);
+            _buffer = new QuadBuffer2D(_context, _shader, texture, TEXT.Length);
 
             const int width = 200;
 

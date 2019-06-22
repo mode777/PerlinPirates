@@ -15,7 +15,7 @@ namespace Renderer.Gles2.Tests
         
         public void Init(GlContext context, ResourceManager manager)
         {
-            var shader = manager.LoadResource<Shader>("Resources.Shaders.minimal");
+            var shader = manager.LoadResource<Shader>("Resources/Shaders.minimal");
 
             _drawable = context.BuildDrawable()
                 .UseShader(shader)

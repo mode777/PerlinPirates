@@ -8,8 +8,10 @@ using System.Threading.Tasks;
 using ExampleGame.Tests;
 using Game.Abstractions;
 using ImageSharpLoader;
+using Loader.Tmx;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Platform.RaspberryPi;
@@ -63,18 +65,21 @@ namespace ExampleGame
 
         private static void ConfigureServices(HostBuilderContext hostContext, IServiceCollection services)
         {
-            services.AddResourceManager(x =>
-            {
-                x.AddEmbeddedAssembly(typeof(Program).Assembly);
-            });
+            services.AddResourceManager(o => o.AddProvider(new EmbeddedFileProvider(Assembly.GetEntryAssembly())));
             services.AddResourceLoader<Texture, TextureLoader>();
             services.AddResourceLoader<Shader, ShaderLoader>();
             services.AddResourceLoader<SpriteFont, SpriteFontLoader>();
-            
+
+            services.AddResourceLoader<Tilemap, TilemapLoader>();
+            services.AddResourceLoader<Tileset, TilesetLoader>();
+            services.AddResourceLoader<TiledMap, TiledMapLoader>();
+            services.AddResourceLoader<TiledTileset, TiledTilesetLoader>();
+
             services.AddSdl2(x => hostContext.Configuration.Bind("Platform", x));
             
             services.AddSingleton(x => 
                 new GlContext(x.GetRequiredService<IGlLoader>().GetGlProcAddress));
+            services.AddSingleton<Shader2d>();
 
             services.AddSingleton<IGameComponent, TilesTest>();
             //services.RegisterGameComponent<Input>();

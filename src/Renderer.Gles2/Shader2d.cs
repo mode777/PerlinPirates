@@ -19,7 +19,7 @@ namespace Renderer.Gles2
 
         public Shader2d(GlContext context, ResourceManager resources)
         {
-            Shader = resources.LoadResource<Shader>("Resources.Shaders.quad2d");
+            Shader = resources.LoadResource<Shader>("Resources/Shaders/quad2d");
 
             _state = context.State;
             _state.PropertyChanged += StateOnPropertyChanged;

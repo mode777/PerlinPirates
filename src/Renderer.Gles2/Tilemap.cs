@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.IO;
 using Tgl.Net;
 
@@ -23,7 +24,9 @@ namespace Renderer.Gles2
 
         public Tilemap(GlContext context, Shader2d shader, Tileset set, int width, int height)
         {
-            Set = set;
+            if (context == null) throw new ArgumentNullException(nameof(context));
+            if (shader == null) throw new ArgumentNullException(nameof(shader));
+            Set = set ?? throw new ArgumentNullException(nameof(set));
             Width = width;
             Height = height;
             _buffer2D = new QuadBuffer2D(context, shader, Set.Texture, width * height);

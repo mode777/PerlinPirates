@@ -23,7 +23,7 @@ namespace Renderer.Gles2
         {
             _context = context;
             _resources = resources;
-            _shader = _resources.LoadResource<Shader>("Resources.Shaders.game2d");
+            _shader = _resources.LoadResource<Shader>("Resources/Shaders/game2d");
             _context.State.PropertyChanged += OnStateOnPropertyChanged;
             UpdateProjectionMatrix();
             _transform.Identity();

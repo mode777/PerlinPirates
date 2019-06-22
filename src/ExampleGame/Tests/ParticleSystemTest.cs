@@ -14,18 +14,20 @@ namespace ExampleGame.Tests
         private readonly ResourceManager _manager;
         private readonly ILogger<IGameComponent> _logger;
         private readonly IEventSource _eventSource;
+        private readonly Shader2d _shader;
         private const int PARTICLES = 10000;
 
         private readonly Vector2[] offsets = new Vector2[PARTICLES];
         private QuadBuffer2D _buffer;
         private Random _random = new Random();
 
-        public ParticleSystemTest(GlContext context, ResourceManager manager, ILogger<IGameComponent> logger, IEventSource eventSource)
+        public ParticleSystemTest(GlContext context, ResourceManager manager, ILogger<IGameComponent> logger, IEventSource eventSource, Shader2d shader)
         {
             _context = context;
             _manager = manager;
             _logger = logger;
             _eventSource = eventSource;
+            _shader = shader;
 
             _eventSource.Load += Load;
             _eventSource.Update += Update;
@@ -36,7 +38,7 @@ namespace ExampleGame.Tests
         {
             var texture = _manager.LoadResource<Texture>("Resources.Textures.particle.png");
 
-            _buffer = new QuadBuffer2D(_context, new Shader2d(_context, _manager), texture, PARTICLES);
+            _buffer = new QuadBuffer2D(_context, _shader, texture, PARTICLES);
 
             for (int i = 0; i < PARTICLES; i++)
             {

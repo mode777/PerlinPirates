@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Numerics;
 using Tgl.Net;
 using Tgl.Net.Bindings;
@@ -22,9 +23,9 @@ namespace Renderer.Gles2
 
         public QuadBuffer2D(GlContext context, Shader2d shader, Texture texture, int capacity)
         {
-            _context = context;
-            _shader = shader;
-            Texture = texture;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _shader = shader ?? throw new ArgumentNullException(nameof(shader));
+            Texture = texture ?? throw new ArgumentNullException(nameof(texture));
             _capacity = capacity;
             _quads = new Quad2d[capacity];
 

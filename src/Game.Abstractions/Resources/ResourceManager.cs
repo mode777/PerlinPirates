@@ -5,44 +5,41 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 
 namespace Game.Abstractions
 {
     public class ResourceManager
     {
-        private readonly IOptions<ResourceManagerOptions> _options;
         private readonly IServiceProvider _provider;
+        private readonly IFileProvider _fileProvider;
 
-        private readonly ConcurrentDictionary<string, object> _resources
-            = new ConcurrentDictionary<string, object>();
+        private readonly ConcurrentDictionary<(Type, string), object> _resources
+            = new ConcurrentDictionary<(Type, string), object>();
 
-        public ResourceManager(IOptions<ResourceManagerOptions> options, IServiceProvider provider)
+        public ResourceManager(IServiceProvider provider, IOptions<ResourceManagerOptions> options)
         {
-            _options = options;
             _provider = provider;
+            _fileProvider = options.Value.CreateFileProvider();
         }
         
         public T LoadResource<T>(string key)
             where T : class
         {
-            return (T)_resources.GetOrAdd(key, k =>
+            return (T)_resources.GetOrAdd((typeof(T), key), tuple =>
             {
                 var loader = _provider.GetRequiredService<ResourceLoader<T>>();
 
                 if(loader == null)
                     throw new InvalidOperationException($"No loader registered for {typeof(T)}");
 
-                Stream stream = null;
+                var file = _fileProvider.GetFileInfo(tuple.Item2);
 
-                foreach (var resolver in _options.Value.Resolvers)
-                {
-                    stream = resolver.Resolve(k);
-                    if (stream != null)
-                        break;
-                }
+                return loader.LoadObject(key, file.Exists 
+                    ? file.CreateReadStream() 
+                    : null);
 
-                return loader.LoadObject(key, stream);
             });
         }
     }

@@ -1,17 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
-using TiledSharp;
+using System.Xml.Serialization;
 
 namespace Loader.Tmx
 {
-    public class TilesetLoader
-    {
-        public TilesetLoader()
-        {
-            var tsc = TmxTileset()
-            
-        }
-
-    }
+    
 }

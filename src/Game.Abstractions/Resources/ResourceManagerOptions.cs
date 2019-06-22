@@ -1,23 +1,22 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using Microsoft.Extensions.FileProviders;
 
 namespace Game.Abstractions
 {
     public class ResourceManagerOptions
     {
-        private readonly List<IResourceResolver> _resolvers = new List<IResourceResolver>();
+        private readonly List<IFileProvider> _providers = new List<IFileProvider>();
 
-        public IEnumerable<IResourceResolver> Resolvers => _resolvers.AsReadOnly();
-
-        public void AddFilesystem(DirectoryInfo basePath)
+        public void AddProvider(IFileProvider provider)
         {
-            _resolvers.Add(new FilesystemResourceResolver(basePath));
+            _providers.Add(provider);
         }
-
-        public void AddEmbeddedAssembly(Assembly assembly)
+        
+        public IFileProvider CreateFileProvider()
         {
-            _resolvers.Add(new EmbeddedResourceResolver(assembly));
+            return new CompositeFileProvider(_providers);
         }
     }
 }

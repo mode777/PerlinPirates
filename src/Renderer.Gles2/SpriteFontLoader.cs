@@ -17,10 +17,12 @@ namespace Renderer.Gles2
             _manager = manager;
         }
 
-        private Texture LoadTexture(XDocument doc)
+        private Texture LoadTexture(string path, XDocument doc)
         {
-            var textureKey = doc.Descendants("page").First().Attribute("file").Value;
-            return _manager.LoadResource<Texture>(textureKey);
+            var textureFile = doc.Descendants("page").First().Attribute("file").Value;
+            var texturePath = Path.Combine(Path.GetDirectoryName(path), textureFile);
+
+            return _manager.LoadResource<Texture>(texturePath);
         }
 
         private SpriteFont LoadFromXml(XDocument doc, Texture texture)
@@ -66,7 +68,7 @@ namespace Renderer.Gles2
         public override SpriteFont Load(string rid, Stream stream)
         {
             var doc = XDocument.Load(stream);
-            var texture = LoadTexture(doc);
+            var texture = LoadTexture(rid, doc);
             return LoadFromXml(doc, texture);
         }
     }

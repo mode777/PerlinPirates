@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Game.Abstractions
@@ -19,6 +20,7 @@ namespace Game.Abstractions
             services.AddSingleton<ResourceManager>();
             services.AddResourceLoader<string, StringLoader>();
             services.AddResourceLoader<byte[], BinaryLoader>();
+            services.AddResourceLoader<Stream, StreamLoader>();
 
             return services;
         }

@@ -15,16 +15,19 @@ namespace ExampleGame.Tests
         private readonly GlContext _context;
         private readonly ResourceManager _manager;
         private readonly EventsProvider _provider;
+        private readonly Shader2d _shader;
 
         private Framebuffer _fb;
         private IDrawable _fbDrawable;
         private Tilemap _map;
+        private Tilemap _map2;
 
-        public TilesTest(GlContext context, ResourceManager manager, EventsProvider provider)
+        public TilesTest(GlContext context, ResourceManager manager, EventsProvider provider, Shader2d shader)
         {
             _context = context;
             _manager = manager;
             _provider = provider;
+            _shader = shader;
 
             _provider.Load += Load;
             _provider.Draw += Draw;
@@ -33,6 +36,8 @@ namespace ExampleGame.Tests
 
         private void Load()
         {
+            _map2 = _manager.LoadResource<Tilemap>("Resources/Tilemaps/level");
+
             _fb = _context.BuildFramebuffer()
                 .HasAttachment(FramebufferAttachment.GL_COLOR_ATTACHMENT0)
                 .WithDefaultTexture(256, 128)
@@ -40,11 +45,9 @@ namespace ExampleGame.Tests
 
             var texture = _manager.LoadResource<Texture>("Resources.Textures.tiles.png");
 
-            var shader = new Shader2d(_context, _manager);
-
             var tileset = new Tileset(texture, new Size(TILE_SIZE, TILE_SIZE));
 
-            _map = new Tilemap(_context, shader, tileset, 16, 8);
+            _map = new Tilemap(_context, _shader, tileset, 16, 8);
             var data = new int[_map.Width * _map.Height];
             var rand = new Random();
 
@@ -64,7 +67,7 @@ namespace ExampleGame.Tests
             using (var context = _fb.StartDrawing())
             {
                 _context.Clear(ClearBufferMask.GL_COLOR_BUFFER_BIT);
-                _map.Render();
+                _map2.Render();
             }
 
             _context.Clear(ClearBufferMask.GL_COLOR_BUFFER_BIT);

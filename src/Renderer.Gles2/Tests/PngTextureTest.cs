@@ -16,8 +16,8 @@ namespace Renderer.Gles2.Tests
         
         public void Init(GlContext context, ResourceManager resources)
         {
-            var shader = resources.LoadResource<Shader>("Resources.Shaders.texture_checker");
-            var texture = resources.LoadResource<Texture>("Resources.Textures.grid.png");
+            var shader = resources.LoadResource<Shader>("Resources/Shaders/texture_checker");
+            var texture = resources.LoadResource<Texture>("Resources/Textures/grid.png");
 
             _drawable = context.BuildDrawable()
                 .UseShader(shader)

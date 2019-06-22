@@ -5,11 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="TiledSharp" Version="1.0.1" />
+    <PackageReference Include="SharpZipLib" Version="1.1.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Game.Abstractions\Game.Abstractions.csproj" />
+    <ProjectReference Include="..\Renderer.Gles2\Renderer.Gles2.csproj" />
   </ItemGroup>
 
 </Project>

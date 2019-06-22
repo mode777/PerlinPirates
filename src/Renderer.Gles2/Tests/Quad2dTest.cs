@@ -24,7 +24,7 @@ namespace Renderer.Gles2.Tests
             //var shader = resources.LoadResource<Shader>("Resources.Shaders.quad2d");
             var shader = new Shader2d(context, resources);
             
-            _texture = resources.LoadResource<Texture>("Resources.Textures.grid.png");
+            _texture = resources.LoadResource<Texture>("Resources/Textures/grid.png");
 
             _buffer = new QuadBuffer2D(context, shader, _texture, 2);
 
