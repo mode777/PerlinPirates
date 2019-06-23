@@ -5,10 +5,13 @@ using System.Runtime.InteropServices;
 using System.Runtime.Loader;
 using System.Threading;
 using System.Threading.Tasks;
+using ExampleGame.Entites;
+using ExampleGame.Loaders;
 using ExampleGame.Tests;
 using Game.Abstractions;
 using ImageSharpLoader;
 using Loader.Tmx;
+using Loader.Tmx.Xml;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
@@ -74,6 +77,8 @@ namespace ExampleGame
             services.AddResourceLoader<Tileset, TilesetLoader>();
             services.AddResourceLoader<TiledMap, TiledMapLoader>();
             services.AddResourceLoader<TiledTileset, TiledTilesetLoader>();
+
+            services.AddResourceLoader<GameMap, GameMapLoader>();
 
             services.AddSdl2(x => hostContext.Configuration.Bind("Platform", x));
             

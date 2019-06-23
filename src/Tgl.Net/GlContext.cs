@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -17,6 +18,11 @@ namespace Tgl.Net
             Info = new GlInfo();
             State = new GlStateCache(Info);
             DefaultViewport = State.Viewport;
+
+            // hack: SRGB is enabled by default on certain (intel?) chips;
+            uint GL_FRAMEBUFFER_SRGB = 0x8DB9;
+            GL.glDisable((EnableCap) GL_FRAMEBUFFER_SRGB);
+            var err = GL.glGetError();
         }
 
         public GlInfo Info { get; }
