@@ -1,8 +1,8 @@
 ﻿namespace ECS
 {
-    internal class TripleIterator<T1, T2, T3> : AbstractIterator<(T1, T2, T3)>
+    internal class TripleIterator<T1, T2, T3> : AbstractIterator<(int, T1, T2, T3)>
     {
         protected override bool IsValid(Entity e) => e.HasTypes(typeof(T1), typeof(T2), typeof(T3));
-        protected override (T1, T2, T3) Transform(Entity e) => e.GetComponents<T1, T2, T3>();
+        protected override (int, T1, T2, T3) Transform(Entity e) => (e.Id, e.GetComponent<T1>(), e.GetComponent<T2>(), e.GetComponent<T3>());
     }
 }

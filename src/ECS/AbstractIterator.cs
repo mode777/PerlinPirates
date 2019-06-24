@@ -14,8 +14,12 @@ namespace ECS
     {
         private readonly HashSet<Entity> _entities;
         
-        public AbstractIterator()
+        public AbstractIterator(IEnumerable<Entity> entites)
         {
+            foreach (var entity in entites)
+            {
+                _entities.Add(entity);
+            }
         }
 
         public void AddOrUpdate(Entity e)
