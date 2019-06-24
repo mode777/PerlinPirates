@@ -1,76 +1,64 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
+using System.Threading;
 
 namespace ECS
 {
-    public class Entity
-    {
-        public readonly int Id;
-        private readonly Dictionary<Type, object> _components;
-
-        public Entity(int id)
-        {
-            Id = id;
-            _components = new Dictionary<Type, object>();
-        }
-
-        public bool HasTypes(params Type[] types)
-        {
-            return types.All(x => _components.ContainsKey(x));
-        }
-
-        public T GetComponent<T>()
-        {
-            return (T)_components[typeof(T)];
-        }
-    }
-
     public class World
     {
-        private readonly List<Entity> _entities;
-        private readonly List<(Predicate<Entity>, Action<Entity>)> _delegates = new List<(Predicate<Entity>, Action<Entity>)>();
+        private static int _Id = 0;
 
-        public void Iterate()
+        private readonly Dictionary<int, Entity> _entities = new Dictionary<int, Entity>();
+        private readonly Dictionary<Type, IAbstractIterator> _enumerators = new Dictionary<Type, IAbstractIterator>();
+
+        public int CreateEntity()
         {
-            foreach (var entity in _entities)
+            var id = Interlocked.Increment(ref _Id);
+            var e = new Entity(id);
+            _entities.Add(id, e);
+            UpdateEnumerators(e, false);
+            return id;
+        }
+
+        public void AddComponent<T>(int id, T component)
+        {
+            var e = _entities[id];
+            e.AddComponent(component);
+            UpdateEnumerators(e, false);
+        }
+
+        public void RemoveComponent<T>(int id)
+        {
+            var e = _entities[id];
+            e.RemoveComponent<T>();
+            UpdateEnumerators(e, false);
+        }
+
+        public void DestoryEntity(int id)
+        {
+            UpdateEnumerators(_entities[id], true);
+            _entities.Remove(id);
+        }
+
+        private void UpdateEnumerators(Entity e, bool remove)
+        {
+            foreach (var value in _enumerators.Values)
             {
-                foreach (var tuple in _delegates)
+                if (remove)
                 {
-                    if (tuple.Item1(entity))
-                    {
-                        tuple.Item2(entity);
-                    }
+                    value.Remove(e);
+                }
+                else
+                {
+                    value.AddOrUpdate(e);
                 }
             }
         }
 
-        public void RegisterIterator<T1>(Action<int, T1> iterator)
-        {
-            Predicate<Entity> predicate = e => e.HasTypes(typeof(T1));
-            Action<Entity> action = e => iterator(e.Id, e.GetComponent<T1>());
-
-            _delegates.Add((predicate, action));
-        }
-
-        public void RegisterIterator<T1, T2>(Action<int, T1, T2> iterator)
-        {
-            Predicate<Entity> predicate = e => e.HasTypes(typeof(T1), typeof(T2));
-            Action<Entity> action = e => iterator(e.Id, e.GetComponent<T1>(), e.GetComponent<T2>());
-
-            _delegates.Add((predicate, action));
-        }
-
-        public void RegisterIterator<T1, T2, T3>(Action<int, T1, T2, T3> iterator)
-        {
-            Predicate<Entity> predicate = e => e.HasTypes(typeof(T1), typeof(T2));
-            Action<Entity> action = e => iterator(e.Id, e.GetComponent<T1>(), e.GetComponent<T2>(), e.GetComponent<T3>());
-
-            _delegates.Add((predicate, action));
-        }
-
+        
     }
 }
