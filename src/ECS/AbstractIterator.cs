@@ -12,7 +12,7 @@ namespace ECS
 
     internal abstract class AbstractIterator<TResult> : IAbstractIterator, IEnumerable<TResult>
     {
-        private readonly HashSet<Entity> _entities;
+        private readonly HashSet<Entity> _entities = new HashSet<Entity>();
         
         public AbstractIterator(IEnumerable<Entity> entites)
         {

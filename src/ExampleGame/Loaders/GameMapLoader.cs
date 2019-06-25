@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using ExampleGame.Entites;
+using ExampleGame.Components;
 using Game.Abstractions;
 using Loader.Tmx.Xml;
 

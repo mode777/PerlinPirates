@@ -5,7 +5,8 @@ using System.Runtime.InteropServices;
 using System.Runtime.Loader;
 using System.Threading;
 using System.Threading.Tasks;
-using ExampleGame.Entites;
+using ECS;
+using ExampleGame.Components;
 using ExampleGame.Loaders;
 using ExampleGame.Tests;
 using Game.Abstractions;
@@ -77,7 +78,7 @@ namespace ExampleGame
             services.AddResourceLoader<Tileset, TilesetLoader>();
             services.AddResourceLoader<TiledMap, TiledMapLoader>();
             services.AddResourceLoader<TiledTileset, TiledTilesetLoader>();
-
+            
             services.AddResourceLoader<GameMap, GameMapLoader>();
 
             services.AddSdl2(x => hostContext.Configuration.Bind("Platform", x));
@@ -94,6 +95,7 @@ namespace ExampleGame
             services.AddSingleton<IEventDispatcher>(x => x.GetRequiredService<EventsProvider>());
             
             services.AddScoped<IGameLoop, GameLoop>();
+            services.AddScoped<World>();
             services.AddHostedService<GameHost>();
         }
 
