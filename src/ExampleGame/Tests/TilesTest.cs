@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
-using ExampleGame.Entites;
+using ECS;
+using ExampleGame.Components;
 using Game.Abstractions;
 using Renderer.Gles2;
 using Tgl.Net;
@@ -17,17 +18,18 @@ namespace ExampleGame.Tests
         private readonly ResourceManager _manager;
         private readonly EventsProvider _provider;
         private readonly Shader2d _shader;
+        private readonly World _world;
 
         private Framebuffer _fb;
         private IDrawable _fbDrawable;
-        private Tilemap _map;
 
-        public TilesTest(GlContext context, ResourceManager manager, EventsProvider provider, Shader2d shader)
+        public TilesTest(GlContext context, ResourceManager manager, EventsProvider provider, Shader2d shader, World world)
         {
             _context = context;
             _manager = manager;
             _provider = provider;
             _shader = shader;
+            _world = world;
 
             _provider.Load += Load;
             _provider.Draw += Draw;
@@ -37,8 +39,13 @@ namespace ExampleGame.Tests
         private void Load()
         {
             var gamemap = _manager.LoadResource<GameMap>("Resources/Tilemaps/level");
+            var tilemap = _manager.LoadResource<Tilemap>("Resources/Tilemaps/level");
 
-            _map = _manager.LoadResource<Tilemap>("Resources/Tilemaps/level");
+            var worldEntity = _world.CreateEntity();
+            _world.AddComponent(worldEntity, gamemap);
+            _world.AddComponent(worldEntity, tilemap);
+            _world.ApplyChanges();
+            
 
             _fb = _context.BuildFramebuffer()
                 .HasAttachment(FramebufferAttachment.GL_COLOR_ATTACHMENT0)
@@ -46,6 +53,7 @@ namespace ExampleGame.Tests
                 .Build();
 
             _fbDrawable = _context.CreateFullscreenTexture(_fb.ColorAttachment);
+
         }
 
         private void Draw()
@@ -53,7 +61,10 @@ namespace ExampleGame.Tests
             using (var context = _fb.StartDrawing())
             {
                 _context.Clear(ClearBufferMask.GL_COLOR_BUFFER_BIT);
-                _map.Render();
+                foreach (var (entity, tilemap) in _world.Enumerate<Tilemap>())
+                {
+                    tilemap.Render();
+                }
             }
 
             _context.Clear(ClearBufferMask.GL_COLOR_BUFFER_BIT);

@@ -29,11 +29,9 @@ namespace ECS
         {
             var id = Interlocked.Increment(ref _Id);
             var e = new Entity(id);
-
+            _entities.Add(e.Id, e);
             _entityQueue.Enqueue((ChangeStatus.Created, e));
 
-            _entities.Add(id, e);
-            UpdateEnumerators(e, false);
             return id;
         }
 
@@ -41,7 +39,7 @@ namespace ECS
         {
             var e = _entities[id];
             e.AddComponent(component);
-            UpdateEnumerators(e, false);
+            _entityQueue.Enqueue((ChangeStatus.Changed, e));
         }
 
         public T GetComponent<T>(int id)
@@ -70,6 +68,20 @@ namespace ECS
                 .Cast<(int, T1)>();
         }
 
+        public IEnumerable<(int, T1, T2)> Enumerate<T1, T2>()
+        {
+            return _enumerators
+                .GetOrAdd(typeof((T1, T2)), new DoubleIterator<T1, T2>(_entities.Values))
+                .Cast<(int, T1, T2)>();
+        }
+
+        public IEnumerable<(int, T1, T2, T3)> Enumerate<T1, T2, T3>()
+        {
+            return _enumerators
+                .GetOrAdd(typeof((T1, T2, T3)), new TripleIterator<T1, T2, T3>(_entities.Values))
+                .Cast<(int, T1, T2, T3)>();
+        }
+
         private void UpdateEnumerators(Entity e, bool remove)
         {
             foreach (var value in _enumerators.Values)
@@ -94,7 +106,6 @@ namespace ECS
                 switch (type)
                 {
                     case ChangeStatus.Created:
-                        _entities.Add(entity.Id, entity);
                         UpdateEnumerators(entity, false);
                         break;
                     case ChangeStatus.Deleted:
