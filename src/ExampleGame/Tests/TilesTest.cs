@@ -44,9 +44,7 @@ namespace ExampleGame.Tests
             var worldEntity = _world.CreateEntity();
             _world.AddComponent(worldEntity, gamemap);
             _world.AddComponent(worldEntity, tilemap);
-            _world.ApplyChanges();
             
-
             _fb = _context.BuildFramebuffer()
                 .HasAttachment(FramebufferAttachment.GL_COLOR_ATTACHMENT0)
                 .WithDefaultTexture(256, 128)
