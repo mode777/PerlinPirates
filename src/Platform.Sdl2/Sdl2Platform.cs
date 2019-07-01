@@ -103,11 +103,11 @@ namespace Platform.Sdl2
                     };
                     break;
                 case SDL.SDL_EventType.SDL_KEYUP:
-                    @event = new KeyDownEvent
+                    @event = new KeyUpEvent
                     {
                         Key = (KeyCode)ev.key.keysym.sym,
                         ScanCode = (ScanCode)ev.key.keysym.scancode,
-                        IsRepeat = Convert.ToBoolean(ev.key.repeat),
+                        //IsRepeat = Convert.ToBoolean(ev.key.repeat),
                         Modifier = (KeyModifier)ev.key.keysym.mod
                     };
                     break;

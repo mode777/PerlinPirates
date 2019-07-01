@@ -39,19 +39,20 @@ namespace ExampleGame.Loaders
                     x.Properties.Properties.First(y => y.Name == "terrain_type").Value, 
                     true));
             var entityLookup = tileset.Tiles
-                .Where(x => x.Properties.Properties
-                    .Any(y => y.Name == "entity_type"))
-                .ToDictionary(x => x.Id + 1, 
-                    x => (EntityType)Enum.Parse(typeof(EntityType), x.Properties.Properties.First(y => y.Name == "entity_type").Value, 
-                        true));
+                .Select(x => new
+                {
+                    Id = x.Id + 1,
+                    Type = x.Properties.Properties.FirstOrDefault(y => y.Name == "entity_type")?.Value
+                })
+                .Where(x => x.Type != null)
+                .ToDictionary(x => x.Id, x => x.Type);
 
             var mapData = tiled.Layers.First(x => x.Name == "map").Decoded;
             var tiles = mapData.Select(x => new GameTile(terrainLookup[x.Id])).ToArray();
 
             var entityData = tiled.Layers.First(x => x.Name == "entities").Decoded;
-            var entities = entityData.Where(x => x.Id > 0).Select((x, i) => new GameEntity(i, entityLookup[x.Id], i % tiled.Width, i / tiled.Width)).ToArray();
 
-            return new GameMap(tiled.Width, tiled.Height, tiles, entities);
+            return new GameMap(tiled.Width, tiled.Height, tiles);
         }
     }
 }

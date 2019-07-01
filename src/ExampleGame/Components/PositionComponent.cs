@@ -9,6 +9,11 @@ namespace ExampleGame.Components
 
     public class PositionComponent
     {
-        public Point Position { get; set; }
+        public PositionComponent(int x, int y)
+        {
+            Value = new Point(x,y);
+        }
+
+        public Point Value { get; set; }
     }
 }

@@ -7,7 +7,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using ECS;
 using ExampleGame.Components;
+using ExampleGame.Extensions;
 using ExampleGame.Loaders;
+using ExampleGame.Systems;
 using ExampleGame.Tests;
 using Game.Abstractions;
 using ImageSharpLoader;
@@ -93,8 +95,15 @@ namespace ExampleGame
             services.AddSingleton<EventsProvider>();
             services.AddSingleton<IEventSource>(x => x.GetRequiredService<EventsProvider>());
             services.AddSingleton<IEventDispatcher>(x => x.GetRequiredService<EventsProvider>());
-            
-            services.AddScoped<IGameLoop, GameLoop>();
+
+            services.AddSingleton<InputState>();
+            services.AddScoped<IGameLoop, EcsGameLoop>();
+
+            services.RegisterSystem<GameEntityLoader>();
+            services.RegisterSystem<Input>();
+            services.RegisterSystem<Movement>();
+            services.RegisterSystem<GameRenderer>();
+
             services.AddScoped<World>();
             services.AddHostedService<GameHost>();
         }

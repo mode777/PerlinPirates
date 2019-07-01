@@ -22,7 +22,7 @@ namespace ECS
 
         public void AddComponent<T>(T component)
         {
-            _components.Add(typeof(T), component);
+            _components[typeof(T)] = component;
         }
 
         public void RemoveComponent<T>()
