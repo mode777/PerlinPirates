@@ -13,15 +13,13 @@ namespace ExampleGame.Loaders
     public class TilemapLoader : ResourceLoader<Tilemap>
     {
         private readonly ResourceManager _manager;
-        private readonly GlContext _context;
-        private readonly Shader2d _shader;
+        private readonly Context2d _context;
         private readonly XmlSerializer _serializer;
 
-        public TilemapLoader(ResourceManager manager, GlContext context, Shader2d shader)
+        public TilemapLoader(ResourceManager manager, Context2d context)
         {
             _manager = manager ?? throw new ArgumentNullException(nameof(manager));
-            _context = context ?? throw new ArgumentNullException(nameof(context));
-            _shader = shader ?? throw new ArgumentNullException(nameof(shader));
+            _context = context;
             _serializer = new XmlSerializer(typeof(TiledMap));
         }
 
@@ -50,7 +48,7 @@ namespace ExampleGame.Loaders
                 .Select(x => x.Id)
                 .ToArray();
 
-            return new Tilemap(_context, _shader, tileset, map.Width, map.Height, tiles);
+            return _context.CreateTilemap(tileset, new Size(map.Width, map.Height), tiles);
         }
     }
 }

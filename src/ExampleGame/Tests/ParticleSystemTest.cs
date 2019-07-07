@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Numerics;
 using Game.Abstractions;
+using Game.Abstractions.Events;
 using Microsoft.Extensions.Logging;
 using Renderer.Gles2;
 using Tgl.Net;
@@ -8,12 +9,11 @@ using Tgl.Net.Bindings;
 
 namespace ExampleGame.Tests
 {
-    public class ParticleSystemTest : IGameComponent
+    public class ParticleSystemTest : IHandlesLoad, IHandlesDraw, IHandlesUpdate
     {
         private readonly GlContext _context;
         private readonly ResourceManager _manager;
         private readonly ILogger<IGameComponent> _logger;
-        private readonly IEventSource _eventSource;
         private readonly Shader2d _shader;
         private const int PARTICLES = 10000;
 
@@ -21,32 +21,12 @@ namespace ExampleGame.Tests
         private QuadBuffer2D _buffer;
         private Random _random = new Random();
 
-        public ParticleSystemTest(GlContext context, ResourceManager manager, ILogger<IGameComponent> logger, IEventSource eventSource, Shader2d shader)
+        public ParticleSystemTest(GlContext context, ResourceManager manager, ILogger<IGameComponent> logger, Shader2d shader)
         {
             _context = context;
             _manager = manager;
             _logger = logger;
-            _eventSource = eventSource;
             _shader = shader;
-
-            _eventSource.Load += Load;
-            _eventSource.Update += Update;
-            _eventSource.Draw += Draw;
-        }
-
-        private void Load()
-        {
-            var texture = _manager.LoadResource<Texture>("Resources.Textures.particle.png");
-
-            _buffer = new QuadBuffer2D(_context, _shader, texture, PARTICLES);
-
-            for (int i = 0; i < PARTICLES; i++)
-            {
-                ResetParticle(i);
-            }
-
-            _context.State.Blend = true;
-            _context.State.BlendFunc(BlendingFactor.GL_ONE, BlendingFactor.GL_ONE);
         }
 
         private void ResetParticle(int i)
@@ -61,7 +41,28 @@ namespace ExampleGame.Tests
             };
         }
 
-        private void Update(float dt)
+        void IHandlesLoad.Load()
+        {
+            var texture = _manager.LoadResource<Texture>("Resources.Textures.particle.png");
+
+            _buffer = new QuadBuffer2D(_context, _shader, texture, PARTICLES);
+
+            for (int i = 0; i < PARTICLES; i++)
+            {
+                ResetParticle(i);
+            }
+
+            _context.State.Blend = true;
+            _context.State.BlendFunc(BlendingFactor.GL_ONE, BlendingFactor.GL_ONE);
+        }
+
+        void IHandlesDraw.Draw()
+        {
+            _context.Clear(ClearBufferMask.GL_COLOR_BUFFER_BIT);
+            _buffer.Render();
+        }
+
+        void IHandlesUpdate.Update(float delta)
         {
             for (int i = 0; i < PARTICLES; i++)
             {
@@ -80,12 +81,6 @@ namespace ExampleGame.Tests
             }
 
             _buffer.Update();
-        }
-
-        private void Draw()
-        {
-            _context.Clear(ClearBufferMask.GL_COLOR_BUFFER_BIT);
-            _buffer.Render();
         }
     }
 }

@@ -15,7 +15,7 @@ namespace ExampleGame
         public int UpdateEveryNth { get; }
     }
 
-    public class EcsGameLoopOptions
+    public class GameLoopOptions
     {
         private List<SystemConfig> _systemTypes = new List<SystemConfig>();
 

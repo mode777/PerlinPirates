@@ -19,15 +19,13 @@ namespace ExampleGame.Systems
     {
         private readonly World _world;
         private readonly ResourceManager _manager;
-        private readonly GlContext _context;
-        private readonly Shader2d _shader;
+        private readonly Context2d _context;
 
-        public GameEntityLoader(World world, ResourceManager manager, GlContext context, Shader2d shader)
+        public GameEntityLoader(World world, ResourceManager manager, Context2d context)
         {
             _world = world;
             _manager = manager;
             _context = context;
-            _shader = shader;
         }
 
         public void Load()
@@ -69,8 +67,7 @@ namespace ExampleGame.Systems
 
             var texture = _manager.LoadResource<Texture>(Path.Combine("Resources/Tilemaps", tileset.Image.Source));
             var tilesetGl = new Tileset(texture, new Size(tileset.TileWidth, tileset.TileHeight));
-            var tilemapGl = new Tilemap(_context, _shader, tilesetGl, tiled.Width, tiled.Height,
-                mapData.Select(x => x.Id).ToArray());
+            var tilemapGl = _context.CreateTilemap(tilesetGl, new Size(tiled.Width, tiled.Height), mapData.Select(x => x.Id).ToArray());
 
             foreach (var entity in entityData.Select((x, i) => new
             {
@@ -80,7 +77,7 @@ namespace ExampleGame.Systems
             }).Where(x => x.Id > 0 && entityLookup.ContainsKey(x.Id)))
             {
                 var pos = new PositionComponent(entity.X, entity.Y);
-                var sprite = new TileSprite(_context, _shader, tilesetGl, entity.Id);
+                var sprite =  _context.CreateTileSprite(tilesetGl, entity.Id);
 
                 var id = _world.CreateEntity(pos, sprite);
 

@@ -1,75 +1,104 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using Game.Abstractions;
 using Game.Abstractions.Events;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace ExampleGame
 {
     public class GameLoop : IGameLoop
     {
-        private readonly IHost _host;
         private readonly IPlatform _platform;
-        private readonly IGameComponent _game;
-        private readonly ILogger<IGameLoop> _logger;
-        private readonly IEventDispatcher _dispatcher;
+        private readonly IServiceProvider _provider;
+        private readonly IHost _host;
+        private readonly InputState _input;
 
-        public GameLoop(IHost host, IPlatform platform, IGameComponent game, ILogger<IGameLoop> logger, IEventDispatcher dispatcher)
+        private readonly List<IHandlesUpdate> _updates = new List<IHandlesUpdate>();
+        private readonly List<IHandlesLoad> _loaders = new List<IHandlesLoad>();
+        private readonly List<IHandlesDraw> _drawers = new List<IHandlesDraw>();
+        private readonly Dictionary<object, int> _updateEveryNth = new Dictionary<object, int>();
+
+        public GameLoop(IPlatform platform, IOptions<GameLoopOptions> options, IServiceProvider provider,
+            IHost host, InputState input)
         {
-            _host = host;
             _platform = platform;
-            _game = game;
-            _logger = logger;
-            _dispatcher = dispatcher;
+            _provider = provider;
+            _host = host;
+            _input = input;
+
+            foreach (var config in options.Value.Systems)
+            {
+                var system = provider.GetService(config.SystemType);
+                _updateEveryNth[system] = config.UpdateEveryNth;
+
+                if (system == null)
+                    throw new NullReferenceException($"System was not registered: {config}");
+
+                if (system is IHandlesUpdate update)
+                    _updates.Add(update);
+
+                if (system is IHandlesLoad loader)
+                    _loaders.Add(loader);
+
+                if (system is IHandlesDraw drawer)
+                    _drawers.Add(drawer);
+            }
         }
 
         public void Run(CancellationToken token)
         {
-            _dispatcher.DispatchLoad();
+            var updateCount = 0;
+
+            foreach (var loader in _loaders)
+            {
+                loader.Load();
+            }
 
             var sw = new Stopwatch();
-            double dt = 0;
-            double tc = 0;
-            int fc = 0;
-
             sw.Restart();
+            
             while (!token.IsCancellationRequested)
             {
                 while (_platform.PollEvent(out var ev))
                 {
-                    if (ev is QuitEvent){
-                        _dispatcher.DispatchQuit();
+                    if (ev is QuitEvent)
+                    {
+                        //_dispatcher.DispatchQuit();
                         _host.StopAsync();
                     }
-                    else if(ev is KeyUpEvent ku)
-                        _dispatcher.DispatchKeyUp(ku);
-                    else if(ev is KeyDownEvent kd)
-                        _dispatcher.DispatchKeyDown(kd);
+                    else if (ev is KeyUpEvent ku)
+                        _input.OnKeyUp(ku);
+                    else if (ev is KeyDownEvent kd)
+                        _input.OnKeyDown(kd);
                 }
 
-                dt = sw.Elapsed.TotalSeconds;
-                tc += dt;
-
-
+                var dt = sw.Elapsed.TotalSeconds;
+                
                 sw.Restart();
 
-                _dispatcher.DispatchUpdate((float)dt);
-                _dispatcher.DispatchDraw();
-                fc++;
-
-                if (tc > 1)
+                foreach (var handlesUpdate in _updates)
                 {
-                    //_logger.LogInformation(fc + "fps");
-                    tc -= 1;
-                    fc = 0;
+                    if (updateCount % _updateEveryNth[handlesUpdate] == 0)
+                    {
+                        handlesUpdate.Update((float) dt);
+                    }
+
                 }
 
+                foreach (var handlesDraw in _drawers)
+                {
+                    handlesDraw.Draw();
+                }
 
                 _platform.SwapBuffers();
                 _platform.Sleep(0);
-
+                updateCount++;
             }
         }
     }
 }
+
+    

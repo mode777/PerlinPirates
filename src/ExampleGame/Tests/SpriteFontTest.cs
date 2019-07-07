@@ -1,32 +1,27 @@
 ﻿using System.Numerics;
 using Game.Abstractions;
+using Game.Abstractions.Events;
 using Renderer.Gles2;
 using Tgl.Net;
 using Tgl.Net.Bindings;
 
 namespace ExampleGame.Tests
 {
-    public class SpriteFontTest : IGameComponent
+    public class SpriteFontTest : IHandlesLoad, IHandlesUpdate, IHandlesDraw
     {
         private const string TEXT = "Lorem ipsum dolor sit amet, consetfdfffffffffffffffffffffffffffhhhhhhhhhhhhhhhetur sadipscing elitr, sed diam nonumy eirmod.";
 
         private readonly GlContext _context;
         private readonly ResourceManager _manager;
-        private readonly IEventSource _events;
         private readonly Shader2d _shader;
 
         private QuadBuffer2D _buffer;
 
-        public SpriteFontTest(GlContext context, ResourceManager manager, IEventSource events, Shader2d shader)
+        public SpriteFontTest(GlContext context, ResourceManager manager, Shader2d shader)
         {
             _context = context;
             _manager = manager;
-            _events = events;
             _shader = shader;
-
-            _events.Load += Load;
-            _events.Update += Update;
-            _events.Draw += Draw;
         }
 
         public void Load()

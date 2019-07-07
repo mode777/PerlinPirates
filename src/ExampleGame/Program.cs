@@ -23,7 +23,6 @@ using Microsoft.Extensions.Logging;
 using Platform.RaspberryPi;
 using Platform.Sdl2;
 using Renderer.Gles2;
-using Renderer.Gles2.Tests;
 using Tgl.Net;
 
 namespace ExampleGame
@@ -88,17 +87,16 @@ namespace ExampleGame
             services.AddSingleton(x => 
                 new GlContext(x.GetRequiredService<IGlLoader>().GetGlProcAddress));
             services.AddSingleton<Shader2d>();
+            services.AddSingleton<Context2d>();
 
             services.AddSingleton<IGameComponent, TilesTest>();
             //services.RegisterGameComponent<Input>();
 
-            services.AddSingleton<EventsProvider>();
-            services.AddSingleton<IEventSource>(x => x.GetRequiredService<EventsProvider>());
-            services.AddSingleton<IEventDispatcher>(x => x.GetRequiredService<EventsProvider>());
-
             services.AddSingleton<InputState>();
-            services.AddScoped<IGameLoop, EcsGameLoop>();
+            services.AddScoped<IGameLoop, GameLoop>();
 
+            //services.RegisterSystem<ParticleSystemTest>();
+            //services.RegisterSystem<SpriteFontTest>();
             services.RegisterSystem<GameEntityLoader>();
             services.RegisterSystem<Input>();
             services.RegisterSystem<Movement>();

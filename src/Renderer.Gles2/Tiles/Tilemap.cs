@@ -10,31 +10,29 @@ namespace Renderer.Gles2
         private readonly QuadBuffer2D _buffer2D;
 
         public Tileset Set { get; }
-        public int Width { get; }
-        public int Height { get; }
+        public Size Size { get; }
 
-        public Tilemap(GlContext context, Shader2d shader, Tileset set, int width, int height, int[] data)
-            : this(context, shader, set, width, height)
+        public Tilemap(GlContext context, Shader2d shader, Tileset set, Size size, int[] data)
+            : this(context, shader, set, size)
         {
-            if (data.Length != width * height)
+            if (data.Length != size.Width * size.Height)
                 throw new InvalidDataException("Data size does not match map size");
 
             SetData(data);
         }
 
-        public Tilemap(GlContext context, Shader2d shader, Tileset set, int width, int height)
+        public Tilemap(GlContext context, Shader2d shader, Tileset set, Size size)
         {
             if (context == null) throw new ArgumentNullException(nameof(context));
             if (shader == null) throw new ArgumentNullException(nameof(shader));
             Set = set ?? throw new ArgumentNullException(nameof(set));
-            Width = width;
-            Height = height;
-            _buffer2D = new QuadBuffer2D(context, shader, Set.Texture, width * height);
+            Size = size;
+            _buffer2D = new QuadBuffer2D(context, shader, Set.Texture, size.Width * size.Height);
         }
 
         public void SetTile(Point point, int id)
         {
-            var index = (point.Y * Width) + point.X;
+            var index = (point.Y * Size.Width) + point.X;
 
             SetTile(point, index, id);
         }
@@ -63,7 +61,7 @@ namespace Renderer.Gles2
             for (int index = 0; index < data.Length; index++)
             {
                 var id = data[index];
-                var point = new Point(index % Width, index / Width);
+                var point = new Point(index % Size.Width, index / Size.Width);
 
                 SetTile(point, index, id);
             }

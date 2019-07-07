@@ -10,7 +10,7 @@ namespace ExampleGame.Extensions
         public static IServiceCollection RegisterSystem<T>(this IServiceCollection services, int updateEveryNth = 1)
             where T : class
         {
-            services.Configure<EcsGameLoopOptions>(x => x.AddSystem<T>(updateEveryNth));
+            services.Configure<GameLoopOptions>(x => x.AddSystem<T>(updateEveryNth));
             services.AddSingleton<T>();
 
             return services;
