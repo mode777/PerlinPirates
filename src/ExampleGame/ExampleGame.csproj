@@ -53,11 +53,12 @@
   <ItemGroup>
     <ProjectReference Include="..\ECS\ECS.csproj" />
     <ProjectReference Include="..\Game.Abstractions\Game.Abstractions.csproj" />
-    <ProjectReference Include="..\ImageLoader\ImageSharpLoader.csproj" />
+    <ProjectReference Include="..\Loader.BmFont\Loader.BmFont.csproj" />
+    <ProjectReference Include="..\Loader.ImageSharp\Loader.ImageSharp.csproj" />
     <ProjectReference Include="..\Loader.Tmx\Loader.Tmx.csproj" />
     <ProjectReference Include="..\Platform.Sdl2\Platform.Sdl2.csproj" />
     <ProjectReference Include="..\Platform.RaspberryPi\Platform.RaspberryPi.csproj" />
-    <ProjectReference Include="..\Renderer.Gles2\Renderer.Gles2.csproj" />
+    <ProjectReference Include="..\Renderer.Common\Renderer.Common.csproj" />
   </ItemGroup>
 
 </Project>

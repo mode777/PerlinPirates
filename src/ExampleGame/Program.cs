@@ -11,8 +11,10 @@ using ExampleGame.Extensions;
 using ExampleGame.Loaders;
 using ExampleGame.Systems;
 using ExampleGame.Tests;
+using ExampleGame.Tutorial;
 using Game.Abstractions;
-using ImageSharpLoader;
+using Loader.BmFont;
+using Loader.ImageSharp;
 using Loader.Tmx;
 using Loader.Tmx.Xml;
 using Microsoft.Extensions.Configuration;
@@ -22,7 +24,11 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Platform.RaspberryPi;
 using Platform.Sdl2;
-using Renderer.Gles2;
+using Renderer.Common;
+using Renderer.Common2D;
+using Renderer.Common2D.Fonts;
+using Renderer.Common2D.Primitives;
+using Renderer.Common2D.Tiles;
 using Tgl.Net;
 
 namespace ExampleGame
@@ -97,10 +103,13 @@ namespace ExampleGame
 
             //services.RegisterSystem<ParticleSystemTest>();
             //services.RegisterSystem<SpriteFontTest>();
-            services.RegisterSystem<GameEntityLoader>();
-            services.RegisterSystem<Input>();
-            services.RegisterSystem<Movement>();
-            services.RegisterSystem<GameRenderer>();
+
+            services.RegisterSystem<TexturedCube>();
+
+            //services.RegisterSystem<GameEntityLoader>();
+            //services.RegisterSystem<Input>();
+            //services.RegisterSystem<Movement>();
+            //services.RegisterSystem<GameRenderer>();
 
             services.AddScoped<World>();
             services.AddHostedService<GameHost>();

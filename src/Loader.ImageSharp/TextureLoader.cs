@@ -1,17 +1,12 @@
 ﻿using System;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 using Game.Abstractions;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Advanced;
-using SixLabors.ImageSharp.Formats.Bmp;
-using SixLabors.ImageSharp.Formats.Jpeg;
-using SixLabors.ImageSharp.Formats.Png;
-using SixLabors.ImageSharp.PixelFormats;
 using Tgl.Net;
 
-namespace ImageSharpLoader
+namespace Loader.ImageSharp
 {
     public class TextureLoader : ResourceLoader<Texture>
     {

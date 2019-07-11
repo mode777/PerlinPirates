@@ -8,7 +8,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Platform.Sdl2;
-using Renderer.Gles2;
 
 namespace ExampleGame
 {

@@ -1,7 +1,9 @@
 ﻿using System.Drawing;
+using Renderer.Common2D.Primitives;
+using Renderer.Common2D.Tiles;
 using Tgl.Net;
 
-namespace Renderer.Gles2
+namespace Renderer.Common2D
 {
     public class Context2d
     {

@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Text;
 using Tgl.Net;
 
-namespace Renderer.Gles2
+namespace Renderer.Common2D.Tiles
 {
     public class Tileset
     {

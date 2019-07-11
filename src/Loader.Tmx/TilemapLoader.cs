@@ -5,10 +5,11 @@ using System.Linq;
 using System.Xml.Serialization;
 using Game.Abstractions;
 using Loader.Tmx.Xml;
-using Renderer.Gles2;
+using Renderer.Common2D;
+using Renderer.Common2D.Tiles;
 using Tgl.Net;
 
-namespace ExampleGame.Loaders
+namespace Loader.Tmx
 {
     public class TilemapLoader : ResourceLoader<Tilemap>
     {

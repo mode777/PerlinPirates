@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using Tgl.Net;
 
-namespace Renderer.Gles2
+namespace Renderer.Common2D.Fonts
 {
     public class SpriteFont
     {

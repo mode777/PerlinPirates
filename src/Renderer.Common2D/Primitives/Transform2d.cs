@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Numerics;
-using System.Text;
 
-namespace Renderer.Gles2
+namespace Renderer.Common2D.Primitives
 {
     public class Transform2d
     {

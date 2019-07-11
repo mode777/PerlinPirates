@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 
-namespace Renderer.Gles2
+namespace Renderer.Common2D.Fonts
 {
     public class SpriteGlyph
     {

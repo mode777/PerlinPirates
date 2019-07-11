@@ -10,7 +10,8 @@ using ExampleGame.Components;
 using Game.Abstractions;
 using Game.Abstractions.Events;
 using Loader.Tmx.Xml;
-using Renderer.Gles2;
+using Renderer.Common2D;
+using Renderer.Common2D.Tiles;
 using Tgl.Net;
 
 namespace ExampleGame.Systems

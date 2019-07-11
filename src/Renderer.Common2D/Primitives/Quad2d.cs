@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Numerics;
 using System.Runtime.InteropServices;
-using System.Text;
 using Tgl.Net;
-using Tgl.Net.Math;
 using Rectangle = System.Drawing.Rectangle;
 
-namespace Renderer.Gles2
+namespace Renderer.Common2D.Primitives
 {
     [StructLayout(LayoutKind.Sequential)]
     public struct Quad2d

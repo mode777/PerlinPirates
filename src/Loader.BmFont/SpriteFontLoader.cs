@@ -1,12 +1,12 @@
 ﻿using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 using Game.Abstractions;
+using Renderer.Common2D.Fonts;
 using Tgl.Net;
 
-namespace Renderer.Gles2
+namespace Loader.BmFont
 {
     public class SpriteFontLoader : ResourceLoader<SpriteFont>
     {

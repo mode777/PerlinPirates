@@ -3,10 +3,9 @@ using System.Drawing;
 using System.Numerics;
 using Tgl.Net;
 using Tgl.Net.Bindings;
-using Tgl.Net.Math;
 using Rectangle = System.Drawing.Rectangle;
 
-namespace Renderer.Gles2
+namespace Renderer.Common2D.Primitives
 {
     public class QuadBuffer2D
     {

@@ -1,8 +1,7 @@
 ﻿using System.Numerics;
 using System.Runtime.InteropServices;
-using Tgl.Net.Math;
 
-namespace Renderer.Gles2
+namespace Renderer.Common2D.Primitives
 {
     [StructLayout(LayoutKind.Sequential)]
     public struct Vertex2d

@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
+﻿using System.ComponentModel;
 using Game.Abstractions;
 using Tgl.Net;
-using Tgl.Net.Bindings;
 using Tgl.Net.Math;
 
-namespace Renderer.Gles2
+namespace Renderer.Common2D.Primitives
 {
     public class Shader2d
     {

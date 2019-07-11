@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Game.Abstractions\Game.Abstractions.csproj" />
-    <ProjectReference Include="..\Renderer.Common2D\Renderer.Common2D.csproj" />
+    <ProjectReference Include="..\Tgl.Net\Tgl.Net.csproj" />
   </ItemGroup>
 
 </Project>

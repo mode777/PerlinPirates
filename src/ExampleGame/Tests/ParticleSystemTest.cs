@@ -3,7 +3,7 @@ using System.Numerics;
 using Game.Abstractions;
 using Game.Abstractions.Events;
 using Microsoft.Extensions.Logging;
-using Renderer.Gles2;
+using Renderer.Common2D.Primitives;
 using Tgl.Net;
 using Tgl.Net.Bindings;
 

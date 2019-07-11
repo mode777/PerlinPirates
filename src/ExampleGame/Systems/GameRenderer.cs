@@ -1,7 +1,7 @@
 ﻿using ECS;
 using ExampleGame.Components;
 using Game.Abstractions.Events;
-using Renderer.Gles2;
+using Renderer.Common2D.Tiles;
 using Tgl.Net;
 using Tgl.Net.Bindings;
 

@@ -5,8 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0-beta0005" />
+    <PackageReference Include="System.Memory" Version="4.5.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Game.Abstractions\Game.Abstractions.csproj" />
-    <ProjectReference Include="..\Renderer.Common2D\Renderer.Common2D.csproj" />
+    <ProjectReference Include="..\Tgl.Net\Tgl.Net.csproj" />
   </ItemGroup>
 
 </Project>

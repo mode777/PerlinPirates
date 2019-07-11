@@ -1,7 +1,8 @@
 ﻿using System.Numerics;
 using Game.Abstractions;
 using Game.Abstractions.Events;
-using Renderer.Gles2;
+using Renderer.Common2D.Fonts;
+using Renderer.Common2D.Primitives;
 using Tgl.Net;
 using Tgl.Net.Bindings;
 

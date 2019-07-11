@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
+using Renderer.Common2D.Primitives;
 using Tgl.Net;
 
-namespace Renderer.Gles2
+namespace Renderer.Common2D.Tiles
 {
     public class Tilemap
     {

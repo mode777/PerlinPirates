@@ -1,12 +1,8 @@
-﻿using Game.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
+using Game.Abstractions;
 using Tgl.Net;
 
-namespace Renderer.Gles2
+namespace Renderer.Common
 {
     public class ShaderLoader : ResourceLoader<Shader>
     {
