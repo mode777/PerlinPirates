@@ -28,7 +28,7 @@ namespace ExampleGame.Systems
                 .WithDefaultTexture(256, 128)
                 .Build();
 
-            _screen = _context.CreateFullscreenTexture(_fb.ColorAttachment);
+            _screen = _context.CreateFullscreenDrawable(_fb.ColorAttachment);
         }
 
         public void Draw()

@@ -116,7 +116,46 @@ namespace Tgl.Net
             }
         }
 
-        public void TexImage2d<T>(
+        public void SubImage2d<T>(
+            int offsetX,
+            int offsetY,
+            int width,
+            int height,
+            T[] data,
+            PixelFormat format = PixelFormat.GL_RGBA,
+            PixelType type = PixelType.GL_UNSIGNED_BYTE,
+            int lod = 0)
+            where T : struct
+        {
+            Bind();
+
+            if (width + offsetX > Width || height + offsetY > Height)
+            {
+                throw new InvalidOperationException("Subimage is to large");
+            }
+
+            using (var handle = new PinnedGCHandle(data))
+            {
+                glTexSubImage2D(
+                    TextureTarget.GL_TEXTURE_2D,
+                    lod, 
+                    offsetX, 
+                    offsetY, 
+                    width,
+                    height,
+                    format,
+                    type,
+                    handle.Pointer);
+            }
+
+            if (lod == 0)
+            {
+                PixelFormat = format;
+                PixelType = type;
+            }
+        }
+
+        public void Image2d<T>(
             int width,
             int height,
             T[] data,
@@ -168,8 +207,8 @@ namespace Tgl.Net
             FilterMagnify = filter;
             FilterMinify = (TextureMinType) filter;
         }
-
-        public void GenerateMipmaps()
+        
+        public void GenerateMipmap()
         {
             Bind();
 

@@ -420,12 +420,12 @@ namespace Tgl.Net.Bindings
         [SuppressUnmanagedCodeSecurity] public delegate void glStencilMaskSeparateDelegate(StencilFaceDirection face, uint mask);
         [SuppressUnmanagedCodeSecurity] public delegate void glStencilOpDelegate(StencilOp fail, StencilOp zfail, StencilOp zpass);
         [SuppressUnmanagedCodeSecurity] public delegate void glStencilOpSeparateDelegate(StencilFaceDirection face, StencilOp sfail, StencilOp dpfail, StencilOp dppass);
-        [SuppressUnmanagedCodeSecurity] public unsafe delegate void glTexImage2DDelegate(TextureTarget target, int level, InternalFormat internalformat, int width, int height, int border, PixelFormat format, PixelType type, IntPtr pixels);
+        [SuppressUnmanagedCodeSecurity] public delegate void glTexImage2DDelegate(TextureTarget target, int level, InternalFormat internalformat, int width, int height, int border, PixelFormat format, PixelType type, IntPtr pixels);
         [SuppressUnmanagedCodeSecurity] public delegate void glTexParameterfDelegate(TextureTarget target, TextureParameterName pname, float param);
         [SuppressUnmanagedCodeSecurity] public unsafe delegate void glTexParameterfvDelegate(TextureTarget target, TextureParameterName pname, float* @params);
         [SuppressUnmanagedCodeSecurity] public delegate void glTexParameteriDelegate(TextureTarget target, TextureParameterName pname, int param);
         [SuppressUnmanagedCodeSecurity] public unsafe delegate void glTexParameterivDelegate(TextureTarget target, TextureParameterName pname, int* @params);
-        [SuppressUnmanagedCodeSecurity] public unsafe delegate void glTexSubImage2DDelegate(TextureTarget target, int level, int xoffset, int yoffset, int width, int height, PixelFormat format, PixelType type, void* pixels);
+        [SuppressUnmanagedCodeSecurity] public delegate void glTexSubImage2DDelegate(TextureTarget target, int level, int xoffset, int yoffset, int width, int height, PixelFormat format, PixelType type, IntPtr pixels);
         [SuppressUnmanagedCodeSecurity] public delegate void glUniform1fDelegate(int location, float v0);
         [SuppressUnmanagedCodeSecurity] public unsafe delegate void glUniform1fvDelegate(int location, int count, float* value);
         [SuppressUnmanagedCodeSecurity] public delegate void glUniform1iDelegate(int location, int v0);

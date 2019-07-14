@@ -104,7 +104,7 @@ namespace ExampleGame
             //services.RegisterSystem<ParticleSystemTest>();
             //services.RegisterSystem<SpriteFontTest>();
 
-            services.RegisterSystem<TexturedCube>();
+            services.RegisterSystem<DoomFire>();
 
             //services.RegisterSystem<GameEntityLoader>();
             //services.RegisterSystem<Input>();

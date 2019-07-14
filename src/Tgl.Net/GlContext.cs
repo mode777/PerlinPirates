@@ -135,7 +135,7 @@ namespace Tgl.Net
             return new DrawableBuilder(this);
         }
 
-        public IDrawable CreateFullscreenTexture(Texture texture)
+        public IDrawable CreateFullscreenDrawable(Texture texture)
         {
             return this.BuildDrawable()
                 .UseShader(s => s

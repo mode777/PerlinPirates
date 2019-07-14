@@ -85,12 +85,12 @@ namespace Tgl.Net
 
             return this;
         }
-
+        
         public Texture Build()
         {
             var texture = new Texture(_state);
             
-            texture.TexImage2d(Width, Height, Data, PixelFormat, InternalFormat, PixelType, 0);
+            texture.Image2d(Width, Height, Data, PixelFormat, InternalFormat, PixelType, 0);
 
             texture.FilterMagnify = FilterMagnify;
             texture.FilterMinify = FilterMinify;
@@ -99,7 +99,7 @@ namespace Tgl.Net
 
             if(GenerateMipmaps)
             {
-                texture.GenerateMipmaps();
+                texture.GenerateMipmap();
             }
 
             return texture;

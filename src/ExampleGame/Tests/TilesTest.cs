@@ -46,7 +46,7 @@ namespace ExampleGame.Tests
                 .WithDefaultTexture(256, 128)
                 .Build();
 
-            _fbDrawable = _context.CreateFullscreenTexture(_fb.ColorAttachment);
+            _fbDrawable = _context.CreateFullscreenDrawable(_fb.ColorAttachment);
 
         }
 
