@@ -14,6 +14,7 @@
   </ItemGroup>
   
   <ItemGroup>
+    <None Remove="Resources\Meshes\suzanne.obj" />
     <None Remove="Resources\Tilemaps\level.tmx" />
     <None Remove="Resources\Tilemaps\zelda.png" />
     <None Remove="Resources\Tilemaps\zelda.tsx" />
@@ -22,6 +23,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Resources\Fonts\segoe.fnt" />
     <EmbeddedResource Include="Resources\Fonts\segoe_0.png" />
+    <EmbeddedResource Include="Resources\Meshes\suzanne.obj" />
     <EmbeddedResource Include="Resources\Shaders\game2d.fragment.glsl" />
     <EmbeddedResource Include="Resources\Shaders\game2d.vertex.glsl" />
     <EmbeddedResource Include="Resources\Shaders\minimal.fragment.glsl" />
@@ -55,6 +57,7 @@
     <ProjectReference Include="..\Game.Abstractions\Game.Abstractions.csproj" />
     <ProjectReference Include="..\Loader.BmFont\Loader.BmFont.csproj" />
     <ProjectReference Include="..\Loader.ImageSharp\Loader.ImageSharp.csproj" />
+    <ProjectReference Include="..\Loader.Obj\Loader.Obj.csproj" />
     <ProjectReference Include="..\Loader.Tmx\Loader.Tmx.csproj" />
     <ProjectReference Include="..\Platform.Sdl2\Platform.Sdl2.csproj" />
     <ProjectReference Include="..\Platform.RaspberryPi\Platform.RaspberryPi.csproj" />

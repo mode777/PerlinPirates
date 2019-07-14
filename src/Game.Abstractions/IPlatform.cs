@@ -9,5 +9,7 @@ namespace Game.Abstractions
         bool PollEvent(out PlatformEvent @event);
         void Sleep(uint ms);
         Size WindowSize { get; }
+        Point GetMousePosition();
+        void SetMousePosition(Point p);
     }
 }

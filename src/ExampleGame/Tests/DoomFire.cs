@@ -28,7 +28,7 @@ namespace ExampleGame.Tests
 
         public void Load()
         {
-            _data = new ImageData<PixelRgb>(_context.DefaultViewport.Size);
+            _data = new ImageData<PixelRgb>(_context.DefaultViewport.Size / 2);
             _firePixels = new byte[_data.Size.Width * _data.Size.Height];
             Setup();
             _texture = _context.BuildTexture<PixelRgb>()

@@ -172,6 +172,15 @@ namespace Platform.RaspberryPi
         }
 
         public Size WindowSize { get; private set; }
+        public Point GetMousePosition()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetMousePosition(Point p)
+        {
+            throw new NotImplementedException();
+        }
 
         public void SwapBuffers()
         {

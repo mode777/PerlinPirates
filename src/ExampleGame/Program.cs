@@ -1,20 +1,15 @@
-﻿using System.Diagnostics;
-using System.IO;
+﻿using System.IO;
 using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Runtime.Loader;
-using System.Threading;
 using System.Threading.Tasks;
 using ECS;
 using ExampleGame.Components;
 using ExampleGame.Extensions;
 using ExampleGame.Loaders;
-using ExampleGame.Systems;
 using ExampleGame.Tests;
-using ExampleGame.Tutorial;
 using Game.Abstractions;
 using Loader.BmFont;
 using Loader.ImageSharp;
+using Loader.Obj;
 using Loader.Tmx;
 using Loader.Tmx.Xml;
 using Microsoft.Extensions.Configuration;
@@ -22,7 +17,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Platform.RaspberryPi;
 using Platform.Sdl2;
 using Renderer.Common;
 using Renderer.Common2D;
@@ -85,8 +79,10 @@ namespace ExampleGame
             services.AddResourceLoader<Tileset, TilesetLoader>();
             services.AddResourceLoader<TiledMap, TiledMapLoader>();
             services.AddResourceLoader<TiledTileset, TiledTilesetLoader>();
-            
+
             services.AddResourceLoader<GameMap, GameMapLoader>();
+
+            services.AddResourceLoader<ObjFile, ObjLoader>();
 
             services.AddSdl2(x => hostContext.Configuration.Bind("Platform", x));
             
@@ -103,19 +99,18 @@ namespace ExampleGame
 
             //services.RegisterSystem<ParticleSystemTest>();
             //services.RegisterSystem<SpriteFontTest>();
-
             services.RegisterSystem<DoomFire>();
+            //services.RegisterSystem<Input>();
+            //services.RegisterSystem<ObjLoading>();
 
             //services.RegisterSystem<GameEntityLoader>();
-            //services.RegisterSystem<Input>();
+            //services.RegisterSystem<Systems.Input>();
             //services.RegisterSystem<Movement>();
             //services.RegisterSystem<GameRenderer>();
 
             services.AddScoped<World>();
             services.AddHostedService<GameHost>();
         }
-
-        
     }
 }
 

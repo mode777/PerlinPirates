@@ -163,10 +163,12 @@ namespace Tgl.Net
             return new IndexBuffer(State, indices);
         }
 
+        [Obsolete]
         public Texture TextureFromPixels(byte[] data, int width, int height, ImagePixelFormat format)
         {
             return new TextureBuilder<byte>(State)
                 .HasMipmaps()
+                .HasFiltering(TextureMinType.GL_LINEAR_MIPMAP_LINEAR, TextureMagType.GL_LINEAR)
                 .HasSize(width, height)
                 .HasData(data)
                 .Build();

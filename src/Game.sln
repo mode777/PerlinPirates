@@ -21,9 +21,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastru
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loader.Tmx", "Loader.Tmx\Loader.Tmx.csproj", "{F7E45039-7DA9-4CC9-BE9F-9FC43068BC5E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Loader.ImageSharp", "Loader.ImageSharp\Loader.ImageSharp.csproj", "{B90F98C1-22AD-4F69-A752-9704997A48CB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loader.ImageSharp", "Loader.ImageSharp\Loader.ImageSharp.csproj", "{B90F98C1-22AD-4F69-A752-9704997A48CB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Loader.BmFont", "Loader.BmFont\Loader.BmFont.csproj", "{FEF2F65B-CB61-4BE7-86B1-14CD7D118D9D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loader.BmFont", "Loader.BmFont\Loader.BmFont.csproj", "{FEF2F65B-CB61-4BE7-86B1-14CD7D118D9D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Loaders", "Loaders", "{F6C90B03-6DB0-4DC1-AFD6-FB482EB16FA7}"
 EndProject
@@ -31,9 +31,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Platforms", "Platforms", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Rendering", "Rendering", "{1960A851-DD8A-4C3B-9FAA-BD543C1493FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Renderer.Common", "Renderer.Common\Renderer.Common.csproj", "{60DD4ED3-2C16-4D28-AE9B-2B58DF84212C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Renderer.Common", "Renderer.Common\Renderer.Common.csproj", "{60DD4ED3-2C16-4D28-AE9B-2B58DF84212C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Renderer.Common2D", "Renderer.Common2D\Renderer.Common2D.csproj", "{4321AEE4-48AF-4F0C-BADD-48A2C23FB823}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Renderer.Common2D", "Renderer.Common2D\Renderer.Common2D.csproj", "{4321AEE4-48AF-4F0C-BADD-48A2C23FB823}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Loader.Obj", "Loader.Obj\Loader.Obj.csproj", "{DB2D3355-7908-49A2-9D61-727800B339B4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -85,6 +87,10 @@ Global
 		{4321AEE4-48AF-4F0C-BADD-48A2C23FB823}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4321AEE4-48AF-4F0C-BADD-48A2C23FB823}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4321AEE4-48AF-4F0C-BADD-48A2C23FB823}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB2D3355-7908-49A2-9D61-727800B339B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB2D3355-7908-49A2-9D61-727800B339B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB2D3355-7908-49A2-9D61-727800B339B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB2D3355-7908-49A2-9D61-727800B339B4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -102,6 +108,7 @@ Global
 		{1960A851-DD8A-4C3B-9FAA-BD543C1493FF} = {37F56CDC-94AD-408B-96DA-A61F275AD611}
 		{60DD4ED3-2C16-4D28-AE9B-2B58DF84212C} = {1960A851-DD8A-4C3B-9FAA-BD543C1493FF}
 		{4321AEE4-48AF-4F0C-BADD-48A2C23FB823} = {1960A851-DD8A-4C3B-9FAA-BD543C1493FF}
+		{DB2D3355-7908-49A2-9D61-727800B339B4} = {F6C90B03-6DB0-4DC1-AFD6-FB482EB16FA7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DA60A5A6-2F1C-46D5-8D6D-97C573E7F303}

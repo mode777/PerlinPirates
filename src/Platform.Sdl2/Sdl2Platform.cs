@@ -59,6 +59,17 @@ namespace Platform.Sdl2
 
         public Size WindowSize { get; }
 
+        public Point GetMousePosition()
+        {
+            SDL.SDL_GetMouseState(out var x, out var y);
+            return new Point(x,y);
+        }
+
+        public void SetMousePosition(Point p)
+        {
+            SDL.SDL_WarpMouseInWindow(_window.Handle, p.X, p.Y);
+        }
+
         public bool PollEvent(out PlatformEvent @event)
         {
             var more = SDL.SDL_PollEvent(out SDL.SDL_Event ev) != 0;
