@@ -6,6 +6,7 @@ using ExampleGame.Components;
 using ExampleGame.Extensions;
 using ExampleGame.Loaders;
 using ExampleGame.Tests;
+using ExampleGame.Tutorial;
 using Game.Abstractions;
 using Loader.BmFont;
 using Loader.ImageSharp;
@@ -99,9 +100,9 @@ namespace ExampleGame
 
             //services.RegisterSystem<ParticleSystemTest>();
             //services.RegisterSystem<SpriteFontTest>();
-            services.RegisterSystem<DoomFire>();
+            //services.RegisterSystem<DoomFire>();
             //services.RegisterSystem<Input>();
-            //services.RegisterSystem<ObjLoading>();
+            services.RegisterSystem<ObjLoading>();
 
             //services.RegisterSystem<GameEntityLoader>();
             //services.RegisterSystem<Systems.Input>();

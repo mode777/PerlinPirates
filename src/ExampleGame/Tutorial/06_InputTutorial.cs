@@ -15,7 +15,7 @@ namespace ExampleGame.Tutorial
 {
 
 
-    public class Input : IHandlesLoad, IHandlesDraw, IHandlesUpdate
+    public class InputTutorial : IHandlesLoad, IHandlesDraw, IHandlesUpdate
     {
         const string GL_VERTEX_SHADER = @"
 attribute vec3 vertexPosition_modelspace;
@@ -50,7 +50,7 @@ void main(){
         private readonly ResourceManager _resources;
         private readonly InputState _state;
         private readonly IPlatform _platform;
-        private readonly ILogger<Input> _logger;
+        private readonly ILogger<InputTutorial> _logger;
 
         private IDrawable _drawable;
 
@@ -71,7 +71,7 @@ void main(){
         private float _delta;
 
 
-        public Input(GlContext context, ResourceManager resources, InputState state, IPlatform platform, ILogger<Input> logger)
+        public InputTutorial(GlContext context, ResourceManager resources, InputState state, IPlatform platform, ILogger<InputTutorial> logger)
         {
             _context = context;
             _resources = resources;
