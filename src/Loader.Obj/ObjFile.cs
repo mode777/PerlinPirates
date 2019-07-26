@@ -15,7 +15,9 @@ namespace Loader.Obj
             _list = list;
         }
 
-        public T this[int index] => _list[index - 1];
+        public T this[int index] => index != 0 
+            ? _list[index - 1]
+            : default;
 
         public IEnumerator<T> GetEnumerator()
         {

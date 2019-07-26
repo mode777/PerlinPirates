@@ -61,6 +61,8 @@
     <ProjectReference Include="..\Loader.Tmx\Loader.Tmx.csproj" />
     <ProjectReference Include="..\Platform.Sdl2\Platform.Sdl2.csproj" />
     <ProjectReference Include="..\Platform.RaspberryPi\Platform.RaspberryPi.csproj" />
+    <ProjectReference Include="..\Renderer.Common2D\Renderer.Common2D.csproj" />
+    <ProjectReference Include="..\Renderer.Common3D\Renderer.Common3D.csproj" />
     <ProjectReference Include="..\Renderer.Common\Renderer.Common.csproj" />
   </ItemGroup>
 
