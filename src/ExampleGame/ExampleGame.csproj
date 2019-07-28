@@ -28,8 +28,6 @@
     <EmbeddedResource Include="Resources\Shaders\game2d.vertex.glsl" />
     <EmbeddedResource Include="Resources\Shaders\minimal.fragment.glsl" />
     <EmbeddedResource Include="Resources\Shaders\minimal.vertex.glsl" />
-    <EmbeddedResource Include="Resources\Shaders\quad2d.fragment.glsl" />
-    <EmbeddedResource Include="Resources\Shaders\quad2d.vertex.glsl" />
     <EmbeddedResource Include="Resources\Shaders\texture_checker.fragment.glsl" />
     <EmbeddedResource Include="Resources\Shaders\texture_checker.vertex.glsl" />
     <EmbeddedResource Include="Resources\Textures\grid.png" />

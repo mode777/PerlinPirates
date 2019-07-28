@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Game.Abstractions
 {
@@ -9,7 +10,8 @@ namespace Game.Abstractions
         public static IServiceCollection AddResourceLoader<TResource, TLoader>(this IServiceCollection services)
             where TLoader : ResourceLoader<TResource>
         {
-            services.AddScoped<ResourceLoader<TResource>, TLoader>();
+            services.TryAddScoped<ResourceLoader<TResource>, TLoader>();
+
             return services;
         }
 
@@ -17,7 +19,7 @@ namespace Game.Abstractions
         {
             services.Configure(options);
 
-            services.AddSingleton<ResourceManager>();
+            services.TryAddSingleton<ResourceManager>();
             services.AddResourceLoader<string, StringLoader>();
             services.AddResourceLoader<byte[], BinaryLoader>();
             services.AddResourceLoader<Stream, StreamLoader>();

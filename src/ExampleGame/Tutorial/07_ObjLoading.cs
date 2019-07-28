@@ -111,7 +111,6 @@ namespace ExampleGame.Tutorial
             _mvp = _mv * _projection;
             
             _drawable.Matrix4Uniforms["MVP"] = _mvp;
-            //_drawable.Matrix4Uniforms["MV"] = _mv;
             _drawable.Matrix4Uniforms["M"] = _model;
             _drawable.Matrix4Uniforms["V"] = _view;
 

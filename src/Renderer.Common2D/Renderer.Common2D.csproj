@@ -1,11 +1,26 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Shaders\quad2d.fragment.glsl" />
+    <None Remove="Resources\Shaders\quad2d.vertex.glsl" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Shaders\quad2d.fragment.glsl" />
+    <EmbeddedResource Include="Resources\Shaders\quad2d.vertex.glsl" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Game.Abstractions\Game.Abstractions.csproj" />
+    <ProjectReference Include="..\Renderer.Common\Renderer.Common.csproj" />
     <ProjectReference Include="..\Tgl.Net\Tgl.Net.csproj" />
   </ItemGroup>
 

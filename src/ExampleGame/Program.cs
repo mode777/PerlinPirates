@@ -20,7 +20,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Platform.Sdl2;
 using Renderer.Common;
+using Renderer.Common.Extensions;
 using Renderer.Common2D;
+using Renderer.Common2D.Extensions;
 using Renderer.Common2D.Fonts;
 using Renderer.Common2D.Primitives;
 using Renderer.Common2D.Tiles;
@@ -72,9 +74,8 @@ namespace ExampleGame
         private static void ConfigureServices(HostBuilderContext hostContext, IServiceCollection services)
         {
             services.AddResourceManager(o => o.AddProvider(new EmbeddedFileProvider(Assembly.GetEntryAssembly())));
-            services.AddResourceLoader<Texture, TextureLoader>();
-            services.AddResourceLoader<Shader, ShaderLoader>();
             services.AddResourceLoader<SpriteFont, SpriteFontLoader>();
+            services.AddResourceLoader<Texture, TextureLoader>();
 
             services.AddResourceLoader<Tilemap, TilemapLoader>();
             services.AddResourceLoader<Tileset, TilesetLoader>();
@@ -86,15 +87,9 @@ namespace ExampleGame
             services.AddResourceLoader<ObjFile, ObjLoader>();
 
             services.AddSdl2(x => hostContext.Configuration.Bind("Platform", x));
+            services.AddGles2();
+            services.Add2dRendering();
             
-            services.AddSingleton(x => 
-                new GlContext(x.GetRequiredService<IGlLoader>().GetGlProcAddress));
-            services.AddSingleton<Shader2d>();
-            services.AddSingleton<Context2d>();
-
-            services.AddSingleton<IGameComponent, TilesTest>();
-            //services.RegisterGameComponent<Input>();
-
             services.AddSingleton<InputState>();
             services.AddScoped<IGameLoop, GameLoop>();
 
