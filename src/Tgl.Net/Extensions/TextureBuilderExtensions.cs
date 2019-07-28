@@ -5,7 +5,7 @@ namespace Tgl.Net.Extensions
 {
     public static class TextureBuilderExtensions
     {
-        public static TextureBuilder<PixelRgba> UseImageData(this TextureBuilder<PixelRgba> builder, ImageData<PixelRgba> imageData)
+        public static TextureBuilder<ColorRgba> UseImageData(this TextureBuilder<ColorRgba> builder, ImageData<ColorRgba> imageData)
         {
             return builder.HasSize(imageData.Size.Width, imageData.Size.Height)
                 .HasPixelFormat(PixelFormat.GL_RGBA)
@@ -13,7 +13,7 @@ namespace Tgl.Net.Extensions
                 .HasData(imageData.Pixels);
         }
 
-        public static TextureBuilder<PixelRgb> UseImageData(this TextureBuilder<PixelRgb> builder, ImageData<PixelRgb> imageData)
+        public static TextureBuilder<ColorRgb> UseImageData(this TextureBuilder<ColorRgb> builder, ImageData<ColorRgb> imageData)
         {
             return builder.HasSize(imageData.Size.Width, imageData.Size.Height)
                 .HasPixelFormat(PixelFormat.GL_RGB)

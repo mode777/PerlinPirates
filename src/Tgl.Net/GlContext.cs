@@ -4,9 +4,11 @@ using System.Drawing;
 using System.Dynamic;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Reflection;
 using System.Text;
 using Tgl.Net.Bindings;
+using Tgl.Net.Imaging;
 
 namespace Tgl.Net
 {
@@ -150,6 +152,19 @@ namespace Tgl.Net
                         1, 1)
                     .HasAttribute("vertexPositionNDC", 2))
                 .AddTexture("colorMap", texture)
+                .Build();
+        }
+
+        public Texture CreateColorTexture(ColorRgba color)
+        {
+            return new TextureBuilder<ColorRgba>(State)
+                .HasMipmaps(false)
+                .HasPixelType(PixelType.GL_UNSIGNED_BYTE)
+                .HasPixelFormat(PixelFormat.GL_RGBA)
+                .HasInternalFormat(InternalFormat.GL_RGBA)
+                .HasFiltering(TextureMinType.GL_NEAREST, TextureMagType.GL_NEAREST)
+                .HasSize(1,1)
+                .HasData(color)
                 .Build();
         }
 

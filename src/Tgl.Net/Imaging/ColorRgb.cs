@@ -4,25 +4,23 @@ using System.Runtime.InteropServices;
 namespace Tgl.Net.Imaging
 {
     [StructLayout(LayoutKind.Sequential)]
-    public readonly struct PixelRgba
+    public readonly struct ColorRgb
     {
-        public static PixelRgba Parse(int val)
+        public static ColorRgb Parse(int val)
         {
             var bytes = BitConverter.GetBytes(val);
-            return new PixelRgba(bytes[0], bytes[1], bytes[2], bytes[3]);
+            return new ColorRgb(bytes[0], bytes[1], bytes[2]);
         }
 
         public readonly byte R;
         public readonly byte G;
         public readonly byte B;
-        public readonly byte A;
-
-        public PixelRgba(byte r, byte g, byte b, byte a)
+        
+        public ColorRgb(byte r, byte g, byte b)
         {
             R = r;
             G = g;
             B = b;
-            A = a;
         }
     }
 }
