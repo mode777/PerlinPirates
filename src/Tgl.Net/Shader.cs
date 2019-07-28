@@ -72,14 +72,28 @@ namespace Tgl.Net
 
         public int GetUniformLocation(string name)
         {
-            return _uniformsByName[name].Location;
+            if (_uniformsByName.TryGetValue(name, out var uni))
+            {
+                return uni.Location;
+            }
+            else
+            {
+                return 0;
+            }
         }
 
         public int GetAttributeLocation(string name)
         {
-            return _attributesByName[name].Location;
+            if (_attributesByName.TryGetValue(name, out var loc))
+            {
+                return loc.Location;
+            }
+            else
+            {
+                return 0;
+            }
         }
-
+        
         public void SetUniform(int location, float value)
         {
             Use();
