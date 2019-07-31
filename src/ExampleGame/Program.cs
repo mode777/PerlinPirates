@@ -26,6 +26,7 @@ using Renderer.Common2D.Extensions;
 using Renderer.Common2D.Fonts;
 using Renderer.Common2D.Primitives;
 using Renderer.Common2D.Tiles;
+using Renderer.Common3D.Extensions;
 using Tgl.Net;
 
 namespace ExampleGame
@@ -89,7 +90,8 @@ namespace ExampleGame
             services.AddSdl2(x => hostContext.Configuration.Bind("Platform", x));
             services.AddGles2();
             services.Add2dRendering();
-            
+            services.Add3dRendering();
+
             services.AddSingleton<InputState>();
             services.AddScoped<IGameLoop, GameLoop>();
 
@@ -97,7 +99,8 @@ namespace ExampleGame
             //services.RegisterSystem<SpriteFontTest>();
             //services.RegisterSystem<DoomFire>();
             //services.RegisterSystem<Input>();
-            services.RegisterSystem<ObjLoading>();
+            //services.RegisterSystem<ObjLoading>();
+            services.RegisterSystem<Monkey>();
 
             //services.RegisterSystem<GameEntityLoader>();
             //services.RegisterSystem<Systems.Input>();

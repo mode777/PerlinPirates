@@ -13,6 +13,8 @@ namespace Renderer.Common3D.Extensions
             services.Configure<ResourceManagerOptions>(x =>
                 x.AddProvider(new EmbeddedFileProvider(typeof(ServiceCollectionExtensions).Assembly)));
 
+            services.AddSingleton<Shader3D>();
+
             return services;
         }
     }
