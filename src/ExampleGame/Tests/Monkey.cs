@@ -62,7 +62,7 @@ namespace ExampleGame.Tutorial
                 ParseVertex(face.C);
             }
 
-            var material = new Material3D(_context.CreateColorTexture(ColorRgba.Parse(0x0000FFFF)));
+            var material = new Material3D(texture);
 
             return new Mesh3D(_context, _shader, vertices.ToArray(), indices.ToArray(), material);
         }
@@ -80,7 +80,7 @@ namespace ExampleGame.Tutorial
         
         public void Update(float delta)
         {
-            _mesh.Transform3D.Rotate(0.01f, 0, 0);
+            _mesh.Transform3D.Rotate(0.01f, 0.01f, 0.01f);
         }
 
         public void Draw()

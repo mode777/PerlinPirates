@@ -13,6 +13,7 @@ namespace Renderer.Common3D
         {
             _position = position;
             _target = target;
+            UpdateView();
         }
 
         public Vector3 Position
@@ -21,6 +22,7 @@ namespace Renderer.Common3D
             set
             {
                 _position = value;
+                UpdateView();
             }
         }
 
@@ -30,6 +32,7 @@ namespace Renderer.Common3D
             set
             {
                 _target = value;
+                UpdateView();
             }
         }
 

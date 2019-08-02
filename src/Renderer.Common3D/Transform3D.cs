@@ -50,7 +50,8 @@ namespace Renderer.Common3D
 
         public void Rotate(float yaw, float pitch, float roll)
         {
-            Rotation = new Vector3(yaw, pitch, roll);
+            Rotation = _rotation + new Vector3(yaw, pitch, roll);
+            UpdateMatrix();
         }
     }
 }

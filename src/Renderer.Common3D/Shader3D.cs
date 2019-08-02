@@ -62,7 +62,7 @@ namespace Renderer.Common3D
         {
             Shader.SetUniform(_mvpLocation, ModelMatrix * ViewMatrix * ProjectionMatrix);
             Shader.SetUniform(_mLocation, ModelMatrix);
-            Shader.SetUniform(_vLocation, ModelMatrix);
+            Shader.SetUniform(_vLocation, ViewMatrix);
             Shader.SetUniform(_light1Location, Light1);
             Shader.SetUniform(_light1LocationPs, Light1);
         }
