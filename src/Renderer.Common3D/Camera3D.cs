@@ -8,12 +8,13 @@ namespace Renderer.Common3D
 
         private Vector3 _position;
         private Vector3 _target;
+        private bool _dirty = true;
+        private Matrix4x4 _viewMatrix;
 
         public Camera3D(Vector3 position, Vector3 target)
         {
             _position = position;
             _target = target;
-            UpdateView();
         }
 
         public Vector3 Position
@@ -22,7 +23,7 @@ namespace Renderer.Common3D
             set
             {
                 _position = value;
-                UpdateView();
+                _dirty = true;
             }
         }
 
@@ -32,19 +33,44 @@ namespace Renderer.Common3D
             set
             {
                 _target = value;
-                UpdateView();
+                _dirty = true;
             }
         }
 
-        public Matrix4x4 ViewMatrix { get; private set; }
+        public Matrix4x4 ViewMatrix
+        {
+            get
+            {
+                if (_dirty)
+                {
+                    UpdateView();
+                }
+                return _viewMatrix;
+            }
+        }
 
         private void UpdateView()
         {
-            ViewMatrix = Matrix4x4.CreateLookAt(
+            _viewMatrix = Matrix4x4.CreateLookAt(
                 _position,
                 _target,
                 Up);
+            _dirty = false;
         }
 
+        public void Orbit(Vector3 amount)
+        {
+            Position = Vector3.Transform(Position, Matrix4x4.CreateFromYawPitchRoll(amount.X,amount.Y, amount.Z));
+        }
+
+        public void OrbitX(float amount)
+        {
+            Position = Vector3.Transform(Position, Matrix4x4.CreateRotationX(amount, Target));
+        }
+
+        public void OrbitZ(float amount)
+        {
+            Position = Vector3.Transform(Position, Matrix4x4.CreateRotationZ(amount, Target));
+        }
     }
 }

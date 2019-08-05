@@ -70,17 +70,19 @@ namespace ExampleGame.Tutorial
         public void Load()
         {
             _mesh = LoadMesh();
-            _camera = new Camera3D(new Vector3(4, 3, 3),
+            _camera = new Camera3D(new Vector3(4, 1, 0),
                 new Vector3(0, 0, 0));
-            _shader.Light1 = new Vector3(4, 4, 4);
+            _shader.Light1 = new Light(new Vector3(4, 4, 4), Vector3.One, 50);
 
             _context.State.DepthTest = true;
             _context.State.DepthFunc = DepthFunction.GL_LESS;
+            _context.State.CullFace = true;
+            _context.State.CullFaceMode = CullFaceMode.GL_BACK;
         }
         
         public void Update(float delta)
         {
-            _mesh.Transform3D.Rotate(0.01f, 0.01f, 0.01f);
+            _mesh.Transform3D.Rotate(0.01f, 0, 0);
         }
 
         public void Draw()

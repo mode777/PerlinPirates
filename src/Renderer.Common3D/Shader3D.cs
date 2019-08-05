@@ -18,7 +18,7 @@ namespace Renderer.Common3D
         public Matrix4x4 ProjectionMatrix { get; private set; }
         public Matrix4x4 ViewMatrix { get; set; }
         public Matrix4x4 ModelMatrix { get; set; }
-        public Vector3 Light1 { get; set; }
+        public Light Light1 { get; set; }
         
         public Shader3D(GlContext context, ResourceManager resources)
         {
@@ -63,8 +63,8 @@ namespace Renderer.Common3D
             Shader.SetUniform(_mvpLocation, ModelMatrix * ViewMatrix * ProjectionMatrix);
             Shader.SetUniform(_mLocation, ModelMatrix);
             Shader.SetUniform(_vLocation, ViewMatrix);
-            Shader.SetUniform(_light1Location, Light1);
-            Shader.SetUniform(_light1LocationPs, Light1);
+            Shader.SetUniform(_light1Location, Light1.Position);
+            Shader.SetUniform(_light1LocationPs, Light1.Position);
         }
 
     }
