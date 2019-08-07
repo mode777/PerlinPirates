@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Game.Abstractions\Game.Abstractions.csproj" />
+    <ProjectReference Include="..\Renderer.Common3D\Renderer.Common3D.csproj" />
     <ProjectReference Include="..\Tgl.Net\Tgl.Net.csproj" />
   </ItemGroup>
 

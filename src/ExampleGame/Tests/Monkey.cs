@@ -20,6 +20,7 @@ namespace ExampleGame.Tutorial
         private readonly Shader3D _shader;
         private Mesh3D _mesh;
         private Camera3D _camera;
+        private Material3D _material;
 
         public Monkey(ResourceManager resources, GlContext context, Shader3D shader)
         {
@@ -28,53 +29,16 @@ namespace ExampleGame.Tutorial
             _shader = shader;
         }
 
-        public Mesh3D LoadMesh()
-        {
-            var texture = _context.CreateColorTexture(ColorRgba.Parse(0x0000FFFF));
-            var file = _resources.LoadResource<ObjFile>("Resources/Meshes/suzanne.obj");
-
-            var mapping = new Dictionary<int, ushort>();
-
-            var vertices = new List<Vertex3d>();
-            var indices = new List<ushort>();
-
-            void ParseVertex(VertexId id)
-            {
-                var hash = id.GetHashCode();
-
-                if (mapping.TryGetValue(hash, out var pos))
-                {
-                    indices.Add(pos);
-                }
-                else
-                {
-                    indices.Add((ushort)vertices.Count);
-                    mapping[hash] = (ushort)vertices.Count;
-
-                    vertices.Add(new Vertex3d(file.Positions[id._postion], file.Normals[id._normal], file.Uvs[id._uv]));
-                }
-            }
-
-            foreach (var face in file.Faces)
-            {
-                ParseVertex(face.A);
-                ParseVertex(face.B);
-                ParseVertex(face.C);
-            }
-
-            var material = new Material3D(texture);
-
-            return new Mesh3D(_context, _shader, vertices.ToArray(), indices.ToArray(), material);
-        }
-
         public void Load()
         {
-            _mesh = LoadMesh();
+            _mesh = _resources.LoadResource<Mesh3D>("Resources/Meshes/suzanne.obj");
             _camera = new Camera3D(new Vector3(4, 1, 0),
                 new Vector3(0, 0, 0));
-            _shader.Light1 = new Light(new Vector3(4, 4, 4), Vector3.One, 50);
+            _shader.Light1 = new Light(new Vector3(4, 4, 4), new Vector3(1,0.8f,0.8f), 100);
+            var texture = _context.CreateColorTexture(ColorRgba.Parse(0x0000FFFF));
+            _material = new Material3D(texture);
 
-            _context.State.DepthTest = true;
+                _context.State.DepthTest = true;
             _context.State.DepthFunc = DepthFunction.GL_LESS;
             _context.State.CullFace = true;
             _context.State.CullFaceMode = CullFaceMode.GL_BACK;
@@ -89,7 +53,7 @@ namespace ExampleGame.Tutorial
         {
             _context.Clear(ClearBufferMask.GL_COLOR_BUFFER_BIT | ClearBufferMask.GL_DEPTH_BUFFER_BIT);
 
-            _mesh.Draw(_camera);
+            _mesh.Draw(_camera, _material);
         }
     }
 }

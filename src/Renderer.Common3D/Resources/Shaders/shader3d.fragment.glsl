@@ -2,6 +2,8 @@
 
 uniform sampler2D myTextureSampler;
 uniform vec3 LightPosition_worldspace_ps;
+uniform vec3 LightColor;
+uniform float LightPower;
 
 varying vec2 vertexUV;
 varying vec3 Position_worldspace;
@@ -10,11 +12,6 @@ varying vec3 EyeDirection_cameraspace;
 varying vec3 LightDirection_cameraspace;
  
 void main(){
-
-	// Light emission properties
-	// You probably want to put them as uniforms
-	vec3 LightColor = vec3(1,1,1);
-	float LightPower = 50.0f;
 	
 	// Material properties
 	vec3 MaterialDiffuseColor = texture2D( myTextureSampler, vertexUV ).rgb;

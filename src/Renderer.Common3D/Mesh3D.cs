@@ -12,16 +12,14 @@ namespace Renderer.Common3D
         private readonly GlContext _context;
         private readonly Shader3D _shader;
         private readonly Vertex3d[] _vertices;
-        private readonly Material3D _material;
 
         public Transform3D Transform3D { get; }
 
-        public Mesh3D(GlContext context, Shader3D shader, Vertex3d[] vertices, ushort[] indices, Material3D material)
+        public Mesh3D(GlContext context, Shader3D shader, Vertex3d[] vertices, ushort[] indices)
         {
             _context = context;
             _shader = shader;
             _vertices = vertices;
-            _material = material;
             _vertices = vertices;
 
             _buffer = context.BuildBuffer<Vertex3d>()
@@ -34,7 +32,6 @@ namespace Renderer.Common3D
 
             _drawable = context.BuildDrawable()
                 .UseShader(shader.Shader)
-                .AddTexture("myTextureSampler", _material.Diffuse)
                 .AddBuffer(_buffer)
                 .UseIndices(indices)
                 .Build();
@@ -42,10 +39,11 @@ namespace Renderer.Common3D
             Transform3D = new Transform3D();
         }
 
-        public void Draw(Camera3D camera)
+        public void Draw(Camera3D camera, Material3D material)
         {
             _shader.ModelMatrix = Transform3D.Matrix;
             _shader.ViewMatrix = camera.ViewMatrix;
+            _shader.Material = material;
             
             _shader.Update();
 

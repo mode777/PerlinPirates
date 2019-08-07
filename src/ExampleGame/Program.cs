@@ -26,6 +26,7 @@ using Renderer.Common2D.Extensions;
 using Renderer.Common2D.Fonts;
 using Renderer.Common2D.Primitives;
 using Renderer.Common2D.Tiles;
+using Renderer.Common3D;
 using Renderer.Common3D.Extensions;
 using Tgl.Net;
 
@@ -86,6 +87,7 @@ namespace ExampleGame
             services.AddResourceLoader<GameMap, GameMapLoader>();
 
             services.AddResourceLoader<ObjFile, ObjLoader>();
+            services.AddResourceLoader<Mesh3D, MeshLoader>();
 
             services.AddSdl2(x => hostContext.Configuration.Bind("Platform", x));
             services.AddGles2();
